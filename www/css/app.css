@@ -47,4 +47,17 @@
   --f7-navbar-large-title-text-color: #fff;
 }
 
-/* Your app custom styles here */
+/* login */
+
+
+.page-content {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+
+/* Create event */
+.createEventBtn {
+  height: 50px;
+}
