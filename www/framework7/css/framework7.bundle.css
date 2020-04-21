@@ -3848,7 +3848,7 @@ html.device-full-viewport body {
 }
 .block-title {
   position: relative;
-  overflow: hidden;
+  /* overflow: hidden; */
   margin: 0;
   white-space: var(--f7-block-title-white-space);
   text-overflow: ellipsis;

@@ -27,10 +27,10 @@
   <link rel="stylesheet" href="css/icons.css">
   <link rel="stylesheet" href="css/app.css">
 </head>
-<body>
-  <div id="app"class="theme-dark">
+<body class="color-theme-green  ">
+  <div id="app">
     <!-- Left panel with cover effect-->
-    <div class="panel panel-left panel-cover theme-dark panel-init">
+    <div class="panel panel-left panel-cover  panel-init">
       <div class="view">
         <div class="page">
           <div class="navbar">
@@ -46,7 +46,7 @@
       </div>
     </div>
     <!-- Right panel with reveal effect-->
-    <div class="panel panel-right panel-reveal theme-dark">
+    <div class="panel panel-right panel-reveal ">
       <div class="view">
         <div class="page">
           <div class="navbar">
@@ -77,12 +77,12 @@
           <a href="#view-catalog" class="tab-link">
             <i class="icon f7-icons if-not-md">square_list_fill</i>
             <i class="icon material-icons if-md">view_list</i>
-            <span class="tabbar-label">Catalog</span>
+            <span class="tabbar-label">Events</span>
           </a>
           <a href="#view-settings" class="tab-link">
-            <i class="icon f7-icons if-not-md">gear</i>
-            <i class="icon material-icons if-md">settings</i>
-            <span class="tabbar-label">Settings</span>
+            <i class="icon f7-icons if-not-md">plus_app</i>
+            <i class="icon material-icons if-md">add</i>
+            <span class="tabbar-label">Add</span>
           </a>
           <!--eigen code-->
           <a href="#view-locatie" class="tab-link">
@@ -98,7 +98,7 @@
           <a href="#view-login" class="tab-link">
             <i class="icon f7-icons if-not-md">person</i>
             <i class="icon material-icons if-md">person</i>
-            <span class="tabbar-label">Login</span>
+            <span class="tabbar-label">Account</span>
           </a>
         </div>
       </div>
@@ -106,35 +106,72 @@
       <!-- Your main view/tab, should have "view-main" class. It also has "tab-active" class -->
       <div id="view-home" class="view view-main view-init tab tab-active">
         <div class="page" data-name="home">
-          <!-- Top Navbar -->
-          <div class="navbar navbar-large">
+          <!-- Top Navbar -->          
+          <div class="navbar">
             <div class="navbar-bg"></div>
-            <div class="navbar-inner">
+            <div class="navbar-inner sliding">
               <div class="left">
-                <a href="#" class="link icon-only panel-open" data-panel="left">
+                <a class="link back icon-only panel-open" data-panel="left">
                   <i class="icon f7-icons if-not-md">menu</i>
                   <i class="icon material-icons if-md">menu</i>
                 </a>
               </div>
-              <div class="title sliding">F7Cordova</div>
-              <div class="right">
-                <a href="#" class="link icon-only panel-open" data-panel="right">
-                  <i class="icon f7-icons if-not-md">menu</i>
-                  <i class="icon material-icons if-md">menu</i>
-                </a>
-              </div>
-              <div class="title-large">
-                <div class="title-large-text">F7Cordova</div>
-              </div>
+              <div class="title">Providit</div>
             </div>
           </div>
-
           <!-- Scrollable page content-->
-          <div class="page-content">
-            <div class="block block-strong">
-              <p>This is an example of tabs-layout application. The main point of such tabbed layout is that each tab contains independent view with its own routing and navigation.</p>
-
-              <p>Each tab/view may have different layout, different navbar type (dynamic, fixed or static) or without navbar like this tab.</p>
+          <div class="page-content hide-navbar-on-scroll">
+            <!-- Een datum zoeken-->
+            <div class="block-title block-title-medium">Een datum zoeken...</div>
+            <div class="card demo-card-header-pic">
+              <div style="background-image: url('img/bowling.jpg')" class="card-header align-items-flex-end">Bowling</div>
+              <div class="card-content card-content-padding">
+                <p class="date">Aanmelden tot 15/04</p>
+                <p>Avondje bowling met erna een walking diner.</p>
+              </div>
+              <div class="card-footer"><a href="#" class="link">Meld je aan</a></div>
+            </div>            
+            <div class="card demo-card-header-pic">
+              <div style="background-image: url('img/paintball.jpg')" class="card-header align-items-flex-end">Paintball</div>
+              <div class="card-content card-content-padding">
+                <p class="date">Aanmelden tot 24/04</p>
+                <p>Paintball in de bossen van Dendermonde.</p>
+              </div>
+              <div class="card-footer"><a href="#" class="link">Aangemeld</a><a href="#" class="link" style="color: gray;">Wijzig aanmelding></a></div>
+            </div>
+            <div class="card demo-card-header-pic">
+              <div style="background-image: url('img/voetbal.jpeg')" class="card-header align-items-flex-end">Beerschot-Antwerp</div>
+              <div class="card-content card-content-padding">
+                <p class="date">Aanmelden tot 26/06</p> 
+                <p>Samen naar Beershot-Antwerp gaan kijken.</p>
+              </div>
+              <div class="card-footer"><a href="#" class="link" style="color: red;">Ik kom niet</a><a href="#" class="link" style="color: gray;">Wijzig aanmelding></a></div>
+            </div>
+              <!--  Geplande events -->
+            <div class="block-title block-title-medium">Geplande events</div>
+            <div class="card demo-card-header-pic">
+              <div style="background-image: url('img/bbq.jpg')" class="card-header align-items-flex-end">BBQ</div>
+              <div class="card-content card-content-padding">
+                <p class="date">23/03</p>
+                <p>BBQ vlees eten op binnenkoer van Providit. Johan gaat het vlees bakken ;)</p>
+              </div>
+              <div class="card-footer"><a href="#" class="link">Aanwezig</a><a href="#" class="link" style="color: gray;">Wijzig aanwezigheid></a></div>
+            </div>            
+            <div class="card demo-card-header-pic">
+              <div style="background-image: url('img/cinema.jpg')" class="card-header align-items-flex-end">Cinema</div>
+              <div class="card-content card-content-padding">
+                <p class="date">4/04</p>
+                <p>De nieuwste James Bond gaan kijken in Kineplis Antwerpen.</p>
+              </div>
+              <div class="card-footer"><a href="#" class="link" style="color  : red;">Afwezig</a><a href="#" class="link" style="color: gray;">Wijzig aanwezigheid></a></div>
+            </div>
+            <div class="card demo-card-header-pic">
+              <div style="background-image: url('img/schaatsen.jpg')" class="card-header align-items-flex-end">Schaatsen</div>
+              <div class="card-content card-content-padding">
+                <p class="date">12/02</p>
+                <p>Gaan schaatsen op de schaatspiste van Antwerpen.</p>
+              </div>
+              <div class="card-footer"><a href="#" class="link" ">Aanwezig</a><a href="#" class="link" style="color: gray;">Wijzig aanwezigheid></a></div>
             </div>
 
             <div class="block-title">Navigation</div>
