@@ -1,0 +1,77 @@
+<template>
+<div class="page" data-name="gegevens">
+    <div class="navbar">
+      <div class="navbar-bg"></div>
+      <div class="navbar-inner sliding">
+        <div class="title">Data</div>
+      </div>
+    </div>
+    <div class="page-content">
+        <div class="block ">
+          <div class="content-block">
+            <form id="product">
+              <div class="list">
+                <ul>
+                  <li class="item-content item-input">
+                    <div class="item-inner">
+                      <div class="item-input-wrap">
+                        <input type="text" id="PR_naam" placeholder="Productnaam">
+                        <span class="input-clear-button"></span>
+                      </div>
+                    </div>
+                  </li>
+                  <li class="item-content item-input">
+                    <div class="item-inner">
+                      <div class="item-input-wrap">
+                        <input type="number" id="prijs" placeholder="Prijs in euro">
+                        <span class="input-clear-button"></span>
+                      </div>
+                    </div>
+                  </li>
+                </ul>
+              
+                <ul class="row">
+                  <li class="col">
+                    <label class="item-radio item-content">
+                      <input type="radio" name="categorie" value="groente" checked />
+                      <i class="icon icon-radio"></i>
+                      <div class="item-inner">
+                        <div class="item-title">Groente</div>
+                      </div>
+                    </label>
+                  </li>
+                  <li class="col">
+                    <label class="item-radio item-content">
+                      <input type="radio" name="categorie" value="fruit"/>
+                      <i class="icon icon-radio"></i>
+                      <div class="item-inner">
+                        <div class="item-title">Fruit</div>
+                      </div>
+                    </label>
+                  </li>
+                </ul>
+                <a href="#" id="btnVoegToe" class="button button-fill button-raised" @click="voegToe2">Voeg product toe</a>
+              </div>
+            </form>
+            <a href="#" id="btnToonData" class="button button-fill button-raised" @click="toonData">Toon data</a>
+            <div id="resultaat" class="content-block-inner"></div>
+            <div id="pList" class="content-block-inner"></div>
+    
+          </div>
+        </div>
+      </div>
+  </div>
+</template>
+<script>
+    return {
+      methods: {
+        voegToe2: function (){
+            app.dialog.alert("test");
+            voegToe();
+        },
+        toonData: function(){
+            getList();
+        },
+      },
+    };
+  </script>
