@@ -71,3 +71,19 @@
 .demo-card-header-pic .card-content-padding .date{
   color: #8e8e93;
 }
+
+/* detail event */
+#background_color
+{
+  background-color: lightgrey;
+}
+#titel_detail
+{
+  margin-top: -10px;
+}
+#imageBowling{
+  max-width: 75%;
+  margin-left: auto;
+  margin-right: auto;
+  border-radius: 30px;
+}
