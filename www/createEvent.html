@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <!--
+  Customize this policy to fit your own app's needs. For more guidance, see:
+      https://github.com/apache/cordova-plugin-whitelist/blob/master/README.md#content-security-policy
+  Some notes:
+    * gap: is required only on iOS (when using UIWebView) and is needed for JS->native communication
+    * https://ssl.gstatic.com is required only on Android and is needed for TalkBack to function properly
+    * Disables use of inline scripts in order to mitigate risk of XSS vulnerabilities. To change this:
+      * Enable inline JS: add 'unsafe-inline' to default-src
+  -->
+  <!--niet zeker of hier de https://webmobile.kinemaschepdaal.be wel inmoet, aangezien we deze subsite niet gebruiken en deze subsite geen https heeft-->
+  <meta http-equiv="Content-Security-Policy" content="default-src * 'self' https://webmobile.kinemaschepdaal.be 'unsafe-inline' 'unsafe-eval' data: gap: content:">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no, minimal-ui, viewport-fit=cover">
+
+  <meta name="theme-color" content="#007aff">
+  <meta name="format-detection" content="telephone=no">
+  <meta name="msapplication-tap-highlight" content="no">
+  <title>F7Cordova</title>
+  
+  
+  
+  
+  <link rel="stylesheet" href="framework7/css/framework7.bundle.min.css">
+  <link rel="stylesheet" href="css/icons.css">
+  <link rel="stylesheet" href="css/app.css">
+</head>
+<body>
+  <div id="app"class="theme-white">
+
+    <div class="page" data-name="form">
+        <div class="navbar">
+<div class="page" data-name="form">
+  <div class="navbar">
+    <div class="navbar-bg"></div>
+    <div class="navbar-inner sliding">
+      <div class="left">
+        <a href="#" class="link back">
+          <i class="icon icon-back"></i>
+          <span class="if-not-md">Back</span>
+        </a>
+      </div>
+      <div class="title">Create event</div>
+    </div>
+  </div>
+  <div class="page-content">
+    
+   
+    
+  </div>
+</div>
+          <div class="navbar-inner sliding">
+            <div class="left">
+              <a href="#" class="link back">
+                <i class="icon icon-back"></i>
+                <span class="if-not-md">Back</span>
+              </a>
+            </div>
+            <div class="title">Create event</div>
+          </div>
+        </div>
+        <div class="page-content">
+          <div class="block-title">Maak hier uw evenement aan</div>
+          <div class="list no-hairlines-md">
+            <ul>
+              <li>
+                <div class="item-content item-input">
+                  <div class="item-inner">
+                    <div class="item-title item-label">Evenement titel</div>
+                    <div class="item-input-wrap">
+                      <input type="text" placeholder="het evenement"/>
+                    </div>
+                  </div>
+                </div>
+              </li>
+              <li>
+                <div class="item-content item-input">
+                  <div class="item-inner">
+                    <div class="item-title item-label">Duurtijd</div>
+                    <div class="item-input-wrap">
+                      <input type="number" min="0" max="100" value="0"/>
+                    </div>
+                  </div>
+                </div>
+              </li>
+
+              <li>
+                <div class="item-content item-input">
+                  <div class="item-inner">
+                    <div class="item-title item-label">Tijdstip</div>
+                    <div class="item-input-wrap">
+                      <input type="time" />
+                    </div>
+                  </div>
+                </div>
+              </li>
+
+              <li>
+                <div class="item-content item-input">
+                  <div class="item-inner">
+                    <div class="item-title item-label">Prijs p.p</div>
+                    <div class="item-input-wrap">
+                      <div class="range-slider range-slider-init" data-label="true">
+                        <input type="range" value="0" min="0" max="100" step="1">
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </li>
+
+              <li>
+                <div class="item-content item-input">
+                  <div class="item-inner">
+                    <div class="item-title item-label">Locatie</div>
+                    <div class="item-input-wrap">
+                      <input type="password" placeholder="Locatie"/>
+                    </div>
+                  </div>
+                </div>
+              </li>
+              <li>
+                <div class="item-content item-input">
+                  <div class="item-inner">
+                    <div class="item-title item-label">Voeg foto toe</div>
+                    <div class="item-input-wrap">
+                      <input type="tel" placeholder="foto"/>
+                    </div>
+                  </div>
+                </div>
+              </li>
+
+              <li>
+                <div class="item-content item-input">
+                  <div class="item-inner">
+                    <div class="item-title item-label">URL</div>
+                    <div class="item-input-wrap">
+                      <input type="url" placeholder="URL"/>
+                    </div>
+                  </div>
+                </div>
+              </li>
+              
+              <li class="align-top">
+                <div class="item-content item-input">
+                  <div class="item-inner">
+                    <div class="item-title item-label">beschrijving</div>
+                    <div class="item-input-wrap">
+                      <textarea placeholder="Bio"></textarea>
+                    </div>
+                  </div>
+                </div>
+              </li>
+
+            </ul>
+
+            
+
+          </div>
+          <button class="col button button-fill color-green createEventBtn">Toevoegen</button>       
+        </div>
+        
+      </div>
+    
+  </div>
+
+  
+  <!-- CORDOVA_PLACEHOLDER_DONT_REMOVE -->
+  <!-- Framework7 library -->
+  <script src="framework7/js/framework7.bundle.min.js"></script>
+  <!-- Cordova APIs -->
+  <script src="js/cordova-app.js"></script>
+  <!-- App routes -->
+  <script src="js/routes.js"></script>
+  <!-- App scripts -->
+  <script src="js/app.js"></script>
+
+  <!-- The core Firebase JS SDK is always required and must be listed first -->
+  <script src="https://www.gstatic.com/firebasejs/7.14.1/firebase-app.js"></script>
+
+  <!-- TODO: Add SDKs for Firebase products that you want to use
+      https://firebase.google.com/docs/web/setup#available-libraries -->
+
+  <script>
+    // Your web app's Firebase configuration
+    var firebaseConfig = {
+      apiKey: "AIzaSyCvV_xtrOzYto5dmz4a9gGwyktjXfPr8jY",
+      authDomain: "eventplanner-providit.firebaseapp.com",
+      databaseURL: "https://eventplanner-providit.firebaseio.com",
+      projectId: "eventplanner-providit",
+      storageBucket: "eventplanner-providit.appspot.com",
+      messagingSenderId: "796873791764",
+      appId: "1:796873791764:web:87e42e0c783b05326d0a01"
+    };
+    // Initialize Firebase
+    firebase.initializeApp(firebaseConfig);
+  </script>
+</body>
+</html>
