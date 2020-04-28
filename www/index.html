@@ -18,7 +18,7 @@
   <meta name="theme-color" content="#007aff">
   <meta name="format-detection" content="telephone=no">
   <meta name="msapplication-tap-highlight" content="no">
-  <title>F7Cordova</title>
+  <title>Providit Planner</title>
   
   
   
@@ -74,31 +74,15 @@
             <i class="icon material-icons if-md">home</i>
             <span class="tabbar-label">Home</span>
           </a>
-          <a href="#view-catalog" class="tab-link">
-            <i class="icon f7-icons if-not-md">square_list_fill</i>
-            <i class="icon material-icons if-md">view_list</i>
+          <a href="#view-lijstvoorstellen" class="tab-link">
+            <i class="icon f7-icons if-not-md">calendar</i>
+            <i class="icon material-icons if-md">calendar</i>
             <span class="tabbar-label">Events</span>
           </a>
-          <a href="#view-settings" class="tab-link">
-            <i class="icon f7-icons if-not-md">plus_app</i>
-            <i class="icon material-icons if-md">add</i>
-            <span class="tabbar-label">Add</span>
-          </a>
-          <!--eigen code-->
-          <a href="#view-locatie" class="tab-link">
-            <i class="icon f7-icons if-not-md">location_circle_fill</i>
-            <i class="icon material-icons if-md">my_location</i>
-            <span class="tabbar-label">Locatie</span>
-          </a>
-          <a href="#view-gegevens" class="tab-link">
-            <i class="icon f7-icons if-not-md">square_list_fill</i>
-            <i class="icon material-icons if-md">view_list</i>
-            <span class="tabbar-label">Data</span>
-          </a>
-          <a href="#view-login" class="tab-link">
-            <i class="icon f7-icons if-not-md">person</i>
-            <i class="icon material-icons if-md">person</i>
-            <span class="tabbar-label">Account</span>
+          <a href="#view-myevents" class="tab-link">
+            <i class="icon f7-icons if-not-md">waveform_path</i>
+            <i class="icon material-icons if-md">waveform_path</i>
+            <span class="tabbar-label">My events</span>
           </a>
         </div>
       </div>
@@ -110,153 +94,93 @@
           <div class="navbar">
             <div class="navbar-bg"></div>
             <div class="navbar-inner sliding">
-              <div class="left">
-                <a class="link back icon-only panel-open" data-panel="left">
-                  <i class="icon f7-icons if-not-md">menu</i>
-                  <i class="icon material-icons if-md">menu</i>
-                </a>
-              </div>
               <div class="title">Providit</div>
             </div>
           </div>
           <!-- Scrollable page content-->
           <div class="page-content hide-navbar-on-scroll">
+            
             <!-- Een datum zoeken-->
-            <div class="block-title block-title-medium">Een datum zoeken...</div>
+            <div class="block-title block-title-medium">Een datum zoeken...</div>            
             <div class="card demo-card-header-pic">
-              <div style="background-image: url('img/bowling.jpg')" class="card-header align-items-flex-end">Bowling</div>
+              <a class ="cardlinks" href="/detailevent/">
+                <div style="background-image: url('img/bowling.jpg')" class="card-header align-items-flex-end">Bowling</div>
               <div class="card-content card-content-padding">
                 <p class="date">Aanmelden tot 15/04</p>
                 <p>Avondje bowling met erna een walking diner.</p>
               </div>
-              <div class="card-footer"><a href="#" class="link">Meld je aan</a></div>
+              <div class="card-footer"><a href="/detailevent/" class="link">Meld je aan</a></div>
+              </a>
+              
             </div>            
             <div class="card demo-card-header-pic">
+              <a class ="cardlinks" href="/detailevent/">
               <div style="background-image: url('img/paintball.jpg')" class="card-header align-items-flex-end">Paintball</div>
               <div class="card-content card-content-padding">
                 <p class="date">Aanmelden tot 24/04</p>
                 <p>Paintball in de bossen van Dendermonde.</p>
               </div>
               <div class="card-footer"><a href="#" class="link">Aangemeld</a><a href="#" class="link" style="color: gray;">Wijzig aanmelding></a></div>
+            </a>
             </div>
             <div class="card demo-card-header-pic">
+              <a class ="cardlinks" href="/detailevent/">
               <div style="background-image: url('img/voetbal.jpeg')" class="card-header align-items-flex-end">Beerschot-Antwerp</div>
               <div class="card-content card-content-padding">
                 <p class="date">Aanmelden tot 26/06</p> 
                 <p>Samen naar Beershot-Antwerp gaan kijken.</p>
               </div>
               <div class="card-footer"><a href="#" class="link" style="color: red;">Ik kom niet</a><a href="#" class="link" style="color: gray;">Wijzig aanmelding></a></div>
+            </a>
             </div>
               <!--  Geplande events -->
             <div class="block-title block-title-medium">Geplande events</div>
             <div class="card demo-card-header-pic">
+              <a class ="cardlinks" href="/detailfinalevent/">
               <div style="background-image: url('img/bbq.jpg')" class="card-header align-items-flex-end">BBQ</div>
               <div class="card-content card-content-padding">
                 <p class="date">23/03</p>
                 <p>BBQ vlees eten op binnenkoer van Providit. Johan gaat het vlees bakken ;)</p>
               </div>
-              <div class="card-footer"><a href="#" class="link">Aanwezig</a><a href="#" class="link" style="color: gray;">Wijzig aanwezigheid></a></div>
+              <div class="card-footer"><a href="/detailfinalevent/" class="link">Aanwezig</a><a href="/detailfinalevent/" class="link" style="color: gray;">Wijzig aanwezigheid></a></div>
+            </a>
             </div>            
             <div class="card demo-card-header-pic">
+              <a class ="cardlinks" href="/detailfinalevent/">
               <div style="background-image: url('img/cinema.jpg')" class="card-header align-items-flex-end">Cinema</div>
               <div class="card-content card-content-padding">
                 <p class="date">4/04</p>
                 <p>De nieuwste James Bond gaan kijken in Kineplis Antwerpen.</p>
               </div>
-              <div class="card-footer"><a href="#" class="link" style="color  : red;">Afwezig</a><a href="#" class="link" style="color: gray;">Wijzig aanwezigheid></a></div>
+              <div class="card-footer"><a href="/detailfinalevent/" class="link" style="color  : red;">Afwezig</a><a href="/detailfinalevent/" class="link" style="color: gray;">Wijzig aanwezigheid></a></div>
+            </a>
             </div>
             <div class="card demo-card-header-pic">
+              <a class ="cardlinks" href="/detailfinalevent/">
               <div style="background-image: url('img/schaatsen.jpg')" class="card-header align-items-flex-end">Schaatsen</div>
               <div class="card-content card-content-padding">
                 <p class="date">12/02</p>
                 <p>Gaan schaatsen op de schaatspiste van Antwerpen.</p>
               </div>
-              <div class="card-footer"><a href="#" class="link" ">Aanwezig</a><a href="#" class="link" style="color: gray;">Wijzig aanwezigheid></a></div>
+              <div class="card-footer"><a href="/detailfinalevent/" class="link" ">Aanwezig</a><a href="/detailfinalevent/" class="link" style="color: gray;">Wijzig aanwezigheid></a></div>
+            </a>
             </div>
 
-            <div class="block-title">Navigation</div>
-            <div class="list">
-              <ul>
-                <li>
-                  <a href="/about/" class="item-content item-link">
-                    <div class="item-inner">
-                      <div class="item-title">About</div>
-                    </div>
-                  </a>
-                </li>
-                <li>
-                  <a href="/form/" class="item-content item-link">
-                    <div class="item-inner">
-                      <div class="item-title">Form</div>
-                    </div>
-                  </a>
-                </li>
-              </ul>
-            </div>
-
-            <div class="block-title">Modals</div>
-            <div class="block block-strong">
-              <div class="row">
-                <div class="col-50">
-                  <a href="#" class="button button-raised button-fill popup-open" data-popup="#my-popup">Popup</a>
-                </div>
-                <div class="col-50">
-                  <a href="#" class="button button-raised button-fill login-screen-open" data-login-screen="#my-login-screen">Login Screen</a>
-                </div>
-              </div>
-            </div>
-
-            <div class="block-title">Panels</div>
-            <div class="block block-strong">
-              <div class="row">
-                <div class="col-50">
-                  <a href="#" class="button button-raised button-fill panel-open" data-panel="left">Left Panel</a>
-                </div>
-                <div class="col-50">
-                  <a href="#" class="button button-raised button-fill panel-open" data-panel="right">Right Panel</a>
-                </div>
-              </div>
-            </div>
-
-            <div class="list links-list">
-              <ul>
-                <li>
-                  <a href="/dynamic-route/blog/45/post/125/?foo=bar#about">Dynamic (Component) Route</a>
-                </li>
-                <li>
-                  <a href="/load-something-that-doesnt-exist/">Default Route (404)</a>
-                </li>
-                <li>
-                  <a href="/request-and-load/user/123456/">Request Data & Load</a>
-                </li>
-              </ul>
-            </div>
+            
           </div>
         </div>
       </div>
 
-      <!-- Catalog View -->
-      <div id="view-catalog" class="view view-init tab" data-view="catalog" data-url="/catalog/">
-        <!-- Catalog page will be loaded here dynamically from /catalog/ route -->
+      <!-- lijstvoorstellen View -->
+      <div id="view-lijstvoorstellen" class="view view-init tab" data-view="lijstvoorstellen" data-url="/lijstvoorstellen/">
+        <!-- lijstvoorstellen page will be loaded here dynamically from /lijstvoorstellen/ route -->
       </div>
 
-      <!-- Settings View -->
-      <div id="view-settings" class="view view-init tab" data-view="settings" data-url="/settings/">
-        <!-- Settings page will be loaded here dynamically from /settings/ route -->
+      <!-- myevents View -->
+      <div id="view-myevents" class="view view-init tab" data-view="myevents" data-url="/myevents/">
+        <!-- myevents page will be loaded here dynamically from /myevents/ route -->
       </div>
-      <!-- Locatie view -->
-      <div id="view-locatie" class="view view-init tab" data-view="locatie" data-url="/locatie/">
-        <!-- Locatie page will be loaded here dynamically from /locatie/ route -->
-      </div>
-      <!-- Gegevens View -->
-      <div id="view-gegevens" class="view view-init tab" data-view="gegevens" data-url="/gegevens/">
-        <!-- Gegevens page will be loaded here dynamically from /gegevens/ route -->
-      </div>
-
-      <!-- Login view-->
-      <div id="view-login" class="view view-init tab" data-view="login" data-url="/login/">
-        <!-- Login page will be loaded here dynamically from /login/ route -->
-      </div>
+      
     </div>
 
 
