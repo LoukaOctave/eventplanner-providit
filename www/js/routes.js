@@ -13,18 +13,65 @@ var routes = [
     url: './pages/form.html',
   },
   {
-    path: '/catalog/',
-    componentUrl: './pages/catalog.html',
+    path: '/lijstvoorstellen/',
+    componentUrl: './pages/lijstvoorstellen.html',
   },
   {
     path: '/product/:id/',
     componentUrl: './pages/product.html',
   },
   {
+    path: '/eventvoorstel/',
+    url: './pages/eventvoorstel.html',
+  },
+  {
+    path: '/eventvoorstelzaakvoerder/',
+    url: './pages/eventvoorstelzaakvoerder.html',
+  },
+  {
     path: '/settings/',
     url: './pages/settings.html',
   },
-
+  {
+    path: '/voorsteldatepicker/',
+    url: './pages/voorsteldatepicker.html',
+    name: 'voorsteldatepicker'
+  },
+  {
+    path: '/createEvent/',
+    url: './pages/createEvent.html',
+    name: 'createEvent'
+  },
+  {
+    path: '/myevents/',
+    url: './pages/myevents.html',
+    name: 'myevents'
+  },
+  {
+    path: '/detailevent/',
+    url: './pages/detailevent.html',
+    name: 'detailevent'
+  },
+  {
+    path: '/detailfinalevent/',
+    url: './pages/detailfinalevent.html',
+    name: 'detailfinalevent'
+  },
+  {
+    path: '/editevent/',
+    url: './pages/editevent.html',
+    name: 'editevent'
+  },
+  {
+    path: '/eventvoorstelwithdate/',
+    url: './pages/eventvoorstelwithdate.html',
+    name: 'eventvoorstelwithdate'
+  },
+  {
+    path: '/eventrespons/',
+    url: './pages/eventrespons.html',
+    name: 'eventrespons'
+  },
   {
     path: '/dynamic-route/blog/:blogId/post/:postId/',
     componentUrl: './pages/dynamic-route.html',

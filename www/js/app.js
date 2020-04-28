@@ -4,7 +4,7 @@ var $$ = Dom7;
 var app = new Framework7({
   root: '#app', // App root element
   id: 'be.mikadebelder.F7Cordova', // App bundle ID
-  name: 'F7Cordova', // App name
+  name: 'Providit Planner', // App name
   theme: 'auto', // Automatic theme detection
   // App root data
   data: function () {
@@ -13,7 +13,7 @@ var app = new Framework7({
         firstName: 'John',
         lastName: 'Doe',
       },
-      // Demo products for Catalog section
+      // Demo products for lijstvoorstellen section
       products: [
         {
           id: '1',
@@ -61,6 +61,23 @@ var app = new Framework7({
         cordovaApp.init(f7);
       }
     },
+    pageInit: function (page) {
+
+      // bij het toevoegen van een fiets wordt het toegevoegd in de lijst in de homepagina
+        //if (page.route.name === "addbike") {
+            //$$('#btnaddbike').on('click', function () {
+               // voegToe();
+         // });
+        //}
+        if (page.route.name === "voorsteldatepicker") {          
+          datepicker();
+        }
+        if (page.route.name === "detailevent") {          
+          datepicker();
+        }
+       
+
+    }
   },
 });
 
@@ -374,7 +391,7 @@ var $$ = Dom7;
 var monthNames = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August' , 'September' , 'October', 'November', 'December'];
 var calendarInline = app.calendar.create({
   containerEl: '#demo-calendar-inline-container',
-  value: [new Date()],
+  multiple: true,
   weekHeader: false,
   renderToolbar: function () {
     return '<div class="toolbar calendar-custom-toolbar no-shadow">' +
@@ -404,3 +421,44 @@ var calendarInline = app.calendar.create({
     }
   }
 });
+
+
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
+//PROVIDIT//
+///////////////////////////////////////////////////////////////////////////////////////////////////
+function datepicker() {
+  var monthNames = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August' , 'September' , 'October', 'November', 'December'];
+  var calendarInline = app.calendar.create({
+  containerEl: '#demo-calendar-inline-container',
+  multiple: true,
+  weekHeader: false,
+  renderToolbar: function () {
+    return '<div class="toolbar calendar-custom-toolbar no-shadow">' +
+      '<div class="toolbar-inner">' +
+        '<div class="left">' +
+          '<a href="#" class="link icon-only"><i class="icon icon-back ' + (app.theme === 'md' ? 'color-black' : '') + '"></i></a>' +
+        '</div>' +
+        '<div class="center"></div>' +
+        '<div class="right">' +
+          '<a href="#" class="link icon-only"><i class="icon icon-forward ' + (app.theme === 'md' ? 'color-black' : '') + '"></i></a>' +
+        '</div>' +
+      '</div>' +
+    '</div>';
+  },
+  on: {
+    init: function (c) {
+      $$('.calendar-custom-toolbar .center').text(monthNames[c.currentMonth] +', ' + c.currentYear);
+      $$('.calendar-custom-toolbar .left .link').on('click', function () {
+        calendarInline.prevMonth();
+      });
+      $$('.calendar-custom-toolbar .right .link').on('click', function () {
+        calendarInline.nextMonth();
+      });
+    },
+    monthYearChangeStart: function (c) {
+      $$('.calendar-custom-toolbar .center').text(monthNames[c.currentMonth] +', ' + c.currentYear);
+    }
+  }
+});
+}
