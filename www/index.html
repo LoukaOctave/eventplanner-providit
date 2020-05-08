@@ -254,26 +254,34 @@
   <script src="js/routes.js"></script>
   <!-- App scripts -->
   <script src="js/app.js"></script>
+  
+<!-- The core Firebase JS SDK is always required and must be listed first -->
+<script src="https://www.gstatic.com/firebasejs/7.14.3/firebase-app.js"></script>
+<script src="https://www.gstatic.com/firebasejs/7.14.3/firebase-storage.js"></script>
+<script src="https://www.gstatic.com/firebasejs/7.14.3/firebase-auth.js"></script>
+<script src="https://www.gstatic.com/firebasejs/7.14.3/firebase-firestore.js"></script>
 
-  <!-- The core Firebase JS SDK is always required and must be listed first -->
-  <script src="https://www.gstatic.com/firebasejs/7.14.1/firebase-app.js"></script>
 
-  <!-- TODO: Add SDKs for Firebase products that you want to use
-      https://firebase.google.com/docs/web/setup#available-libraries -->
+<!-- TODO: Add SDKs for Firebase products that you want to use
+     https://firebase.google.com/docs/web/setup#available-libraries -->
 
-  <script>
-    // Your web app's Firebase configuration
-    var firebaseConfig = {
-      apiKey: "AIzaSyCvV_xtrOzYto5dmz4a9gGwyktjXfPr8jY",
-      authDomain: "eventplanner-providit.firebaseapp.com",
-      databaseURL: "https://eventplanner-providit.firebaseio.com",
-      projectId: "eventplanner-providit",
-      storageBucket: "eventplanner-providit.appspot.com",
-      messagingSenderId: "796873791764",
-      appId: "1:796873791764:web:87e42e0c783b05326d0a01"
-    };
-    // Initialize Firebase
-    firebase.initializeApp(firebaseConfig);
-  </script>
+<script>
+  
+  // Your web app's Firebase configuration
+  var firebaseConfig = {
+    apiKey: "AIzaSyCvV_xtrOzYto5dmz4a9gGwyktjXfPr8jY",
+    authDomain: "eventplanner-providit.firebaseapp.com",
+    databaseURL: "https://eventplanner-providit.firebaseio.com",
+    projectId: "eventplanner-providit",
+    storageBucket: "eventplanner-providit.appspot.com",
+    messagingSenderId: "796873791764",
+    appId: "1:796873791764:web:87e42e0c783b05326d0a01"
+  };
+      // Initialize Firebase
+  firebase.initializeApp(firebaseConfig);
+    // Get a reference to the storage service, which is used to create references in your storage bucket
+    var storage = firebase.storage();
+    const db = firebase.firestore();
+</script>
 </body>
 </html>

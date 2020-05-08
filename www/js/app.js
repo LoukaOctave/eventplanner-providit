@@ -461,4 +461,87 @@ function datepicker() {
     }
   }
 });
+<<<<<<< Updated upstream
+=======
+}
+function datepickerdisabled() {
+  var today = new Date();
+  var weekLater = new Date().setDate(today.getDate() + 7);
+  var monthNames = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August' , 'September' , 'October', 'November', 'December'];
+  var calendarInline = app.calendar.create({
+  containerEl: '#demo-calendar-inline-container',
+  multiple: true,
+  weekHeader: false,
+  disabled: {
+    from: new Date(2020, 4, 4),
+    to: new Date(2020, 4, 7),
+},
+  renderToolbar: function () {
+    return '<div class="toolbar calendar-custom-toolbar no-shadow">' +
+      '<div class="toolbar-inner">' +
+        '<div class="left">' +
+          '<a href="#" class="link icon-only"><i class="icon icon-back ' + (app.theme === 'md' ? 'color-black' : '') + '"></i></a>' +
+        '</div>' +
+        '<div class="center"></div>' +
+        '<div class="right">' +
+          '<a href="#" class="link icon-only"><i class="icon icon-forward ' + (app.theme === 'md' ? 'color-black' : '') + '"></i></a>' +
+        '</div>' +
+      '</div>' +
+    '</div>';
+  },
+  on: {
+    init: function (c) {
+      $$('.calendar-custom-toolbar .center').text(monthNames[c.currentMonth] +', ' + c.currentYear);
+      $$('.calendar-custom-toolbar .left .link').on('click', function () {
+        calendarInline.prevMonth();
+      });
+      $$('.calendar-custom-toolbar .right .link').on('click', function () {
+        calendarInline.nextMonth();
+      });
+    },
+    monthYearChangeStart: function (c) {
+      $$('.calendar-custom-toolbar .center').text(monthNames[c.currentMonth] +', ' + c.currentYear);
+    }
+  }
+});
+}
+
+
+// make event voorstel
+function firestoreAddVoorstel(){
+  console.log("testclick");
+  var img = document.getElementById("img").files[0];
+  var imgname = img.name;
+ 
+  var storage = firebase.storage();
+
+  var storageRef = firebase.storage().ref(imgname);
+
+  var uploadTask = storageRef.put(img);
+
+  uploadTask.on('state_changed', function (snapshot){
+    var progress = (snapshot.bytesTransferred/snapshot.totalBytes)*100;
+    console.log("upload is "+ progress+" done");
+  },function(error){
+    console.log(error.message);
+  },function(){
+
+    uploadTask.snapshot.ref.getDownloadURL().then(function (downloadURL){
+      console.log(downloadURL);
+      // later als login werkt kan dit worden uncomment worden samen met eigenaar
+      //var user = firebase.auth().currentUser;
+      db.collection('Events').add({
+        naam: document.getElementById("addeventnaam").value,
+        beschrijving: document.getElementById("addeventbeschrijving").value,
+        prijspp: document.getElementById("addeventprijs").value,
+        url: document.getElementById("addeventurl").value,
+        img: downloadURL ,
+        status: "voorstel"
+        //eigenaar: user.uid
+      });
+
+    });
+  });
+  
+>>>>>>> Stashed changes
 }

@@ -21,7 +21,7 @@
             <div class="item-inner">
               <div class="item-title item-label">Evenement titel</div>
               <div class="item-input-wrap">
-                <input type="text" placeholder="het evenement"/>
+                <input type="text" placeholder="het evenement" id="addeventnaam"/>
               </div>
             </div>
           </div>
@@ -31,7 +31,7 @@
             <div class="item-inner">
               <div class="item-title item-label">Duurtijd</div>
               <div class="item-input-wrap">
-                <input type="number" min="0" max="100" value="0"/>
+                <input type="number" min="0" max="100" value="0" id="addeventduurtijd"/>
               </div>
             </div>
           </div>
@@ -42,7 +42,7 @@
             <div class="item-inner">
               <div class="item-title item-label">Tijdstip</div>
               <div class="item-input-wrap">
-                <select name="tijdstip" placeholder="Please choose..." >
+                <select name="tijdstip" placeholder="Please choose..." id="addeventtijdstip">
                   <option value="voormiddag">Voormiddag</option>
                   <option value="namiddag">Namiddag</option>
                   <option value="savonds">'s avonds</option>
@@ -59,10 +59,10 @@
               <div class="item-title item-label">Prijs p.p</div>
               <div class="item-input-wrap">
                 <div class="range-slider range-slider-init" data-label="true">
-                  <input type="range" value="0" min="0" max="100" step="1">
+                  <input type="range" value="0" min="0" max="100" step="1" id="addeventprijs">
                 </div>
               </div>
-            </div>
+            </div>  
           </div>
         </li>
 
@@ -71,11 +71,11 @@
             <div class="item-inner">
               <div class="item-title item-label">Locatie</div>
               <div class="item-input-wrap">
-                <input type="password" placeholder="Locatie"/>
+                <input type="text" placeholder="Locatie" id="addeventlocatie"/>
               </div>
             </div>
           </div>
-        </li>
+         </li>
         <li>
           <div class="item-content item-input">
             <div class="item-inner">
@@ -85,14 +85,14 @@
               </div>
             </div>
           </div>
-        </li>
+        </li> 
 
         <li>
           <div class="item-content item-input">
             <div class="item-inner">
               <div class="item-title item-label">URL</div>
               <div class="item-input-wrap">
-                <input type="url" placeholder="URL"/>
+                <input type="url" placeholder="URL" id="addeventurl"/>
               </div>
             </div>
           </div>
@@ -103,14 +103,14 @@
             <div class="item-inner">
               <div class="item-title item-label">Beschrijving</div>
               <div class="item-input-wrap">
-                <textarea placeholder="beschrijf kort de activiteit"></textarea>
+                <textarea placeholder="beschrijf kort de activiteit" id="addeventbeschrijving"></textarea>
               </div>
             </div>
           </div>
         </li>
       </ul>   
       <p></p>  
-      <button class="col button button-fill"> <a href="/myevents/" style="color: white;">Create new event</a></button>
+      <button class="col button button-fill" onclick="firestoreAddVoorstel()"> <a href="/myevents/" style="color: white;">Create new event</a></button>
         </div>
            
   </div>
