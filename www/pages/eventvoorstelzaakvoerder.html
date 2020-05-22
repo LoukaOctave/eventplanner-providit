@@ -4,7 +4,7 @@
         
         <div class="navbar-inner sliding">
             <div class="left">
-                <a href="/lijstvoorstellen/" class="link">
+                <a href="/lijstvoorstellen/" class="link" onclick="getListVoorstellen()">
                     <i class="icon icon-back"></i>
                     <span>Back</span>
                 </a>
@@ -14,15 +14,15 @@
       </div>
       <div class="page-content">
         <div class="block-title block-title-medium">Bowlen</div>
-        <img id="imgvoorstel" src="img/bowling.jpg" alt="bowling">     
+        <img id="vImg" src="" alt="">     
         <div class="block-title">Voorstel van:</div>  
         <div class="list inset ">
             <ul>
                 <div  class="item-content">
-                    <div class="item-media"><img id="imguser"src="https://cdn.framework7.io/placeholder/fashion-88x88-4.jpg" width="44"/></div>
+                    <div class="item-media"><img id="imguser"src="" width="44"/></div>
                     <div class="item-inner">
                       <div class="item-title-row">
-                        <div class="item-title">Pieter De Bakker</div>
+                        <div class="item-title" id="vOrganisator"></div>
                       </div>
                     </div>
                 </div>
@@ -30,16 +30,16 @@
           </div>
           <div class="block-title">Info</div>  
         <div class="block block-strong inset">
-            <p><b>Info:</b> Het plan zou zijn om te gaan bowlen en eventueel erna nog iets te gaan eten.</p>
-            <p><b>Tijdstip:</b> 's avonds</p>
-            <p><b>Duur:</b> 4 uur</p>
-            <p><b>Locatie:</b> Steenweg op Vilvoorde 12, Vilvoorde</p>
-            <p><b>URL:</b> <a href="www.bowlingvilvoorde.be">www.bowlingvilvoorde.be</a></p>
+            <p id="vInfo"><b>Info:</b></p>
+            <p id="vTijdstip"><b>Tijdstip:</b> </p>
+            <p id="vDuur"><b>Duur:</b></p>
+            <p id="vLocatie"><b>Locatie:</b></p>
+            <p id="vURL"><b>URL:</b> <a href="www.bowlingvilvoorde.be"></a></p>
         </div>
         <div class="block">
             <p class="row">
-               <button class="col button button-fill color-green"> <a href="/voorsteldatepicker/" style="color: white;">Goedkeuren</a></button>
-               <button class="col button button-fill color-red"> <a href="/lijstvoorstellen/" style="color: white;">Afkeuren</a></button>                           
+               <button class="col button button-fill color-green"> <a href="/voorsteldatepicker/" style="color: white;" class="aanvraagGoedkeuren" id="vGoedkeuren">Goedkeuren</a></button>
+               <button class="col button button-fill color-red"> <a href="/lijstvoorstellen/" style="color: white;" class="aanvraagAfkeuren" id="vAfkeuren">Afkeuren</a></button>                           
             </p>            
           </div>
       </div>

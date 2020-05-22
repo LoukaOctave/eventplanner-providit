@@ -102,3 +102,6 @@ color: black;
 .dateblock {
   margin-bottom: -10px;
 }
+#vImg {
+  height: 20vh;
+}
