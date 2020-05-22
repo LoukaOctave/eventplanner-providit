@@ -73,9 +73,20 @@ var routes = [
     name: 'eventrespons'
   },
   {
+    path: '/detaileventdate/',
+    url: './pages/detaileventdate.html',
+    name: 'detaileventdate'
+  },
+  {
+    path: '/voorstelrandomevent/',
+    url: './pages/voorstelrandomevent.html',
+    name: 'voorstelrandomevent'
+  },
+  {
     path: '/dynamic-route/blog/:blogId/post/:postId/',
     componentUrl: './pages/dynamic-route.html',
   },
+  
   {
     path: '/request-and-load/user/:userId/',
     async: function (routeTo, routeFrom, resolve, reject) {
