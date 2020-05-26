@@ -357,7 +357,51 @@ function getListRandomEvents(){
         $$("#datumzoekenvooronbepaaldevent").append(tlines);                 
     }) 
 });
+}
 
+//////////////////////////////////////
+/////////////INDEX.HTML///////////////
+//////////////////////////////////////
+
+// Checken of user aangemeld is voor event met status "voorstelnodate", en juiste text weergeven op card
+// linkText OK! maar ook linkUrl wijzigen???
+// Of misschien text behouden maar niet als link, aangezien we kunnen klikken op de card zelf?
+//function isUserAangemeldBijEvent() {
+//  var linkText ="";
+//  forEach(aangemelde => {
+//    if(aangemelde.Username == user){
+//      linkText = "Wijzig aanmelding"
+//    }
+//    else{
+//     linkText = "Meld je aan"
+//    }
+//  return linkText;
+//}
+
+// Events met "voorstelnodate" als status ophalen en zetten onder "Datum kiezen..."
+function getListVoorstellenNoDate() {
+  
+  db.collection('Events').where('Status' , '==', "voorstelnodate").get().then((snapshot)=>{
+    snapshot.docs.forEach(doc => {              
+      var tlines = "";
+
+      tlines += "<div class='card demo-card-header-pic'><a class ='cardlinks' href='/detailevent/'><div style='background-image: url('" + doc.data().Img + "')' class='card-header align-items-flex-end'>" + doc.data().Eventnaam + "</div><div class='card-content card-content-padding'><p class='date'>Aanmelden tot " + "AAN TE VULLEN" + "</p><p>" + doc.data().Beschrijving + "</p></div><div class='card-footer'><a href='/detailfinalevent/' class='link'>" + "isUserAangemeldBijEvent()" + "</a></div></a></div>";
+      $$("#eventVoorstelNoDate").html(tlines);                 
+  
+      })
+  })
+}
+
+function getListVoorstellenGepland() {
+  
+  db.collection('Events').where('Status' , '==', "gepland").get().then((snapshot)=>{
+    snapshot.docs.forEach(doc => {              
+      var tlines = "";
+
+      tlines += "<div class='card demo-card-header-pic'><a class ='cardlinks' href='/detailfinalevent/'><div style='background-image: url('" + doc.data().Img + "')' class='card-header align-items-flex-end'>" + doc.data().Eventnaam + "</div><div class='card-content card-content-padding'><p class='date'>" + "AAN TE VULLEN" + "</p><p>" + doc.data().Beschrijving + "</p></div><div class='card-footer'><a href='/detailevent/' class='link'>" + "isUserAangemeldBijEvent()" + "</a></div></a></div>";
+      $$("#eventGepland").html(tlines);
+    })
+  })
 }
 
 /* Deze functie dient om wanneer iemand op een eventvoorstel/aanvraag 
