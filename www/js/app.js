@@ -538,12 +538,12 @@ function aanvraagAfkeuren(){
 
 // lists op myevents laden
 $$(document).on('page:init', '.page[data-name="myevents"]', function (e) {
-  lijstEigenVoorstellen() ;
-  lijstEigenHistory();
+  
  });
 
 function getListMyEvents(){
-
+  lijstEigenVoorstellen() ;
+  lijstEigenHistory();
 }
 
 
@@ -560,23 +560,23 @@ function lijstEigenVoorstellen() {
 
 // list van eigen voorstellen history
 function lijstEigenHistory() {  
-  var tlines ="";
+ 
   var user = firebase.auth().currentUser;  
   db.collection('Events').where('Status' , '==', "voorstel").where("Organisator", '==', user.uid).get().then((snapshot)=>{
     snapshot.docs.forEach(doc => {              
-     
+      var tlines ="";
       tlines += "<li><a href='#' class='item-link item-content' id=" + doc.id + "><div class='item-media'><i class='f7-icons'>checkmark_alt_circle</i></div><div class='item-inner'><div class='item-title'>" + doc.data().Eventnaam + "</div></div></a></li>";
-             
+      $$("#eigenvoorstellenhistory").append(tlines);    
   })
 }) 
 db.collection('Events').where('Status' , '==', "afgekeurd").where("Organisator", '==', user.uid).get().then((snapshot)=>{
   snapshot.docs.forEach(doc => {              
-     
+    var tlines ="";
     tlines += "<li><a href='/aanvraagafkeurenuitlegRead/' class='item-link item-content eigenafgekeurdeevents' id=" + doc.id + "><div class='item-media'><i class='f7-icons'>multiply_circle</i></div><div class='item-inner'><div class='item-title'>" + doc.data().Eventnaam + "</div></div></a></li>";
-         
+    $$("#eigenvoorstellenhistory").append(tlines);  
 })
 }) 
-$$("#eigenvoorstellenhistory").html(tlines);  
+
 }
 
 // show scherm waarom afgekeurd

@@ -14,7 +14,7 @@ var $$ = Dom7;
             db.collection('events').onSnapshot(snapshot => {
                 //setupGuides(snapshot.docs);
                 setupUI(user);
-
+                getListMyEvents();
 
                 if (loggedIn == false) {
                   loggedIn = true;
