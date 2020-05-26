@@ -1,10 +1,13 @@
-<div class="page" data-name="voorsteldatepicker">
+<!-- 
+  Deze pagina dient voor als de zaakvoerder op een random event klikt waarvooor een datum wordt gezocht
+ -->
+<div class="page" data-name="voorsteldatepickershow">
     <div class="navbar">
       <div class="navbar-bg"></div>
       
       <div class="navbar-inner sliding">
           <div class="left">
-              <a href="/eventvoorstel/" class="link">
+              <a href="/lijstvoorstellen/" class="link">
                   <i class="icon icon-back"></i>
                   <span>Back</span>
               </a>
@@ -15,11 +18,10 @@
     <div class="page-content">
       <div class="block-title block-title-medium">Datums selecteren</div>
       
-      <div class="block block-strong no-padding">
-        
-        <div id="demo-calendar-inline-container-voorsteldatepicker"></div>
+      <div class="block block-strong no-padding" id="lijstdatarandomevent">
+
       </div>
-      <button class="col button button-fill color-green"> <a href="/lijstvoorstellen/" class="aanvraagGoedkeuren" style="color: white;">Indienen</a></button>
+      <button class="col button button-fill color-red"> <a href="/lijstvoorstellen/" style="color: white;" onclick="deleterandomdatumvoorstel()">Verwijderen</a></button>
     </div>
   </div>
 

@@ -3,7 +3,7 @@ var $$ = Dom7;
 
 var app = new Framework7({
   root: '#app', // App root element
-  id: 'be.mikadebelder.F7Cordova', // App bundle ID
+  id: 'be.providit.F7Cordova', // App bundle ID
   name: 'Providit Planner', // App name
   theme: 'auto', // Automatic theme detection
   // App root data
@@ -42,17 +42,11 @@ var app = new Framework7({
     },
     pageInit: function (page) {
 
-      // bij het toevoegen van een fiets wordt het toegevoegd in de lijst in de homepagina
-        //if (page.route.name === "addbike") {
-            //$$('#btnaddbike').on('click', function () {
-               // voegToe();
-         // });
-        //}
         if (page.route.name === "voorsteldatepicker") {          
           datepicker();
         }
         if (page.route.name === "detailevent") {          
-          datepickerdisabled();
+          datepickerDetailevent()
         }
         if (page.route.name === "voorstelrandomevent") {          
           datepicker();
@@ -60,8 +54,9 @@ var app = new Framework7({
         if (page.route.name === "detaileventdate") {          
           datepickerdisabled();
         }
-        if (page.route.name === "lijstvoorstellen") {          
-          getListVoorstellen();
+        if (page.route.name === "voorstelrandomevent") {      
+          datepickerRandomEvent();
+
         }
         
     }
@@ -110,8 +105,9 @@ const setupUI = (user) => {
 
 // Agenda detailEvent
 
+var $$ = Dom7;
 var monthNames = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August' , 'September' , 'October', 'November', 'December'];
-var calendarInline = app.calendar.create({
+var calendarInlineDetailevent = app.calendar.create({
   containerEl: '#demo-calendar-inline-container',
   multiple: true,
   weekHeader: false,
@@ -132,10 +128,10 @@ var calendarInline = app.calendar.create({
     init: function (c) {
       $$('.calendar-custom-toolbar .center').text(monthNames[c.currentMonth] +', ' + c.currentYear);
       $$('.calendar-custom-toolbar .left .link').on('click', function () {
-        calendarInline.prevMonth();
+        calendarInlineDetailevent.prevMonth();
       });
       $$('.calendar-custom-toolbar .right .link').on('click', function () {
-        calendarInline.nextMonth();
+        calendarInlineDetailevent.nextMonth();
       });
     },
     monthYearChangeStart: function (c) {
@@ -151,8 +147,8 @@ var calendarInline = app.calendar.create({
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 function datepicker() {
   var monthNames = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August' , 'September' , 'October', 'November', 'December'];
-  var calendarInline = app.calendar.create({
-  containerEl: '#demo-calendar-inline-container',
+  var calendarInlineZ = app.calendar.create({
+  containerEl: '#demo-calendar-inline-container-voorsteldatepicker',
   multiple: true,
   weekHeader: false,
   renderToolbar: function () {
@@ -172,10 +168,10 @@ function datepicker() {
     init: function (c) {
       $$('.calendar-custom-toolbar .center').text(monthNames[c.currentMonth] +', ' + c.currentYear);
       $$('.calendar-custom-toolbar .left .link').on('click', function () {
-        calendarInline.prevMonth();
+        calendarInlineZ.prevMonth();
       });
       $$('.calendar-custom-toolbar .right .link').on('click', function () {
-        calendarInline.nextMonth();
+        calendarInlineZ.nextMonth();
       });
     },
     monthYearChangeStart: function (c) {
@@ -183,14 +179,14 @@ function datepicker() {
     }
   }
 });
-
 }
-function datepickerdisabled() {
+
+function datepickerDetailevent(){
   var today = new Date();
   var weekLater = new Date().setDate(today.getDate() + 7);
   var monthNames = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August' , 'September' , 'October', 'November', 'December'];
-  var calendarInline = app.calendar.create({
-  containerEl: '#demo-calendar-inline-container',
+  var calendarInlineVoorsteldetailevent = app.calendar.create({
+  containerEl: '#demo-calendar-inline-container-detailevent',
   multiple: true,
   weekHeader: false,
   disabled: {
@@ -214,10 +210,10 @@ function datepickerdisabled() {
     init: function (c) {
       $$('.calendar-custom-toolbar .center').text(monthNames[c.currentMonth] +', ' + c.currentYear);
       $$('.calendar-custom-toolbar .left .link').on('click', function () {
-        calendarInline.prevMonth();
+        calendarInlineVoorsteldetailevent.prevMonth();
       });
       $$('.calendar-custom-toolbar .right .link').on('click', function () {
-        calendarInline.nextMonth();
+        calendarInlineVoorsteldetailevent.nextMonth();
       });
     },
     monthYearChangeStart: function (c) {
@@ -225,8 +221,52 @@ function datepickerdisabled() {
     }
   }
 });
-
 }
+// kalender bij het voorstellen van een event zonder bepaald event
+function datepickerRandomEvent(){
+  var today = new Date();
+  var weekLater = new Date().setDate(today.getDate() + 7);
+  var monthNames = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August' , 'September' , 'October', 'November', 'December'];
+  var calendarInlineVoorstelrandomevent = app.calendar.create({
+  containerEl: '#demo-calendar-inline-container-voorstelrandomevent',
+  multiple: true,
+  weekHeader: false,
+  disabled: {
+    from: new Date(2020, 4, 4),
+    to: new Date(2020, 4, 7),
+},
+  renderToolbar: function () {
+    return '<div class="toolbar calendar-custom-toolbar no-shadow">' +
+      '<div class="toolbar-inner">' +
+        '<div class="left">' +
+          '<a href="#" class="link icon-only"><i class="icon icon-back ' + (app.theme === 'md' ? 'color-black' : '') + '"></i></a>' +
+        '</div>' +
+        '<div class="center"></div>' +
+        '<div class="right">' +
+          '<a href="#" class="link icon-only"><i class="icon icon-forward ' + (app.theme === 'md' ? 'color-black' : '') + '"></i></a>' +
+        '</div>' +
+      '</div>' +
+    '</div>';
+  },
+  on: {
+    init: function (c) {
+      $$('.calendar-custom-toolbar .center').text(monthNames[c.currentMonth] +', ' + c.currentYear);
+      $$('.calendar-custom-toolbar .left .link').on('click', function () {
+        calendarInlineVoorstelrandomevent.prevMonth();
+      });
+      $$('.calendar-custom-toolbar .right .link').on('click', function () {
+        calendarInlineVoorstelrandomevent.nextMonth();
+      });
+    },
+    monthYearChangeStart: function (c) {
+      $$('.calendar-custom-toolbar .center').text(monthNames[c.currentMonth] +', ' + c.currentYear);
+    }
+  }
+});
+}
+
+
+
 
 
 // make event voorstel
@@ -251,15 +291,18 @@ function firestoreAddVoorstel(){
     uploadTask.snapshot.ref.getDownloadURL().then(function (downloadURL){
       console.log(downloadURL);
       // later als login werkt kan dit worden uncomment worden samen met eigenaar
-      //var user = firebase.auth().currentUser;
+      var user = firebase.auth().currentUser;
       db.collection('Events').add({
         Eventnaam: document.getElementById("addeventnaam").value,
+        Duutrijd: document.getElementById("addeventduurtijd").value,
+        Tijdstip: document.getElementById("addeventtijdstip").value,
         Beschrijving: document.getElementById("addeventbeschrijving").value,
         Prijspp: document.getElementById("addeventprijs").value,
         URL: document.getElementById("addeventurl").value,
+        Locatie: document.getElementById("addeventlocatie").value,
         Img: downloadURL ,
-        Status: "voorstel"
-        //eigenaar: user.uid
+        Status: "aanvraag",
+        Eigenaar: user.uid
       });
 
     });
@@ -267,29 +310,63 @@ function firestoreAddVoorstel(){
   
 
 }
+// lists op zaakvoerderspaneel laden
+$$(document).on('page:init', '.page[data-name="lijstvoorstellen"]', function (e) {
+  getListHistory();
+  getListVoorstellen();
+  getListRandomEvents();
+ });
 
+// list van voorstellen history
+function getListHistory() {    
+  db.collection('Events').where('Status' , '==', "voorstel").get().then((snapshot)=>{
+    snapshot.docs.forEach(doc => {              
+      var tlines = "";          
+      tlines += "<li><a href='#' class='item-link item-content' id=" + doc.id + "><div class='item-media'><i class='f7-icons'>checkmark_alt_circle</i></div><div class='item-inner'><div class='item-title'>" + doc.data().Eventnaam + "</div></div></a></li>";
+      $$("#voorstellenhistory").append(tlines);       
+  })
+}) 
+db.collection('Events').where('Status' , '==', "afgekeurd").get().then((snapshot)=>{
+  snapshot.docs.forEach(doc => {              
+    var tlines = "";          
+    tlines += "<li><a href='#' class='item-link item-content' id=" + doc.id + "><div class='item-media'><i class='f7-icons'>multiply_circle</i></div><div class='item-inner'><div class='item-title'>" + doc.data().Eventnaam + "</div></div></a></li>";
+    $$("#voorstellenhistory").append(tlines);       
+})
+}) 
+
+    
+}
 // eventvoorstellen ophalen voor zaakvoerderspaneel
 function getListVoorstellen() {
-
-    
+  var tlines = "";     
     db.collection('Events').where('Status' , '==', "aanvraag").get().then((snapshot)=>{
       snapshot.docs.forEach(doc => {              
-        var tlines = "";          
-        tlines += "<li><a href='/eventvoorstelzaakvoerder/' class='voorstellinks' id=" + doc.id + ">" + doc.data().Eventnaam + "</a></li>";
-        $$("#voorstellenaanzaakvoerder").html(tlines);                 
-    
-  
+                 
+        tlines += "<li><a href='/eventvoorstelzaakvoerder/' class='voorstellinks' id=" + doc.id + ">" + doc.data().Eventnaam + "</a></li>";       
     })
-  }) 
-
-      
+    $$("#voorstellenaanzaakvoerder").html(tlines);      
+  })       
 }
+
+function getListRandomEvents(){
+  db.collection('Events').where('Status' , '==', "voorstelnodate").get()
+  .then((snapshot) => {
+      snapshot.docs.forEach(doc => {             
+        var tlines = "";          
+        tlines += "<li><a href='/voorsteldatepickershow/' class='item-link item-content randomvoorstellinks' id=" + doc.id + "><div class='item-inner'><div class='item-title' id='titelZoekenRandomEvent'>" + doc.data().Eventnaam+ "</div></div></a></li>";
+        $$("#datumzoekenvooronbepaaldevent").append(tlines);                 
+    }) 
+});
+
+}
+
 /* Deze functie dient om wanneer iemand op een eventvoorstel/aanvraag 
 voor de zaakvoerder klikt dat 
 alle gegevens van die fiets worden weergegeven
  */
 
 $$(document).on('click', 'a.voorstellinks', function (e) {
+  eventnummer = $$(this).attr("id");
   console.log('link clicked'); 
   showEventVoorstelZaakvoerder();  
 });
@@ -297,7 +374,6 @@ $$(document).on('click', 'a.voorstellinks', function (e) {
 
 // event laten zien wanneer op voorstel op zaakvoerderspaneel wordt geklikt
 function showEventVoorstelZaakvoerder(){
-  var eventnummer = document.querySelectorAll('.voorstellinks')[0].id;
   db.collection("Events").doc(eventnummer)
     .get()
     .then(function(doc) {        
@@ -331,16 +407,119 @@ function showEventVoorstelZaakvoerder(){
 
 
 $$(document).on('click', 'a.aanvraagGoedkeuren', function (e) {
-  console.log('link clicked'); 
-  //aanvraagGoedkeuren();  
+  aanvraagGoedkeuren();  
+});
+$$(document).on('click', 'a.aanvraagGetEventnummer', function (e) {
+  aanvraagGetEventnummer();  
 });
 // een aanvraag voor een event van een organisator goedkeuren
+var mogelijkeData = [];
+var eventnummer;
+function aanvraagGetEventnummer(){
+eventnummer = document.querySelectorAll('.aanvraagGetEventnummer.active-state')[0].id;
+}
+
 function aanvraagGoedkeuren(){
-  var eventnummer = document.querySelectorAll('.aanvraagGoedkeuren')[0].id;
-  db.collection("Events").doc(eventnummer)
-    .update({
-      Status: "aanvraag"
-    })
+
+  mogelijkeData = app.calendar.get().value;
+   db.collection("Events").doc(eventnummer).update({
+      Status: "voorstel"
+    }) 
+    
+
+    for (i = 0; i < mogelijkeData.length; i++) {
+      db.collection("Events").doc(eventnummer).collection("Data").doc().set({
+        datum: mogelijkeData[i]
+      })
+  }
 }
 
 
+// make data voorstel
+function firestoreAddRandomEvent(){
+      
+      db.collection('Events').add({
+        Eventnaam: document.getElementById("addrandomeventnaam").value,
+        Img: "https://firebasestorage.googleapis.com/v0/b/eventplanner-providit.appspot.com/o/randomevent.JPG?alt=media&token=8c7151a2-6a3e-4cb4-9456-44dbe463f027" ,
+        Status: "voorstelnodate"
+      }).then(ref => {
+        console.log('Added document with ID: ', ref.id);
+        eventnummer = ref.id;
+        mogelijkeData = app.calendar.get().value;
+        for (i = 0; i < mogelijkeData.length; i++) {
+          db.collection("Events").doc(eventnummer).collection("Data").doc().set({
+            datum: mogelijkeData[i]
+          })
+        }
+    });  
+}
+
+// datepicker voor randomevent dat al is aangemaakt
+function datepickerRandomEventExists(){
+  var today = new Date();
+  var weekLater = new Date().setDate(today.getDate() + 7);
+  var monthNames = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August' , 'September' , 'October', 'November', 'December'];
+  var calendarInlineVoorstelrandomeventExists = app.calendar.create({
+  containerEl: '#demo-calendar-inline-container-voorsteldatepickerShow',
+  multiple: true,
+  weekHeader: false,
+  renderToolbar: function () {
+    return '<div class="toolbar calendar-custom-toolbar no-shadow">' +
+      '<div class="toolbar-inner">' +
+        '<div class="left">' +
+          '<a href="#" class="link icon-only"><i class="icon icon-back ' + (app.theme === 'md' ? 'color-black' : '') + '"></i></a>' +
+        '</div>' +
+        '<div class="center"></div>' +
+        '<div class="right">' +
+          '<a href="#" class="link icon-only"><i class="icon icon-forward ' + (app.theme === 'md' ? 'color-black' : '') + '"></i></a>' +
+        '</div>' +
+      '</div>' +
+    '</div>';
+  },
+  on: {
+    init: function (c) {
+      $$('.calendar-custom-toolbar .center').text(monthNames[c.currentMonth] +', ' + c.currentYear);
+      $$('.calendar-custom-toolbar .left .link').on('click', function () {
+        calendarInlineVoorstelrandomeventExists.prevMonth();
+      });
+      $$('.calendar-custom-toolbar .right .link').on('click', function () {
+        calendarInlineVoorstelrandomeventExists.nextMonth();
+      });
+    },
+    monthYearChangeStart: function (c) {
+      $$('.calendar-custom-toolbar .center').text(monthNames[c.currentMonth] +', ' + c.currentYear);
+    }
+  }
+});
+calendarInlineVoorstelrandomeventExists.setValue(mogelijkeData);
+}
+
+
+
+// wanneer de zaakvoerder op een random event klikt dat al aangemaakt is wordt dit geactiveerd
+$$(document).on('click', 'a.randomvoorstellinks', function (e) {
+  // eventnummer = document.querySelectorAll('.randomvoorstellinks.active-state')[0].id;
+  eventnummer = $$(this).attr("id");
+  showRandomEventVoorstel();  
+});
+function showRandomEventVoorstel(){
+  
+
+db.collection('Events').doc(eventnummer).collection('Data').get()
+  .then((snapshot) => {
+      snapshot.docs.forEach(doc => {             
+        var tlines = "";          
+        tlines += "<p>" + doc.data().datum.toDate()  + "</p>";
+        $$("#lijstdatarandomevent").append(tlines);                 
+    }) 
+  })
+}
+
+// om een event om een datum te zoeken zonder concreet event te verwijderen
+function deleterandomdatumvoorstel(){
+  db.collection("Events").doc(eventnummer).delete().then(function() {
+    console.log("Document successfully deleted!");
+}).catch(function(error) {
+    console.error("Error removing document: ", error);
+});
+}

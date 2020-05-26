@@ -83,8 +83,18 @@ var routes = [
     name: 'voorstelrandomevent'
   },
   {
+    path: '/voorsteldatepickershow/',
+    url: './pages/voorsteldatepickershow.html',
+    name: 'voorsteldatepickershow'
+  },
+  {
     path: '/dynamic-route/blog/:blogId/post/:postId/',
     componentUrl: './pages/dynamic-route.html',
+  },
+  {
+    path: '/aanvraagafkeurenuitleg/',
+    url: './pages/aanvraagafkeurenuitleg.html',
+    name: 'aanvraagafkeurenuitleg'
   },
   
   {
