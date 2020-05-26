@@ -302,7 +302,7 @@ function firestoreAddVoorstel(){
         Locatie: document.getElementById("addeventlocatie").value,
         Img: downloadURL ,
         Status: "aanvraag",
-        Eigenaar: user.uid
+        Organisator: user.uid
       });
 
     });
@@ -378,6 +378,7 @@ function showEventVoorstelZaakvoerder(){
     .get()
     .then(function(doc) {        
       $$("#vInfo").html('<b>Info:</b> ' + doc.data().Beschrijving); 
+      $$("#vEventnaam").html(doc.data().Eventnaam); 
       $$("#vTijdstip").html('<b>Tijdstip:</b> ' + doc.data().Tijdstip); 
       $$("#vDuur").html('<b>Duurtijd:</b> ' + doc.data().Duurtijd); 
       $$("#vLocatie").html('<b>Locatie:</b> ' + doc.data().Locatie); 
@@ -412,6 +413,7 @@ $$(document).on('click', 'a.aanvraagGoedkeuren', function (e) {
 $$(document).on('click', 'a.aanvraagGetEventnummer', function (e) {
   aanvraagGetEventnummer();  
 });
+
 // een aanvraag voor een event van een organisator goedkeuren
 var mogelijkeData = [];
 var eventnummer;
@@ -521,5 +523,77 @@ function deleterandomdatumvoorstel(){
     console.log("Document successfully deleted!");
 }).catch(function(error) {
     console.error("Error removing document: ", error);
+});
+}
+$$(document).on('click', 'a.aanvraagAfkeurenDefinitief', function (e) {
+  aanvraagAfkeuren();  
+});
+function aanvraagAfkeuren(){
+  db.collection("Events").doc(eventnummer).update({
+    Status: "afgekeurd",
+    RedenAfgekeurd: document.getElementById("waaromafkeuren").value
+  })
+
+}
+
+// lists op myevents laden
+$$(document).on('page:init', '.page[data-name="myevents"]', function (e) {
+  lijstEigenVoorstellen() ;
+  lijstEigenHistory();
+ });
+
+function getListMyEvents(){
+
+}
+
+
+function lijstEigenVoorstellen() {    
+  var user = firebase.auth().currentUser;
+  db.collection('Events').where("Organisator", '==', user.uid).where('Status' , '==', "aanvraag").get().then((snapshot)=>{
+    snapshot.docs.forEach(doc => {              
+      var tlines = "";          
+      tlines += "<li><a href='/eventvoorstel/' class='item-link item-content' id='"+ doc.data().id+ "'><div class='item-inner'><div class='item-title'>" + doc.data().Eventnaam + "</div></div></a></li>";
+      $$("#listeigenvoorstellen").html(tlines);       
+  })
+}) 
+}
+
+// list van eigen voorstellen history
+function lijstEigenHistory() {  
+  var tlines ="";
+  var user = firebase.auth().currentUser;  
+  db.collection('Events').where('Status' , '==', "voorstel").where("Organisator", '==', user.uid).get().then((snapshot)=>{
+    snapshot.docs.forEach(doc => {              
+     
+      tlines += "<li><a href='#' class='item-link item-content' id=" + doc.id + "><div class='item-media'><i class='f7-icons'>checkmark_alt_circle</i></div><div class='item-inner'><div class='item-title'>" + doc.data().Eventnaam + "</div></div></a></li>";
+             
+  })
+}) 
+db.collection('Events').where('Status' , '==', "afgekeurd").where("Organisator", '==', user.uid).get().then((snapshot)=>{
+  snapshot.docs.forEach(doc => {              
+     
+    tlines += "<li><a href='/aanvraagafkeurenuitlegRead/' class='item-link item-content eigenafgekeurdeevents' id=" + doc.id + "><div class='item-media'><i class='f7-icons'>multiply_circle</i></div><div class='item-inner'><div class='item-title'>" + doc.data().Eventnaam + "</div></div></a></li>";
+         
+})
+}) 
+$$("#eigenvoorstellenhistory").html(tlines);  
+}
+
+// show scherm waarom afgekeurd
+$$(document).on('click', 'a.eigenafgekeurdeevents', function (e) {
+  eventnummer = $$(this).attr("id");
+  showWaaromAfgekeurd();  
+});
+
+function showWaaromAfgekeurd(){
+  db.collection('Events').doc(eventnummer).get().then(function(doc) {
+    if (doc.exists) {
+        $$("#redenAfgekeurd").append(doc.data().RedenAfgekeurd);
+    } else {
+        // doc.data() will be undefined in this case
+        console.log("No such document!");
+    }
+}).catch(function(error) {
+    console.log("Error getting document:", error);
 });
 }

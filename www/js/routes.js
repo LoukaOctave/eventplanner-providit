@@ -96,6 +96,11 @@ var routes = [
     url: './pages/aanvraagafkeurenuitleg.html',
     name: 'aanvraagafkeurenuitleg'
   },
+  {
+    path: '/aanvraagafkeurenuitlegRead/',
+    url: './pages/aanvraagafkeurenuitlegRead.html',
+    name: 'aanvraagafkeurenuitlegRead'
+  },
   
   {
     path: '/request-and-load/user/:userId/',
