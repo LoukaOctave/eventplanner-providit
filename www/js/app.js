@@ -294,7 +294,7 @@ function firestoreAddVoorstel(){
       var user = firebase.auth().currentUser;
       db.collection('Events').add({
         Eventnaam: document.getElementById("addeventnaam").value,
-        Duutrijd: document.getElementById("addeventduurtijd").value,
+        Duurtijd: document.getElementById("addeventduurtijd").value,
         Tijdstip: document.getElementById("addeventtijdstip").value,
         Beschrijving: document.getElementById("addeventbeschrijving").value,
         Prijspp: document.getElementById("addeventprijs").value,
@@ -552,7 +552,7 @@ function lijstEigenVoorstellen() {
   db.collection('Events').where("Organisator", '==', user.uid).where('Status' , '==', "aanvraag").get().then((snapshot)=>{
     snapshot.docs.forEach(doc => {              
       var tlines = "";          
-      tlines += "<li><a href='/eventvoorstel/' class='item-link item-content' id='"+ doc.data().id+ "'><div class='item-inner'><div class='item-title'>" + doc.data().Eventnaam + "</div></div></a></li>";
+      tlines += "<li><a href='/eventvoorstel/' class='item-link item-content eigenvoorstellink' id="+ doc.id+ "><div class='item-inner'><div class='item-title'>" + doc.data().Eventnaam + "</div></div></a></li>";
       $$("#listeigenvoorstellen").html(tlines);       
   })
 }) 
@@ -597,3 +597,100 @@ function showWaaromAfgekeurd(){
     console.log("Error getting document:", error);
 });
 }
+
+
+// zodat een organisator een ingediende aanvraag kan wijzigen
+$$(document).on('click', 'a.eigenvoorstellink', function (e) {
+  eventnummer = $$(this).attr("id");
+  showAanvraagInfo();
+});
+
+function showAanvraagInfo(){
+  db.collection("Events").doc(eventnummer)
+  .get()
+  .then(function(doc) {        
+    $$("#oInfo").html('<b>Info:</b> ' + doc.data().Beschrijving); 
+    $$("#oEventnaam").html(doc.data().Eventnaam); 
+    $$("#oTijdstip").html('<b>Tijdstip:</b> ' + doc.data().Tijdstip); 
+    $$("#oDuur").html('<b>Duurtijd:</b> ' + doc.data().Duurtijd); 
+    $$("#oLocatie").html('<b>Locatie:</b> ' + doc.data().Locatie); 
+    $$("#oURL").html('<b>URL:</b> ' + doc.data().URL); 
+    document.getElementById("oImg").setAttribute("src", doc.data().Img);
+    document.getElementById("oURL").setAttribute("href", doc.data().URL);
+
+  })
+  .catch(function(error) {
+      console.log("Error getting eventdocuments: ", error);
+  });
+}
+// vult het formulier bij edit aanvraag in
+function editAanvraagFormulierShow(){
+  db.collection("Events").doc(eventnummer)
+  .get()
+  .then(function(doc) {        
+   document.getElementById("editeventnaam").value = doc.data().Eventnaam; 
+   document.getElementById("editeventbeschrijving").value = doc.data().Beschrijving; 
+   document.getElementById("editeventtijdstip").value = doc.data().Tijdstip; 
+   document.getElementById("editeventduurtijd").value =  doc.data().Duurtijd; 
+   document.getElementById("editeventlocatie").value = doc.data().Locatie; 
+   document.getElementById("editeventurl").value = doc.data().URL; 
+  })
+  .catch(function(error) {
+      console.log("Error getting eventdocuments: ", error);
+  });
+}
+function editAanvraag(){
+// wijzigt deze informatie
+var img = document.getElementById("editeventimg").files[0];
+console.log(img);
+if (img){
+  var imgname = img.name;
+
+  var storage = firebase.storage();
+  
+  var storageRef = firebase.storage().ref(imgname);
+  
+  var uploadTask = storageRef.put(img);
+  
+  uploadTask.on('state_changed', function (snapshot){
+    var progress = (snapshot.bytesTransferred/snapshot.totalBytes)*100;
+    console.log("upload is "+ progress+" done");
+  },function(error){
+    console.log(error.message);
+  },function(){
+  
+    uploadTask.snapshot.ref.getDownloadURL().then(function (downloadURL){
+      // later als login werkt kan dit worden uncomment worden samen met eigenaar
+      db.collection('Events').doc(eventnummer).update({
+        Eventnaam: document.getElementById("editeventnaam").value,
+        Duurtijd: document.getElementById("editeventduurtijd").value,
+        Tijdstip: document.getElementById("editeventtijdstip").value,
+        Beschrijving: document.getElementById("editeventbeschrijving").value,
+        Prijspp: document.getElementById("editeventprijs").value,
+        URL: document.getElementById("editeventurl").value,
+        Locatie: document.getElementById("editeventlocatie").value,
+        Img: downloadURL
+      });
+  
+    });
+  });
+}else{
+  db.collection('Events').doc(eventnummer).update({
+    Eventnaam: document.getElementById("editeventnaam").value,
+    Duurtijd: document.getElementById("editeventduurtijd").value,
+    Tijdstip: document.getElementById("editeventtijdstip").value,
+    Beschrijving: document.getElementById("editeventbeschrijving").value,
+    Prijspp: document.getElementById("editeventprijs").value,
+    URL: document.getElementById("editeventurl").value,
+    Locatie: document.getElementById("editeventlocatie").value
+  });
+}
+
+
+getListMyEvents();
+}
+// zodat info steeds getoond wordt op de myevents pagina's
+$$(document).on('click', 'a.myevents', function (e) {
+  getListMyEvents();
+  showAanvraagInfo();
+});
