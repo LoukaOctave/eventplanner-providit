@@ -3,6 +3,7 @@ var routes = [
   {
     path: '/',
     url: './index.html',
+    name: 'index',
   },
   {
     path: '/about/',
@@ -16,10 +17,13 @@ var routes = [
     path: '/lijstvoorstellen/',
     componentUrl: './pages/lijstvoorstellen.html',
   },
-  {
-    path: '/product/:id/',
-    componentUrl: './pages/product.html',
-  },
+
+// Mag weg?
+//  {
+//    path: '/product/:id/',
+//    componentUrl: './pages/product.html',
+//  },
+
   {
     path: '/eventvoorstel/',
     url: './pages/eventvoorstel.html',
@@ -101,7 +105,28 @@ var routes = [
     url: './pages/aanvraagafkeurenuitlegRead.html',
     name: 'aanvraagafkeurenuitlegRead'
   },
-  
+
+// Mag weg?
+//  {
+//    path: '/locatie/',
+//    componentUrl: './pages/locatie.html',
+//  },
+// Mag weg?
+//  {
+//    path: '/gegevens/',
+//    componentUrl: './pages/gegevens.html',
+//  },
+// Mag weg?
+//  {
+//    path: '/login/',
+//    componentUrl: './pages/login.html',
+//  },
+// Mag weg?
+//  {
+//    path: '/gegevens/:id/',
+//    componentUrl: './pages/product.html',
+//  },
+
   {
     path: '/request-and-load/user/:userId/',
     async: function (routeTo, routeFrom, resolve, reject) {
@@ -152,22 +177,7 @@ var routes = [
       }, 1000);
     },
   },
-  {
-    path: '/locatie/',
-    componentUrl: './pages/locatie.html',
-  },
-  {
-    path: '/gegevens/',
-    componentUrl: './pages/gegevens.html',
-  },
-  {
-    path: '/login/',
-    componentUrl: './pages/login.html',
-  },
-  //{
-    //path: '/gegevens/:id/',
-    //componentUrl: './pages/product.html',
-  //},
+
   // Default route (404 page). MUST BE THE LAST
   {
     path: '(.*)',

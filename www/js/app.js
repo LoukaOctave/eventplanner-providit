@@ -70,7 +70,7 @@ var user = firebase.auth().currentUser;
 console.log(user);
 var loggedIn = false;
 console.log(loggedIn);
-let userID = localStorage.getItem("userID");
+let userID = localStorage.getItem("userID"); // App denkt altijd dat er user ingelogd is !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 // !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 const loggedOutLinks = document.querySelectorAll('.loggedout');
 const loggedInLinks = document.querySelectorAll('.loggedin');
@@ -620,35 +620,37 @@ function showWaaromAfgekeurd() {
 //  return linkText; // Dit geeft null terug. De wijzigingen hierboven aan de variabele worden niet doorgegeven naar buiten???
 //}
 
+// TODO: fix
+$$(document).on('page:init', '.page[data-name="home"]', function (e) {
+  getListVoorstellenNoDate();
+  getListVoorstellenGepland();
+});
+
+// Is de huidige user ingelogd: true or false?
 function isUserDeelnemerBijEvent(event) {
   var isUserDeelnemerBijEvent = false;
   db.collection('Events').doc(event).collection('Deelnemers').get().then((snapshot) => {
     snapshot.docs.forEach(doc => { if (doc.id == userID) { isUserDeelnemerBijEvent = true; }})
+    return isUserDeelnemerBijEvent;
   })
-  return isUserDeelnemerBijEvent;
 }
 
 // Events met "voorstelnodate" als status ophalen en zetten onder "Datum kiezen..."
 function getListVoorstellenNoDate() {
-
   db.collection('Events').where('Status', '==', "voorstelnodate").get().then((snapshot) => {
     snapshot.docs.forEach(doc => {
       var tlines = "";
-
       tlines += "<div class='card demo-card-header-pic'><a class ='voorstelNoDateCardLinks' id ='" + doc.id + "' href='/detailevent/'><div style='background-image: url('" + doc.data().Img + "')' class='card-header align-items-flex-end'>" + doc.data().Eventnaam + "</div><div class='card-content card-content-padding'><p class='date'>Aanmelden tot " + "AAN TE VULLEN" + "</p><p>" + doc.data().Beschrijving + "</p></div><div class='card-footer'><a href='/detailfinalevent/' class='link'>" + isUserDeelnemerBijEvent(doc.id) + "</a></div></a></div>";
       $$("#eventVoorstelNoDate").html(tlines);
-
     })
   })
 }
 
 // Events met "gepland" als status ophalen en zetten onder "Geplande events"
 function getListVoorstellenGepland() {
-
   db.collection('Events').where('Status', '==', "gepland").get().then((snapshot) => {
     snapshot.docs.forEach(doc => {
       var tlines = "";
-
       tlines += "<div class='card demo-card-header-pic'><a class ='geplandCardLinks' id ='" + doc.id + "' href='/detailfinalevent/'><div style='background-image: url('" + doc.data().Img + "')' class='card-header align-items-flex-end'>" + doc.data().Eventnaam + "</div><div class='card-content card-content-padding'><p class='date'>" + "AAN TE VULLEN" + "</p><p>" + doc.data().Beschrijving + "</p></div><div class='card-footer'><a href='/detailevent/' class='link'>" + isUserDeelnemerBijEvent(doc.id) + "</a></div></a></div>";
       $$("#eventGepland").html(tlines);
     })
@@ -662,17 +664,14 @@ $$(document).on('click', 'a.voorstelNoDateCardLinks', function (e) {
 
 // Details tonen van event met status "voorstelnodate"
 function getDetailEventNoDate() {
-  db.collection('Events').where('Status', '==', "voorstelnodate").get().then((snapshot) => {
-    snapshot.docs.forEach(doc => {
-      var tlines = "";
-      tlines += "<div class='page-content'><div class='block-title block-title-medium'>" + doc.data().Eventnaam + "</div><img src='img/bowling.jpg' id='imageBowling'> <div class='block block-strong inset'><p><b>Event: </b>" + doc.data().Eventnaam + "</p><p><b>Duurtijd: </b>" + doc.data().Duurtijd + "</p><p><b>Moment van de dag: </b>" + doc.data().Tijdstip + "</p><p><b>Beschrijving: </b>" + doc.data().Beschrijving + "</p></div>";
-      $$("#detailEventNoDate").append(tlines);
-    })
+  db.collection('Events').doc(eventnummer).get().then(function(doc) {
+    var tlines = "";
+    tlines += "<div class='page-content'><div class='block-title block-title-medium'>" + doc.data().Eventnaam + "</div><img src='" + doc.data().Img + "' id='vImg'> <div class='block block-strong inset'><p><b>Event: </b>" + doc.data().Eventnaam + "</p><p><b>Duurtijd: </b>" + doc.data().Duurtijd + "</p><p><b>Moment van de dag: </b>" + doc.data().Tijdstip + "</p><p><b>Beschrijving: </b>" + doc.data().Beschrijving + "</p></div>";
+    $$("#detailEventNoDate").append(tlines);
   })
 }
 
 //get date van date picker DetailEventNoDate
-
 function getDateDetailEventNoDate() {
   datepickerDetailevent.forEach(datum => {
     var gekozenDatum = datepickerDetailevent.getDate().value;
@@ -681,7 +680,33 @@ function getDateDetailEventNoDate() {
 
 $$(document).on('click', 'a.geplandCardLinks', function (e) {
   eventnummer = $$(this).attr("id");
-  //getDetailEventGepland();
+  getDetailEventGepland();
 });
 
-// TODO: function getDetailEventGepland()
+function getCardPageContentsDeelnemers(event){
+  var pageContents = "";
+  db.collection('Events').doc(event).collection('Deelnemers').get().then((snapshot) => {
+    snapshot.docs.forEach(doc => {
+      pageContents += "<li class='item-content'><div class='item-media'><img src='https://cdn.framework7.io/placeholder/fashion-88x88-4.jpg' width='44'/></div><div class='item-inner'><div class='item-title-row'><div class='item-title'>" + doc.data().Naam + "</div></div></div></li>"
+    });
+  })
+  return pageContents;
+}
+
+function getDetailEventGepland() {
+  db.collection('Events').doc(eventnummer).get().then(function(doc) {
+    var tlines = "";
+    tlines += "<div class='block-title block-title-medium'>" + doc.data().Eventnaam
+    + "</div><img src='" + doc.data().Img
+    + "' id='vImg'> <div class='block block-strong inset'><p><b>Event: </b>" + doc.data().Eventnaam //img id ??? Eventnaam opnieuw??
+    + "</p><p><b>Duurtijd: </b>" + doc.data().Duurtijd
+    + "</p><p><b>Datum: </b>" + "doc.data().Datum" // nog geen Datum field in database
+    + "</p><p><b>Moment van de dag: </b>" + doc.data().Tijdstip
+    + "</p><p><b>Beschrijving: </b>" + doc.data().Beschrijving 
+    + "</p></div> <div class='card'><div class='card-header'>Deelnemers:</div><div class='card-content'><div class='list media-list'><ul>"
+    + getCardPageContentsDeelnemers(doc.id);
+    + "</ul></div></div></div>";
+
+    $$("#detailEventGepland").append(tlines);
+  })
+}
