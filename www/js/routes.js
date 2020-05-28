@@ -101,6 +101,16 @@ var routes = [
     url: './pages/aanvraagafkeurenuitlegRead.html',
     name: 'aanvraagafkeurenuitlegRead'
   },
+  {
+    path: '/eventvoorstelzaakvoerdergoedgekeurd/',
+    url: './pages/eventvoorstelzaakvoerdergoedgekeurd.html',
+    name: 'eventvoorstelzaakvoerdergoedgekeurd'
+  },
+  {
+    path: '/editeventVoorstel/',
+    url: './pages/editeventVoorstel.html',
+    name: 'editeventVoorstel'
+  },
   
   {
     path: '/request-and-load/user/:userId/',

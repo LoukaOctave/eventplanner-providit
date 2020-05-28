@@ -5,6 +5,10 @@ var app = new Framework7({
   root: '#app', // App root element
   id: 'be.providit.F7Cordova', // App bundle ID
   name: 'Providit Planner', // App name
+  view: {
+    iosDynamicNavbar: false,
+    xhrCache: false,
+  },
   theme: 'auto', // Automatic theme detection
   // App root data
   data: function () {
@@ -313,8 +317,9 @@ function firestoreAddVoorstel(){
 // lists op zaakvoerderspaneel laden
 $$(document).on('page:init', '.page[data-name="lijstvoorstellen"]', function (e) {
   getListHistory();
-  getListVoorstellen();
+  getListAanvragen();
   getListRandomEvents();
+  getListVoorstellen();
  });
 
 // list van voorstellen history
@@ -337,12 +342,12 @@ db.collection('Events').where('Status' , '==', "afgekeurd").get().then((snapshot
     
 }
 // eventvoorstellen ophalen voor zaakvoerderspaneel
-function getListVoorstellen() {
+function getListAanvragen() {
   var tlines = "";     
     db.collection('Events').where('Status' , '==', "aanvraag").get().then((snapshot)=>{
       snapshot.docs.forEach(doc => {              
                  
-        tlines += "<li><a href='/eventvoorstelzaakvoerder/' class='voorstellinks' id=" + doc.id + ">" + doc.data().Eventnaam + "</a></li>";       
+        tlines += "<li><a href='/eventvoorstelzaakvoerder/' class='aanvraaglinks' id=" + doc.id + ">" + doc.data().Eventnaam + "</a></li>";       
     })
     $$("#voorstellenaanzaakvoerder").html(tlines);      
   })       
@@ -358,6 +363,17 @@ function getListRandomEvents(){
     }) 
 });
 }
+function getListVoorstellen(){
+  var tlines = "";     
+    db.collection('Events').where('Status' , '==', "voorstel").get().then((snapshot)=>{
+      snapshot.docs.forEach(doc => {              
+                 
+        tlines += "<li><a href='/eventvoorstelzaakvoerdergoedgekeurd/' class='voorstellinks' id=" + doc.id + ">" + doc.data().Eventnaam + "</a></li>";       
+    })
+    $$("#goedgekeurdeaanvragen").html(tlines);      
+  })  
+}
+
 
 //////////////////////////////////////
 /////////////INDEX.HTML///////////////
@@ -409,7 +425,7 @@ voor de zaakvoerder klikt dat
 alle gegevens van die fiets worden weergegeven
  */
 
-$$(document).on('click', 'a.voorstellinks', function (e) {
+$$(document).on('click', 'a.aanvraaglinks', function (e) {
   eventnummer = $$(this).attr("id");
   console.log('link clicked'); 
   showEventVoorstelZaakvoerder();  
@@ -466,12 +482,12 @@ eventnummer = document.querySelectorAll('.aanvraagGetEventnummer.active-state')[
 }
 
 function aanvraagGoedkeuren(){
-
+  var DeadlineToTimestamp = firebase.firestore.Timestamp.fromDate(new Date(document.getElementById("adddeadline").value));
   mogelijkeData = app.calendar.get().value;
    db.collection("Events").doc(eventnummer).update({
-      Status: "voorstel"
+      Status: "voorstel",
+      Deadline: DeadlineToTimestamp
     }) 
-    
 
     for (i = 0; i < mogelijkeData.length; i++) {
       db.collection("Events").doc(eventnummer).collection("Data").doc().set({
@@ -579,6 +595,94 @@ function aanvraagAfkeuren(){
   })
 
 }
+// zodat de zaakvoerder een eventvoorstel kan wijzigen
+$$(document).on('click', 'a.voorstellinks', function (e) {
+  eventnummer = $$(this).attr("id");
+  showVoorstelInfo();
+});
+function showVoorstelInfo(){
+  db.collection("Events").doc(eventnummer)
+  .get()
+  .then(function(doc) {        
+    $$("#gInfo").html('<b>Info:</b> ' + doc.data().Beschrijving); 
+    $$("#gEventnaam").html(doc.data().Eventnaam); 
+    $$("#gTijdstip").html('<b>Tijdstip:</b> ' + doc.data().Tijdstip); 
+    $$("#gDuur").html('<b>Duurtijd:</b> ' + doc.data().Duurtijd); 
+    $$("#gLocatie").html('<b>Locatie:</b> ' + doc.data().Locatie); 
+    $$("#gURL").html('<b>URL:</b> ' + doc.data().URL); 
+    document.getElementById("gImg").setAttribute("src", doc.data().Img);
+    document.getElementById("gURL").setAttribute("href", doc.data().URL);
+
+  })
+  .catch(function(error) {
+      console.log("Error getting eventdocuments: ", error);
+  });
+}
+function editVoorstelFormulierShow(){
+  db.collection("Events").doc(eventnummer)
+  .get()
+  .then(function(doc) {        
+   document.getElementById("editeventnaam").value = doc.data().Eventnaam; 
+   document.getElementById("editeventbeschrijving").value = doc.data().Beschrijving; 
+   document.getElementById("editeventtijdstip").value = doc.data().Tijdstip; 
+   document.getElementById("editeventduurtijd").value =  doc.data().Duurtijd; 
+   document.getElementById("editeventlocatie").value = doc.data().Locatie; 
+   document.getElementById("editeventurl").value = doc.data().URL; 
+  })
+  .catch(function(error) {
+      console.log("Error getting eventdocuments: ", error);
+  });
+}
+function editVoorstel(){
+// wijzigt deze informatie
+var img = document.getElementById("editeventimg").files[0];
+console.log(img);
+if (img){
+  var imgname = img.name;
+
+  var storage = firebase.storage();
+  
+  var storageRef = firebase.storage().ref(imgname);
+  
+  var uploadTask = storageRef.put(img);
+  
+  uploadTask.on('state_changed', function (snapshot){
+    var progress = (snapshot.bytesTransferred/snapshot.totalBytes)*100;
+    console.log("upload is "+ progress+" done");
+  },function(error){
+    console.log(error.message);
+  },function(){
+  
+    uploadTask.snapshot.ref.getDownloadURL().then(function (downloadURL){
+      // later als login werkt kan dit worden uncomment worden samen met eigenaar
+      db.collection('Events').doc(eventnummer).update({
+        Eventnaam: document.getElementById("editeventnaam").value,
+        Duurtijd: document.getElementById("editeventduurtijd").value,
+        Tijdstip: document.getElementById("editeventtijdstip").value,
+        Beschrijving: document.getElementById("editeventbeschrijving").value,
+        Prijspp: document.getElementById("editeventprijs").value,
+        URL: document.getElementById("editeventurl").value,
+        Locatie: document.getElementById("editeventlocatie").value,
+        Img: downloadURL
+      });
+  
+    });
+  });
+}else{
+  db.collection('Events').doc(eventnummer).update({
+    Eventnaam: document.getElementById("editeventnaam").value,
+    Duurtijd: document.getElementById("editeventduurtijd").value,
+    Tijdstip: document.getElementById("editeventtijdstip").value,
+    Beschrijving: document.getElementById("editeventbeschrijving").value,
+    Prijspp: document.getElementById("editeventprijs").value,
+    URL: document.getElementById("editeventurl").value,
+    Locatie: document.getElementById("editeventlocatie").value
+  });
+}
+}
+//////////////////////////////////////
+/////////////MY EVENTS///////////////
+//////////////////////////////////////
 
 // lists op myevents laden
 $$(document).on('page:init', '.page[data-name="myevents"]', function (e) {
@@ -737,4 +841,16 @@ getListMyEvents();
 $$(document).on('click', 'a.myevents', function (e) {
   getListMyEvents();
   showAanvraagInfo();
+});
+
+$$(document).on('click', '.open-confirm', function () {
+  app.dialog.confirm('Zeker dat je dit wilt verwijderen?', function () {
+    console.log("deleted aanvraag");
+    /* db.collection("Events").doc(eventnummer).delete().then(function() {
+      console.log("Document successfully deleted!");
+  }).catch(function(error) {
+      console.error("Error removing document: ", error);
+  }); */
+  router.navigate({ name: 'myevents' });
+  });
 });
