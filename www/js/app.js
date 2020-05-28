@@ -601,23 +601,31 @@ function showWaaromAfgekeurd() {
 /////////////INDEX.HTML///////////////
 //////////////////////////////////////
 
+//TODO: deze functie fixen
+//function isUserDeelnemerBijEvent(event, status) {
+//  var linkText = null;
+//  db.collection('Events').doc(event).collection('Deelnemers').get()
+//    .then((snapshot) => {
+//      // Voor elke deelnemer aan het event gaan we de id vergelijken met dat van de huidige gebruiker.
+//      // Zit de huidige gebruiker ertussen dan verschijnt er "Wijzig aanmelding/aanwezigheid", afhankelijk van de status van het event.
+//      snapshot.docs.forEach(doc => { if (doc.id == "rWoMENFlfpQ4klSQHHLI") { 
+//        linkText = "Wijzig "
+//        if (status == "voorstelnodate") { linkText += "aanmelding" }
+//        if (status == "gepland") { linkText += "aanwezigheid" }
+//      }
+//    })
+//    // Was er geen enkele match (variabele nog steeds leeg), dan verschijnt er "Meld je aan".
+//    if (linkText == null){linkText = "Meld je aan"}    
+//  })
+//  return linkText; // Dit geeft null terug. De wijzigingen hierboven aan de variabele worden niet doorgegeven naar buiten???
+//}
 
-function isUserDeelnemerBijEvent(event, status) {
-  var linkText = null;
-  db.collection('Events').doc(event).collection('Deelnemers').get()
-    .then((snapshot) => {
-      // Voor elke deelnemer aan het event gaan we de id vergelijken met dat van de huidige gebruiker.
-      // Zit de huidige gebruiker ertussen dan verschijnt er "Wijzig aanmelding/aanwezigheid", afhankelijk van de status van het event.
-      snapshot.docs.forEach(doc => { if (doc.id == "rWoMENFlfpQ4klSQHHLI") { 
-        linkText = "Wijzig "
-        if(status == "voorstelnodate"){linkText += "aanmelding"}
-        if(status == "gepland"){linkText += "aanwezigheid"}
-      }
-    })
-    // Was er geen enkele match (variabele nog steeds leeg), dan verschijnt er "Meld je aan".
-    if (linkText == null) { linkText = "Meld je aan" }    
+function isUserDeelnemerBijEvent(event) {
+  var isUserDeelnemerBijEvent = false;
+  db.collection('Events').doc(event).collection('Deelnemers').get().then((snapshot) => {
+    snapshot.docs.forEach(doc => { if (doc.id == userID) { isUserDeelnemerBijEvent = true; }})
   })
-  return linkText; // Dit geeft null terug. De wijzigingen hierboven aan de variabele worden niet doorgegeven naar buiten???
+  return isUserDeelnemerBijEvent;
 }
 
 // Events met "voorstelnodate" als status ophalen en zetten onder "Datum kiezen..."
@@ -627,7 +635,7 @@ function getListVoorstellenNoDate() {
     snapshot.docs.forEach(doc => {
       var tlines = "";
 
-      tlines += "<div class='card demo-card-header-pic'><a class ='voorstelNoDateCardLinks' id ='" + doc.id + "' href='/detailevent/'><div style='background-image: url('" + doc.data().Img + "')' class='card-header align-items-flex-end'>" + doc.data().Eventnaam + "</div><div class='card-content card-content-padding'><p class='date'>Aanmelden tot " + "AAN TE VULLEN" + "</p><p>" + doc.data().Beschrijving + "</p></div><div class='card-footer'><a href='/detailfinalevent/' class='link'>" + isUserDeelnemerBijEvent(doc.id, doc.data().Status) + "</a></div></a></div>";
+      tlines += "<div class='card demo-card-header-pic'><a class ='voorstelNoDateCardLinks' id ='" + doc.id + "' href='/detailevent/'><div style='background-image: url('" + doc.data().Img + "')' class='card-header align-items-flex-end'>" + doc.data().Eventnaam + "</div><div class='card-content card-content-padding'><p class='date'>Aanmelden tot " + "AAN TE VULLEN" + "</p><p>" + doc.data().Beschrijving + "</p></div><div class='card-footer'><a href='/detailfinalevent/' class='link'>" + isUserDeelnemerBijEvent(doc.id) + "</a></div></a></div>";
       $$("#eventVoorstelNoDate").html(tlines);
 
     })
@@ -641,7 +649,7 @@ function getListVoorstellenGepland() {
     snapshot.docs.forEach(doc => {
       var tlines = "";
 
-      tlines += "<div class='card demo-card-header-pic'><a class ='geplandCardLinks' id ='" + doc.id + "' href='/detailfinalevent/'><div style='background-image: url('" + doc.data().Img + "')' class='card-header align-items-flex-end'>" + doc.data().Eventnaam + "</div><div class='card-content card-content-padding'><p class='date'>" + "AAN TE VULLEN" + "</p><p>" + doc.data().Beschrijving + "</p></div><div class='card-footer'><a href='/detailevent/' class='link'>" + isUserDeelnemerBijEvent(doc.id, doc.data().Status) + "</a></div></a></div>";
+      tlines += "<div class='card demo-card-header-pic'><a class ='geplandCardLinks' id ='" + doc.id + "' href='/detailfinalevent/'><div style='background-image: url('" + doc.data().Img + "')' class='card-header align-items-flex-end'>" + doc.data().Eventnaam + "</div><div class='card-content card-content-padding'><p class='date'>" + "AAN TE VULLEN" + "</p><p>" + doc.data().Beschrijving + "</p></div><div class='card-footer'><a href='/detailevent/' class='link'>" + isUserDeelnemerBijEvent(doc.id) + "</a></div></a></div>";
       $$("#eventGepland").html(tlines);
     })
   })
@@ -650,17 +658,9 @@ function getListVoorstellenGepland() {
 $$(document).on('click', 'a.voorstelNoDateCardLinks', function (e) {
   eventnummer = $$(this).attr("id");
   getDetailEventNoDate();
-
 });
 
-$$(document).on('click', 'a.geplandCardLinks', function (e) {
-  eventnummer = $$(this).attr("id");
-  //getDetailEventGepland();
-});
-
-
-
-// lijst van detailEventNoDate
+// Details tonen van event met status "voorstelnodate"
 function getDetailEventNoDate() {
   db.collection('Events').where('Status', '==', "voorstelnodate").get().then((snapshot) => {
     snapshot.docs.forEach(doc => {
@@ -678,5 +678,10 @@ function getDateDetailEventNoDate() {
     var gekozenDatum = datepickerDetailevent.getDate().value;
   });
 }
+
+$$(document).on('click', 'a.geplandCardLinks', function (e) {
+  eventnummer = $$(this).attr("id");
+  //getDetailEventGepland();
+});
 
 // TODO: function getDetailEventGepland()
