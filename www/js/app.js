@@ -871,22 +871,22 @@ function getListVoorstelNoDateEvents() {
   db.collection('Events').where('Status', '==', "voorstelnodate").get().then((snapshot) => {
     snapshot.docs.forEach(doc => {
       var tlines = "";
-      tlines += "<div class='card demo-card-header-pic'><a class ='voorstelNoDateCardLinks' id ='"
+      tlines += "<div class='card demo-card-header-pic'><a class ='voorstelNoDateEventCardLinks' id ='"
       + doc.id + "' href='/detailevent/'><div style='background-image: url('"
       + doc.data().Img + "')' class='card-header align-items-flex-end'>"
       + doc.data().Eventnaam + "</div><div class='card-content card-content-padding'><p class='date'>Aanmelden tot "
       // TODO: Events een Deadline geven en deze hieronder plaatsen
       + "doc.data().Deadline" + "</p><p>"
-      + doc.data().Beschrijving + "</p></div><div class='card-footer'><a href='/detailevent/' class='voorstelNoDateCardLinks' id ='"
+      + doc.data().Beschrijving + "</p></div><div class='card-footer'><a href='/detailevent/' class='voorstelNoDateEventCardLinks' id ='"
       + doc.id + "'>"
       + "isUserDeelnemerBijEvent(doc.id)" + "</a></div></a></div>";
-      $$("#eventVoorstelNoDate").append(tlines);
+      $$("#voorstelNoDateEvent").append(tlines);
     })
   })
 }
 
 // Detail voorstelnodate wanneer je op een cardlink klikt
-$$(document).on('click', 'a.voorstelNoDateCardLinks', function (e) {
+$$(document).on('click', 'a.voorstelNoDateEventCardLinks', function (e) {
   eventnummer = $$(this).attr("id");
   getDetailVoorstelNoDateEvent();
   getDatesDetailVoorstelNoDateEvent();
@@ -903,7 +903,7 @@ function getDetailVoorstelNoDateEvent() {
     + doc.data().Tijdstip + "</p><p><b>Beschrijving: </b>"
     + doc.data().Beschrijving + "</p></div>";
 
-    $$("#detailEventNoDate").append(tlines);
+    $$("#detailVoorstelNoDateEvent").append(tlines);
   })
 }
 
@@ -938,18 +938,35 @@ function getListVoorstelNoEventEvents() {
   db.collection('Events').where('Status', '==', "voorstelnoevent").get().then((snapshot) => {
     snapshot.docs.forEach(doc => {
       var tlines = "";
-      tlines += "<div class='card demo-card-header-pic'><a class ='voorstelNoEventCardLinks' id ='"
+      tlines += "<div class='card demo-card-header-pic'><a class ='voorstelNoEventEventCardLinks' id ='"
       + doc.id + "' href='/detaileventdate/'><div style='background-image: url('"
       + doc.data().Img + "')' class='card-header align-items-flex-end'>"
       + doc.data().Eventnaam + "</div><div class='card-content card-content-padding'><p class='date'>Aanmelden tot "
       // TODO: Events een Deadline geven en deze hieronder plaatsen
       + "doc.data().Deadline" + "</p><p>"
-      + doc.data().Beschrijving + "</p></div><div class='card-footer'><a href='/detaileventdate/' class='voorstelNoEventCardLinks' id ='"
+      + doc.data().Beschrijving + "</p></div><div class='card-footer'><a href='/detaileventdate/' class='voorstelNoEventEventCardLinks' id ='"
       + doc.id + "'>"
       + "isUserDeelnemerBijEvent(doc.id)" + "</a></div></a></div>";
 
-      $$("#eventVoorstelNoEvent").append(tlines);
+      $$("#voorstelNoEventEvent").append(tlines);
     })
+  })
+}
+
+// Wanneer er op de cardlink van een voorstelnoevent event wordt geklikt, dan wordt de "detaileventdate.html" pagina geopend met de juiste informatie
+$$(document).on('click', 'a.voorstelNoEventEventCardLinks', function (e) {
+  eventnummer = $$(this).attr("id");
+  getDetailVoorstelNoEventEvent();
+});
+
+// TODO: Ervoor zorgen dat "detaileventdate.html" wordt geopend wanneer er op de cardlink geklikt wordt. (Probleem zit niet bij href of routes.js)
+function getDetailVoorstelNoEventEvent() {
+  db.collection('Events').doc(eventnummer).get().then(function(doc) {
+    var tlines = "";
+    tlines += "<div class='block-title block-title-medium'>"
+    + doc.data().Eventnaam + "</div>";
+
+    $$("#detailVoorstelNoEventEvent").append(tlines);
   })
 }
 
@@ -962,23 +979,23 @@ function getListGeplandEvents() {
   db.collection('Events').where('Status', '==', "gepland").get().then((snapshot) => {
     snapshot.docs.forEach(doc => {
       var tlines = "";
-      tlines += "<div class='card demo-card-header-pic'><a class ='geplandCardLinks' id ='"
+      tlines += "<div class='card demo-card-header-pic'><a class ='geplandEventCardLinks' id ='"
       + doc.id + "' href='/detailfinalevent/'><div style='background-image: url('"
       + doc.data().Img + "')' class='card-header align-items-flex-end'>"
       + doc.data().Eventnaam + "</div><div class='card-content card-content-padding'><p class='date'>"
       // TODO: Events een Datum geven en deze op de volgende lijn plaatsen
       + "doc.data().Datum" + "</p><p>"
-      + doc.data().Beschrijving + "</p></div><div class='card-footer'><a href='/detailfinalevent/' class='geplandCardLinks' id ='"
+      + doc.data().Beschrijving + "</p></div><div class='card-footer'><a href='/detailfinalevent/' class='geplandEventCardLinks' id ='"
       + doc.id + "'>"
       + "isUserDeelnemerBijEvent(doc.id)" + "</a></div></a></div>";
 
-      $$("#eventGepland").append(tlines);
+      $$("#geplandEvent").append(tlines);
     })
   })
 }
 
 // Wanneer er op de cardlink van een gepland event wordt geklikt, dan wordt de "detailfinalevent.html" pagina geopend met de juiste informatie
-$$(document).on('click', 'a.geplandCardLinks', function (e) {
+$$(document).on('click', 'a.geplandEventCardLinks', function (e) {
   eventnummer = $$(this).attr("id");
   getDetailGeplandEvent();
 });
@@ -993,10 +1010,10 @@ function getDetailGeplandEvent() {
     // TODO: Events een Datum geven en deze op de volgende lijn plaatsen
     + "doc.data().Datum" + "</p><p><b>Moment van de dag: </b>"
     + doc.data().Tijdstip + "</p><p><b>Beschrijving: </b>"
-    + doc.data().Beschrijving + "</p></div> <div class='card'><div class='card-header'>Deelnemers:</div><div class='card-content'><div class='list media-list'><ul id='deelnemersDetailEventGepland'>"
+    + doc.data().Beschrijving + "</p></div> <div class='card'><div class='card-header'>Deelnemers:</div><div class='card-content'><div class='list media-list'><ul id='deelnemersDetailGeplandEvent'>"
     + getDeelnemersGeplandEvent(doc.id); + "</ul></div></div></div>";
     
-    $$("#detailEventGepland").append(tlines);
+    $$("#detailGeplandEvent").append(tlines);
   })
 }
 
@@ -1010,7 +1027,7 @@ function getDeelnemersGeplandEvent(event){
       + "https://cdn.framework7.io/placeholder/fashion-88x88-4.jpg" + "' width='44'/></div><div class='item-inner'><div class='item-title-row'><div class='item-title'>"
       + doc.data().Username + "</div></div></div></li>"
 
-      $$("#deelnemersDetailEventGepland").append(tlines);
+      $$("#deelnemersDetailGeplandEvent").append(tlines);
     });
   })
 }
