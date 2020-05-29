@@ -1,0 +1,124 @@
+<!-- Deze pagina dient om de zaakvoerder een voorstel te laten wijzigen -->
+  <div class="page" data-name="editeventVoorstel">
+    <div class="navbar">
+      <div class="navbar-bg"></div>
+      <div class="navbar-inner sliding">
+        <div class="left">
+          <a href="/eventvoorstelzaakvoerdergoedgekeurd/" class="link">
+              <i class="icon icon-back"></i>
+              <span>Back</span>
+          </a>
+      </div>
+        <div class="title">Voorstel event</div>
+      </div>
+    </div>
+  <div class="page-content">
+    <div class="block-title">Wijzig hier uw evenement</div>
+    <div class="list no-hairlines-md">
+      <ul>
+
+        <li>
+          <div class="item-content item-input">
+            <div class="item-inner">
+              <div class="item-title item-label">Evenement titel</div>
+              <div class="item-input-wrap">
+                <input type="text" value="Bowlen" placeholder="het evenement" id="editeventnaam"/>
+              </div>
+            </div>
+          </div>
+        </li>
+
+        <li>
+          <div class="item-content item-input">
+            <div class="item-inner">
+              <div class="item-title item-label">Duurtijd (in uren)</div>
+              <div class="item-input-wrap">
+                <input type="number" value="0" min="0" max="100" id="editeventduurtijd"/>
+              </div>
+            </div>
+          </div>
+        </li>
+        
+        <li>
+          <div class="item-content item-input">
+            <div class="item-inner">
+              <div class="item-title item-label">Moment van de dag</div>
+              <div class="item-input-wrap">
+                    <select name="tijdstip" placeholder="Please choose..." id="editeventtijdstip">
+                      <option value="savonds">'s avonds</option>
+                      <option value="namiddag">Namiddag</option>
+                      <option value="voormiddag">Voormiddag</option>
+                      <option value="heledag">Hele dag</option>
+                    </select>
+              </div>
+            </div>
+          </div>
+        </li>
+
+        <li>
+          <div class="item-content item-input">
+            <div class="item-inner">
+              <div class="item-title item-label">Prijs p.p</div>
+              <div class="item-input-wrap">
+                <div class="range-slider range-slider-init" data-label="true">
+                  <input type="range" value="20" min="0" max="100" step="1" id="editeventprijs"/>
+                </div>
+              </div>
+            </div>
+          </div>
+        </li>
+
+        <li>
+          <div class="item-content item-input">
+            <div class="item-inner">
+              <div class="item-title item-label">Locatie</div>
+              <div class="item-input-wrap">
+                <input type="text" placeholder="Locatie" id="editeventlocatie"/>
+              </div>
+            </div>
+          </div>
+        </li>
+
+        <li>
+          <div class="item-content item-input">
+            <div class="item-inner">
+              <div class="item-title item-label">Wijzig foto</div>
+              <div class="item-input-wrap">
+                <input type="file" name="img" placeholder="img"  id="editeventimg"/>
+              </div>
+            </div>
+          </div>
+        </li>
+
+        <li>
+          <div class="item-content item-input">
+            <div class="item-inner">
+              <div class="item-title item-label">URL</div>
+              <div class="item-input-wrap">
+                <input type="url" placeholder="URL" value="www.bowleninvilvoorde.be" id="editeventurl"/>
+              </div>
+            </div>
+          </div>
+        </li>
+        
+        <li class="align-top">
+          <div class="item-content item-input">
+            <div class="item-inner">
+              <div class="item-title item-label">Beschrijving</div>
+              <div class="item-input-wrap">
+                <textarea placeholder="Bio" value="" id="editeventbeschrijving"></textarea>
+              </div>
+            </div>
+          </div>
+        </li>
+
+      </ul>
+      <p></p>
+      <button class="col button button-fill color-green editEventButton"> <a href="/lijstvoorstellen/" style="color: white;" onclick="editAanvraag()">Indienen</a></button>
+    </div>
+    
+  </div>
+</div>
+    
+  </div>
+  </div>

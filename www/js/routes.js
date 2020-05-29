@@ -88,6 +88,11 @@ var routes = [
     name: 'voorsteldatepickershow'
   },
   {
+    path: '/changepw/',
+    url: './pages/changepw.html',
+    name: 'changepw'
+  },
+  {
     path: '/dynamic-route/blog/:blogId/post/:postId/',
     componentUrl: './pages/dynamic-route.html',
   },

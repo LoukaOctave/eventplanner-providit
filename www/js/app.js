@@ -8,6 +8,7 @@ var app = new Framework7({
   view: {
     iosDynamicNavbar: false,
     xhrCache: false,
+    router: true  
   },
   theme: 'auto', // Automatic theme detection
   // App root data
@@ -42,7 +43,7 @@ var app = new Framework7({
         // Init cordova APIs (see cordova-app.js)
         cordovaApp.init(f7);
       }
-      
+
     },
     pageInit: function (page) {
 
@@ -452,7 +453,8 @@ function showEventVoorstelZaakvoerder(){
             .get()
             .then(function(doc) {        
                 var organisatornaaam = doc.data().Username;
-                $$("#vOrganisator").html(organisatornaaam);              
+                $$("#vOrganisator").html(organisatornaaam);
+                document.getElementById("imguser").setAttribute("src", doc.data().Img);              
             })
             .catch(function(error) {
                 console.log("Error getting userdocuments: ", error);
@@ -701,7 +703,7 @@ function lijstEigenVoorstellen() {
     snapshot.docs.forEach(doc => {              
       var tlines = "";          
       tlines += "<li><a href='/eventvoorstel/' class='item-link item-content eigenvoorstellink' id="+ doc.id+ "><div class='item-inner'><div class='item-title'>" + doc.data().Eventnaam + "</div></div></a></li>";
-      $$("#listeigenvoorstellen").html(tlines);       
+      $$("#listeigenvoorstellen").append(tlines);       
   })
 }) 
 }
@@ -713,7 +715,7 @@ function lijstEigenHistory() {
   db.collection('Events').where('Status' , '==', "voorstel").where("Organisator", '==', user.uid).get().then((snapshot)=>{
     snapshot.docs.forEach(doc => {              
       var tlines ="";
-      tlines += "<li><a href='#' class='item-link item-content' id=" + doc.id + "><div class='item-media'><i class='f7-icons'>checkmark_alt_circle</i></div><div class='item-inner'><div class='item-title'>" + doc.data().Eventnaam + "</div></div></a></li>";
+      tlines += "<li><a href='#' class=' item-content' id=" + doc.id + "><div class='item-media'><i class='f7-icons'>checkmark_alt_circle</i></div><div class='item-inner'><div class='item-title'>" + doc.data().Eventnaam + "</div></div></a></li>";
       $$("#eigenvoorstellenhistory").append(tlines);    
   })
 }) 
@@ -842,15 +844,35 @@ $$(document).on('click', 'a.myevents', function (e) {
   getListMyEvents();
   showAanvraagInfo();
 });
-
+// deze functie dient ervoor dat een organisator een aanvraag kan deleten
 $$(document).on('click', '.open-confirm', function () {
   app.dialog.confirm('Zeker dat je dit wilt verwijderen?', function () {
     console.log("deleted aanvraag");
-    /* db.collection("Events").doc(eventnummer).delete().then(function() {
+     db.collection("Events").doc(eventnummer).delete().then(function() {
       console.log("Document successfully deleted!");
   }).catch(function(error) {
       console.error("Error removing document: ", error);
-  }); */
-  router.navigate({ name: 'myevents' });
+  }); 
+   app.views.current.router.navigate('/myevents/', {reloadCurrent: true});
+   getListMyEvents();
   });
 });
+
+
+function changepw(){
+ var niewpaswoord =  document.getElementById("nieuwpaswoord").value;
+ var herhaalpaswoord = document.getElementById("herhaalpaswoord").value;
+  if (niewpaswoord == herhaalpaswoord) {
+    var user = firebase.auth().currentUser;
+    
+    user.updatePassword(niewpaswoord).then(function() {
+    
+    }).catch(function(error) {
+     console.log(error);
+    });
+    app.dialog.alert('Wachtwoorden is aangepast');
+  } else {
+    app.dialog.alert('Wachtwoorden komen niet overeen');
+  }
+
+}
