@@ -1,0 +1,118 @@
+
+  <div class="page" data-name="createEvent">
+    <div class="navbar">
+      <div class="navbar-bg"></div>
+      <div class="navbar-inner sliding">
+        <div class="left">
+          <a href="/myevents/" class="link">
+              <i class="icon icon-back"></i>
+              <span>Back</span>
+          </a>
+      </div>
+        <div class="title">Create event</div>
+      </div>
+    </div> 
+  <div class="page-content">
+    <div class="block-title">Maak hier uw evenement aan</div>
+    <div class="list no-hairlines-md">
+      <ul>
+        <li>
+          <div class="item-content item-input">
+            <div class="item-inner">
+              <div class="item-title item-label">Evenement titel</div>
+              <div class="item-input-wrap">
+                <input type="text" placeholder="het evenement" id="addeventnaam"/>
+              </div>
+            </div>
+          </div>
+        </li>
+        <li>
+          <div class="item-content item-input">
+            <div class="item-inner">
+              <div class="item-title item-label">Duurtijd</div>
+              <div class="item-input-wrap">
+                <input type="number" min="0" max="100" value="0" id="addeventduurtijd"/>
+              </div>
+            </div>
+          </div>
+        </li>
+
+        <li>
+          <div class="item-content item-input">
+            <div class="item-inner">
+              <div class="item-title item-label">Tijdstip</div>
+              <div class="item-input-wrap">
+                <select name="tijdstip" placeholder="Please choose..." id="addeventtijdstip">
+                  <option value="voormiddag">Voormiddag</option>
+                  <option value="namiddag">Namiddag</option>
+                  <option value="savonds">'s avonds</option>
+                  <option value="heledag">Hele dag</option>
+                </select>
+              </div>
+            </div>
+          </div>
+        </li>
+
+        <li>
+          <div class="item-content item-input">
+            <div class="item-inner">
+              <div class="item-title item-label">Prijs p.p</div>
+              <div class="item-input-wrap">
+                <div class="range-slider range-slider-init" data-label="true">
+                  <input type="range" value="0" min="0" max="100" step="1" id="addeventprijs">
+                </div>
+              </div>
+            </div>  
+          </div>
+        </li>
+
+        <li>
+          <div class="item-content item-input">
+            <div class="item-inner">
+              <div class="item-title item-label">Locatie</div>
+              <div class="item-input-wrap">
+                <input type="text" placeholder="Locatie" id="addeventlocatie"/>
+              </div>
+            </div>
+          </div>
+         </li>
+        <li>
+          <div class="item-content item-input">
+            <div class="item-inner">
+              <div class="item-title item-label">Voeg foto toe</div>
+              <div class="item-input-wrap">
+                <input type="file" name="img" placeholder="img"  id="img"/>
+              </div>
+            </div>
+          </div>
+        </li> 
+
+        <li>
+          <div class="item-content item-input">
+            <div class="item-inner">
+              <div class="item-title item-label">URL</div>
+              <div class="item-input-wrap">
+                <input type="url" placeholder="URL" id="addeventurl"/>
+              </div>
+            </div>
+          </div>
+        </li>
+        
+        <li class="align-top">
+          <div class="item-content item-input">
+            <div class="item-inner">
+              <div class="item-title item-label">Beschrijving</div>
+              <div class="item-input-wrap">
+                <textarea placeholder="beschrijf kort de activiteit" id="addeventbeschrijving"></textarea>
+              </div>
+            </div>
+          </div>
+        </li>
+      </ul>   
+      <p></p>  
+      <button class="col button button-fill" onclick="firestoreAddVoorstel()"> <a href="/myevents/" style="color: white;">Create new event</a></button>
+        </div>
+           
+  </div>
+  </div>
+

@@ -9,7 +9,14 @@
                   <span>Back</span>
               </a>
           </div>
+
         <div class="title">Eventvoorstel</div>
+        <div class="right">
+          <a href="#" class="link open-confirm">
+            <i class="f7-icons if-not-md">trash</i>
+            <i class="material-icons md-only">trash</i>
+          </a>
+      </div>
       </div>
     </div>
     <div class="page-content">
@@ -36,9 +43,11 @@
           <p><b>Locatie:</b> Steenweg op Vilvoorde 12, Vilvoorde</p>
           <p><b>URL:</b> <a href="www.bowlingvilvoorde.be">www.bowlingvilvoorde.be</a></p>
       </div>
-      <div class="block">          
-             <button class="col button button-fill color-orange"> <a href="/editevent/" style="color: white;">Edit</a></button>                      
-                      
+      <div class="block">
+        <p class="row">         
+             <button class="col button button-fill color-orange"> <a href="/editevent/" style="color: white;" onclick="editAanvraagFormulierShow()">Edit</a></button>  
+             <button class="col button open-confirm button-fill color-red">Delete</button>
+        </p>                              
         </div>
     </div>
   </div>

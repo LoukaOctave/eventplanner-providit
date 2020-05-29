@@ -14,11 +14,11 @@ var $$ = Dom7;
             db.collection('events').onSnapshot(snapshot => {
                 //setupGuides(snapshot.docs);
                 setupUI(user);
+                //getListMyEvents();
+                getListVoorstellenNoDate();
+                getListVoorstellenGepland();
                 getListMyEvents();
                 reloadHome();	
-                
-                
-
                 if (loggedIn == false) {
                   loggedIn = true;
                 } else loggedIn = false;
@@ -28,7 +28,6 @@ var $$ = Dom7;
         
     } else {
         setupUI();
-        reloadHome();
         // om niets van output te hebben
         //setupGuides([]);
     }
@@ -65,8 +64,9 @@ $$('#btnLogin').on('click', function (e) {
 /* myFunction toggles between adding and removing the show class, which is used to hide and show the dropdown content */
 function logout() {   
     auth.signOut();
-    loggedIn = false;
+    loggedIn = false; 
     console.log("uitgelogd");
+    localStorage.removeItem("userID");
 }
 
 /* // login status 
@@ -90,4 +90,5 @@ firebase.auth().signInWithPopup(provider).then(function(result) {
     // The firebase.auth.AuthCredential type that was used.
     var credential = error.credential;
     // ...
+
   }); */
