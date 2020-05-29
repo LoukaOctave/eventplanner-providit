@@ -355,7 +355,7 @@ function getListAanvragen() {
 }
 
 function getListRandomEvents(){
-  db.collection('Events').where('Status' , '==', "voorstelnodate").get()
+  db.collection('Events').where('Status' , '==', "voorstelnoevent").get()
   .then((snapshot) => {
       snapshot.docs.forEach(doc => {             
         var tlines = "";          
@@ -380,7 +380,7 @@ function getListVoorstellen(){
 /////////////INDEX.HTML///////////////
 //////////////////////////////////////
 
-// Checken of user aangemeld is voor event met status "voorstelnodate", en juiste text weergeven op card
+// Checken of user aangemeld is voor event met status "voorstelnoevent", en juiste text weergeven op card
 // linkText OK! maar ook linkUrl wijzigen???
 // Of misschien text behouden maar niet als link, aangezien we kunnen klikken op de card zelf?
 //function isUserAangemeldBijEvent() {
@@ -395,16 +395,15 @@ function getListVoorstellen(){
 //  return linkText;
 //}
 
-// Events met "voorstelnodate" als status ophalen en zetten onder "Datum kiezen..."
+// Events met "voorstelnoevent" als status ophalen en zetten onder "Datum kiezen..."
 function getListVoorstellenNoDate() {
   
-  db.collection('Events').where('Status' , '==', "voorstelnodate").get().then((snapshot)=>{
+  db.collection('Events').where('Status' , '==', "voorstelnoevent").get().then((snapshot)=>{
     snapshot.docs.forEach(doc => {              
       var tlines = "";
 
       tlines += "<div class='card demo-card-header-pic'><a class ='cardlinks' href='/detailevent/'><div style='background-image: url('" + doc.data().Img + "')' class='card-header align-items-flex-end'>" + doc.data().Eventnaam + "</div><div class='card-content card-content-padding'><p class='date'>Aanmelden tot " + "AAN TE VULLEN" + "</p><p>" + doc.data().Beschrijving + "</p></div><div class='card-footer'><a href='/detailfinalevent/' class='link'>" + "isUserAangemeldBijEvent()" + "</a></div></a></div>";
       $$("#eventVoorstelNoDate").html(tlines);                 
-  
       })
   })
 }
@@ -505,7 +504,7 @@ function firestoreAddRandomEvent(){
       db.collection('Events').add({
         Eventnaam: document.getElementById("addrandomeventnaam").value,
         Img: "https://firebasestorage.googleapis.com/v0/b/eventplanner-providit.appspot.com/o/randomevent.JPG?alt=media&token=8c7151a2-6a3e-4cb4-9456-44dbe463f027" ,
-        Status: "voorstelnodate"
+        Status: "voorstelnoevent"
       }).then(ref => {
         console.log('Added document with ID: ', ref.id);
         eventnummer = ref.id;
