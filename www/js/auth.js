@@ -14,7 +14,7 @@ var $$ = Dom7;
             db.collection('events').onSnapshot(snapshot => {
                 //setupGuides(snapshot.docs);
                 setupUI(user);
-                getListMyEvents();
+                //getListMyEvents();
                 getListVoorstellenNoDate();
                 getListVoorstellenGepland();
 
@@ -65,6 +65,7 @@ function logout() {
     auth.signOut();
     loggedIn = false; 
     console.log("uitgelogd");
+    localStorage.removeItem("userID");
 }
 
 /* // login status 

@@ -13,6 +13,7 @@ var app = new Framework7({
   theme: 'auto', // Automatic theme detection
   // App root data
   data: function () {
+    
     return {
     };
   },
@@ -43,7 +44,7 @@ var app = new Framework7({
         // Init cordova APIs (see cordova-app.js)
         cordovaApp.init(f7);
       }
-
+     
     },
     pageInit: function (page) {
 
@@ -321,7 +322,7 @@ $$(document).on('page:init', '.page[data-name="lijstvoorstellen"]', function (e)
   getListAanvragen();
   getListRandomEvents();
   getListVoorstellen();
- });
+});
 
 // list van voorstellen history
 function getListHistory() {    
@@ -697,8 +698,8 @@ function getListMyEvents(){
 
 
 function lijstEigenVoorstellen() {    
-  var user = firebase.auth().currentUser;
-  db.collection('Events').where("Organisator", '==', user.uid).where('Status' , '==', "aanvraag").get().then((snapshot)=>{
+  //var user = firebase.auth().currentUser;
+  db.collection('Events').where("Organisator", '==', localStorage.getItem("userID")).where('Status' , '==', "aanvraag").get().then((snapshot)=>{
     snapshot.docs.forEach(doc => {              
       var tlines = "";          
       tlines += "<li><a href='/eventvoorstel/' class='item-link item-content eigenvoorstellink' id="+ doc.id+ "><div class='item-inner'><div class='item-title'>" + doc.data().Eventnaam + "</div></div></a></li>";
@@ -711,14 +712,14 @@ function lijstEigenVoorstellen() {
 function lijstEigenHistory() {  
  
   var user = firebase.auth().currentUser;  
-  db.collection('Events').where('Status' , '==', "voorstel").where("Organisator", '==', user.uid).get().then((snapshot)=>{
+  db.collection('Events').where('Status' , '==', "voorstel").where("Organisator", '==', localStorage.getItem("userID")).get().then((snapshot)=>{
     snapshot.docs.forEach(doc => {              
       var tlines ="";
       tlines += "<li><a href='#' class=' item-content' id=" + doc.id + "><div class='item-media'><i class='f7-icons'>checkmark_alt_circle</i></div><div class='item-inner'><div class='item-title'>" + doc.data().Eventnaam + "</div></div></a></li>";
       $$("#eigenvoorstellenhistory").append(tlines);    
   })
 }) 
-db.collection('Events').where('Status' , '==', "afgekeurd").where("Organisator", '==', user.uid).get().then((snapshot)=>{
+db.collection('Events').where('Status' , '==', "afgekeurd").where("Organisator", '==', localStorage.getItem("userID")).get().then((snapshot)=>{
   snapshot.docs.forEach(doc => {              
     var tlines ="";
     tlines += "<li><a href='/aanvraagafkeurenuitlegRead/' class='item-link item-content eigenafgekeurdeevents' id=" + doc.id + "><div class='item-media'><i class='f7-icons'>multiply_circle</i></div><div class='item-inner'><div class='item-title'>" + doc.data().Eventnaam + "</div></div></a></li>";
@@ -836,13 +837,13 @@ if (img){
 }
 
 
-getListMyEvents();
+
 }
 // zodat info steeds getoond wordt op de myevents pagina's
-$$(document).on('click', 'a.myevents', function (e) {
+/* $$(document).on('click', 'a.myevents', function (e) {
   getListMyEvents();
   showAanvraagInfo();
-});
+}); */
 // deze functie dient ervoor dat een organisator een aanvraag kan deleten
 $$(document).on('click', '.open-confirm', function () {
   app.dialog.confirm('Zeker dat je dit wilt verwijderen?', function () {
@@ -853,7 +854,6 @@ $$(document).on('click', '.open-confirm', function () {
       console.error("Error removing document: ", error);
   }); 
    app.views.current.router.navigate('/myevents/', {reloadCurrent: true});
-   getListMyEvents();
   });
 });
 
@@ -875,3 +875,8 @@ function changepw(){
   }
 
 }
+
+ 
+ $$(document).on('page:init', '.page[data-name="myevents"]', function (e) {
+  getListMyEvents();
+   });
