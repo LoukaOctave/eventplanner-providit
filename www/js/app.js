@@ -690,6 +690,7 @@ $$(document).on('page:init', '.page[data-name="myevents"]', function (e) {
   
  });
 
+ 
 function getListMyEvents(){
   lijstEigenVoorstellen() ;
   lijstEigenHistory();
@@ -885,8 +886,8 @@ function changepw(){
 
     //  #region ALGEMEEN
 
-// Als je op een link klikt met class "backToHome", dan wordt de homepagina herladen
-$$(document).on('click', 'a.backToHome', function (e) {
+// Als de index.html pagina (data-name=home) wordt geïnitialiseerd, dan wordt de homepagina herladen
+$$(document).on('page:init', '.page[data-name="home"]', function (e) {
   reloadHome();
 });
 
