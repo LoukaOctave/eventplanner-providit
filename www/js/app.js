@@ -50,13 +50,13 @@ var app = new Framework7({
         if (page.route.name === "voorsteldatepicker") {          
           datepicker();
         }
-        if (page.route.name === "detailevent") {          
+        if (page.route.name === "detailVoorstelNoDateEvent") {          
           datepickerDetailevent()
         }
         if (page.route.name === "voorstelrandomevent") {          
           datepicker();
         }
-        if (page.route.name === "detaileventdate") {          
+        if (page.route.name === "detailVoorstelNoEventEvent") {          
           datepickerdisabled();
         }
         if (page.route.name === "voorstelrandomevent") {      
@@ -872,12 +872,12 @@ function getListVoorstelNoDateEvents() {
     snapshot.docs.forEach(doc => {
       var tlines = "";
       tlines += "<div class='card demo-card-header-pic'><a class ='voorstelNoDateEventCardLinks' id ='"
-      + doc.id + "' href='/detailevent/'><div style='background-image: url('"
+      + doc.id + "' href='/detailVoorstelNoDateEvent/'><div style='background-image: url('"
       + doc.data().Img + "')' class='card-header align-items-flex-end'>"
       + doc.data().Eventnaam + "</div><div class='card-content card-content-padding'><p class='date'>Aanmelden tot "
       // TODO: Events een Deadline geven en deze hieronder plaatsen
       + "doc.data().Deadline" + "</p><p>"
-      + doc.data().Beschrijving + "</p></div><div class='card-footer'><a href='/detailevent/' class='voorstelNoDateEventCardLinks' id ='"
+      + doc.data().Beschrijving + "</p></div><div class='card-footer'><a href='/detailVoorstelNoDateEvent/' class='voorstelNoDateEventCardLinks' id ='"
       + doc.id + "'>"
       + "isUserDeelnemerBijEvent(doc.id)" + "</a></div></a></div>";
       $$("#voorstelNoDateEvent").append(tlines);
@@ -939,12 +939,12 @@ function getListVoorstelNoEventEvents() {
     snapshot.docs.forEach(doc => {
       var tlines = "";
       tlines += "<div class='card demo-card-header-pic'><a class ='voorstelNoEventEventCardLinks' id ='"
-      + doc.id + "' href='/detaileventdate/'><div style='background-image: url('"
+      + doc.id + "' href='/detailVoorstelNoEventEvent/'><div style='background-image: url('"
       + doc.data().Img + "')' class='card-header align-items-flex-end'>"
       + doc.data().Eventnaam + "</div><div class='card-content card-content-padding'><p class='date'>Aanmelden tot "
       // TODO: Events een Deadline geven en deze hieronder plaatsen
       + "doc.data().Deadline" + "</p><p>"
-      + doc.data().Beschrijving + "</p></div><div class='card-footer'><a href='/detaileventdate/' class='voorstelNoEventEventCardLinks' id ='"
+      + doc.data().Beschrijving + "</p></div><div class='card-footer'><a href='/detailVoorstelNoEventEvent/' class='voorstelNoEventEventCardLinks' id ='"
       + doc.id + "'>"
       + "isUserDeelnemerBijEvent(doc.id)" + "</a></div></a></div>";
 
@@ -953,13 +953,13 @@ function getListVoorstelNoEventEvents() {
   })
 }
 
-// Wanneer er op de cardlink van een voorstelnoevent event wordt geklikt, dan wordt de "detaileventdate.html" pagina geopend met de juiste informatie
+// Wanneer er op de cardlink van een voorstelnoevent event wordt geklikt, dan wordt de "detailVoorstelNoEventEvent.html" pagina geopend met de juiste informatie
 $$(document).on('click', 'a.voorstelNoEventEventCardLinks', function (e) {
   eventnummer = $$(this).attr("id");
   getDetailVoorstelNoEventEvent();
 });
 
-// TODO: Ervoor zorgen dat "detaileventdate.html" wordt geopend wanneer er op de cardlink geklikt wordt. (Probleem zit niet bij href of routes.js)
+// TODO: Ervoor zorgen dat "detailVoorstelNoEventEvent.html" wordt geopend wanneer er op de cardlink geklikt wordt. (Probleem zit niet bij href of routes.js)
 function getDetailVoorstelNoEventEvent() {
   db.collection('Events').doc(eventnummer).get().then(function(doc) {
     var tlines = "";
@@ -980,12 +980,12 @@ function getListGeplandEvents() {
     snapshot.docs.forEach(doc => {
       var tlines = "";
       tlines += "<div class='card demo-card-header-pic'><a class ='geplandEventCardLinks' id ='"
-      + doc.id + "' href='/detailfinalevent/'><div style='background-image: url('"
+      + doc.id + "' href='/detailGeplandEvent/'><div style='background-image: url('"
       + doc.data().Img + "')' class='card-header align-items-flex-end'>"
       + doc.data().Eventnaam + "</div><div class='card-content card-content-padding'><p class='date'>"
       // TODO: Events een Datum geven en deze op de volgende lijn plaatsen
       + "doc.data().Datum" + "</p><p>"
-      + doc.data().Beschrijving + "</p></div><div class='card-footer'><a href='/detailfinalevent/' class='geplandEventCardLinks' id ='"
+      + doc.data().Beschrijving + "</p></div><div class='card-footer'><a href='/detailGeplandEvent/' class='geplandEventCardLinks' id ='"
       + doc.id + "'>"
       + "isUserDeelnemerBijEvent(doc.id)" + "</a></div></a></div>";
 

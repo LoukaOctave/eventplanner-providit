@@ -44,14 +44,19 @@ var routes = [
     name: 'myevents'
   },
   {
-    path: '/detailevent/',
-    url: './pages/detailevent.html',
-    name: 'detailevent'
+    path: '/detailVoorstelNoDateEvent/',
+    url: './pages/detailVoorstelNoDateEvent.html',
+    name: 'detailVoorstelNoDateEvent'
   },
   {
-    path: '/detailfinalevent/',
-    url: './pages/detailfinalevent.html',
-    name: 'detailfinalevent'
+    path: '/detailVoorstelNoEventEvent/',
+    url: './pages/detailVoorstelNoEventEvent.html',
+    name: 'detailVoorstelNoEventEvent'
+  },
+  {
+    path: '/detailGeplandEvent/',
+    url: './pages/detailGeplandEvent.html',
+    name: 'detailGeplandEvent'
   },
   {
     path: '/editevent/',
@@ -67,11 +72,6 @@ var routes = [
     path: '/eventrespons/',
     url: './pages/eventrespons.html',
     name: 'eventrespons'
-  },
-  {
-    path: '/detaileventdate/',
-    url: './pages/detaileventdate.html',
-    name: 'detaileventdate'
   },
   {
     path: '/voorstelrandomevent/',
