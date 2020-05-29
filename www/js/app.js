@@ -71,11 +71,11 @@ var app = new Framework7({
 
 
 // Eigen code
-var user = firebase.auth().currentUser;
+var user = firebase.auth().currentUser; // TODO: moet ook aangepast worden wanneer user inlogd en uitlogd
 console.log(user);
 var loggedIn = false;
 console.log(loggedIn);
-let userID = localStorage.getItem("userID");
+let userID = localStorage.getItem("userID"); // TODO: moet ook aangepast worden wanneer user inlogd en uitlogd
 // !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 const loggedOutLinks = document.querySelectorAll('.loggedout');
 const loggedInLinks = document.querySelectorAll('.loggedin');
@@ -373,51 +373,6 @@ function getListVoorstellen(){
     })
     $$("#goedgekeurdeaanvragen").html(tlines);      
   })  
-}
-
-
-//////////////////////////////////////
-/////////////INDEX.HTML///////////////
-//////////////////////////////////////
-
-// Checken of user aangemeld is voor event met status "voorstelnoevent", en juiste text weergeven op card
-// linkText OK! maar ook linkUrl wijzigen???
-// Of misschien text behouden maar niet als link, aangezien we kunnen klikken op de card zelf?
-//function isUserAangemeldBijEvent() {
-//  var linkText ="";
-//  forEach(aangemelde => {
-//    if(aangemelde.Username == user){
-//      linkText = "Wijzig aanmelding"
-//    }
-//    else{
-//     linkText = "Meld je aan"
-//    }
-//  return linkText;
-//}
-
-// Events met "voorstelnoevent" als status ophalen en zetten onder "Datum kiezen..."
-function getListVoorstellenNoDate() {
-  
-  db.collection('Events').where('Status' , '==', "voorstelnoevent").get().then((snapshot)=>{
-    snapshot.docs.forEach(doc => {              
-      var tlines = "";
-
-      tlines += "<div class='card demo-card-header-pic'><a class ='cardlinks' href='/detailevent/'><div style='background-image: url('" + doc.data().Img + "')' class='card-header align-items-flex-end'>" + doc.data().Eventnaam + "</div><div class='card-content card-content-padding'><p class='date'>Aanmelden tot " + "AAN TE VULLEN" + "</p><p>" + doc.data().Beschrijving + "</p></div><div class='card-footer'><a href='/detailfinalevent/' class='link'>" + "isUserAangemeldBijEvent()" + "</a></div></a></div>";
-      $$("#eventVoorstelNoDate").html(tlines);                 
-      })
-  })
-}
-
-function getListVoorstellenGepland() {
-  
-  db.collection('Events').where('Status' , '==', "gepland").get().then((snapshot)=>{
-    snapshot.docs.forEach(doc => {              
-      var tlines = "";
-
-      tlines += "<div class='card demo-card-header-pic'><a class ='cardlinks' href='/detailfinalevent/'><div style='background-image: url('" + doc.data().Img + "')' class='card-header align-items-flex-end'>" + doc.data().Eventnaam + "</div><div class='card-content card-content-padding'><p class='date'>" + "AAN TE VULLEN" + "</p><p>" + doc.data().Beschrijving + "</p></div><div class='card-footer'><a href='/detailevent/' class='link'>" + "isUserAangemeldBijEvent()" + "</a></div></a></div>";
-      $$("#eventGepland").html(tlines);
-    })
-  })
 }
 
 /* Deze functie dient om wanneer iemand op een eventvoorstel/aanvraag 
@@ -876,11 +831,9 @@ function changepw(){
 
 }
 
- 
- $$(document).on('page:init', '.page[data-name="myevents"]', function (e) {
-  getListMyEvents();
-   });
-
+$$(document).on('page:init', '.page[data-name="myevents"]', function (e) {
+getListMyEvents();
+  });
 
 //  #region INDEX.HTML
 

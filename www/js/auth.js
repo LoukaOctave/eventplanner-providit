@@ -15,8 +15,6 @@ var $$ = Dom7;
                 //setupGuides(snapshot.docs);
                 setupUI(user);
                 //getListMyEvents();
-                getListVoorstellenNoDate();
-                getListVoorstellenGepland();
                 getListMyEvents();
                 reloadHome();	
                 if (loggedIn == false) {
