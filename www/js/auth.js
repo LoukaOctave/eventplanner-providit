@@ -15,6 +15,8 @@ var $$ = Dom7;
                 //setupGuides(snapshot.docs);
                 setupUI(user);
                 getListMyEvents();
+                reloadHome();	
+                
                 
 
                 if (loggedIn == false) {
@@ -26,6 +28,7 @@ var $$ = Dom7;
         
     } else {
         setupUI();
+        reloadHome();
         // om niets van output te hebben
         //setupGuides([]);
     }
@@ -62,7 +65,7 @@ $$('#btnLogin').on('click', function (e) {
 /* myFunction toggles between adding and removing the show class, which is used to hide and show the dropdown content */
 function logout() {   
     auth.signOut();
-    loggedIn = false; 
+    loggedIn = false;
     console.log("uitgelogd");
 }
 
