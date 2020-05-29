@@ -17,10 +17,6 @@ var routes = [
     componentUrl: './pages/lijstvoorstellen.html',
   },
   {
-    path: '/product/:id/',
-    componentUrl: './pages/product.html',
-  },
-  {
     path: '/eventvoorstel/',
     url: './pages/eventvoorstel.html',
   },
@@ -167,25 +163,11 @@ var routes = [
       }, 1000);
     },
   },
-  {
-    path: '/locatie/',
-    componentUrl: './pages/locatie.html',
-  },
-  {
-    path: '/gegevens/',
-    componentUrl: './pages/gegevens.html',
-  },
-  {
-    path: '/login/',
-    componentUrl: './pages/login.html',
-  },
-  //{
-    //path: '/gegevens/:id/',
-    //componentUrl: './pages/product.html',
-  //},
+
   // Default route (404 page). MUST BE THE LAST
   {
     path: '(.*)',
     url: './pages/404.html',
   },
 ];
+

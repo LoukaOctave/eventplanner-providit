@@ -1,4 +1,3 @@
-
 var $$ = Dom7;
 
 var app = new Framework7({
@@ -880,3 +879,191 @@ function changepw(){
  $$(document).on('page:init', '.page[data-name="myevents"]', function (e) {
   getListMyEvents();
    });
+
+
+//  #region INDEX.HTML
+
+    //  #region ALGEMEEN
+
+// Als je op een link klikt met class "backToHome", dan wordt de homepagina herladen
+$$(document).on('click', 'a.backToHome', function (e) {
+  reloadHome();
+});
+
+// De homepagina wordt herladen
+function reloadHome() {
+  getListVoorstelNoDateEvents();
+  getListVoorstelNoEventEvents();
+  getListGeplandEvents();
+}
+
+// Is de huidige user een deelnemer: true or false?
+function isUserDeelnemerBijEvent(event) {
+  db.collection('Events').doc(event).collection('Deelnemers').get().then(function(docs) {
+    docs.forEach(doc => { 
+      /*console.log(doc.id);
+      console.log(userID);*/
+      if (doc.id == userID) { /*console.log(true);*/ }
+    })
+  })
+}
+
+    //  #endregion ALGEMEEN
+
+    //  #region VOORSTELNODATE
+
+// Events met "voorstelnodate" als status ophalen en zetten onder "Datum kiezen..."
+function getListVoorstelNoDateEvents() {
+  db.collection('Events').where('Status', '==', "voorstelnodate").get().then((snapshot) => {
+    snapshot.docs.forEach(doc => {
+      var tlines = "";
+      tlines += "<div class='card demo-card-header-pic'><a class ='voorstelNoDateCardLinks' id ='"
+      + doc.id + "' href='/detailevent/'><div style='background-image: url('"
+      + doc.data().Img + "')' class='card-header align-items-flex-end'>"
+      + doc.data().Eventnaam + "</div><div class='card-content card-content-padding'><p class='date'>Aanmelden tot "
+      // TODO: Events een Deadline geven en deze hieronder plaatsen
+      + "doc.data().Deadline" + "</p><p>"
+      + doc.data().Beschrijving + "</p></div><div class='card-footer'><a href='/detailevent/' class='voorstelNoDateCardLinks' id ='"
+      + doc.id + "'>"
+      + "isUserDeelnemerBijEvent(doc.id)" + "</a></div></a></div>";
+      $$("#eventVoorstelNoDate").append(tlines);
+    })
+  })
+}
+
+// Detail voorstelnodate wanneer je op een cardlink klikt
+$$(document).on('click', 'a.voorstelNoDateCardLinks', function (e) {
+  eventnummer = $$(this).attr("id");
+  getDetailVoorstelNoDateEvent();
+  getDatesDetailVoorstelNoDateEvent();
+});
+
+// Details tonen van event met status "voorstelnodate"
+function getDetailVoorstelNoDateEvent() {
+  db.collection('Events').doc(eventnummer).get().then(function(doc) {
+    var tlines = "";
+    tlines += "<div class='page-content'><div class='block-title block-title-medium'>"
+    + doc.data().Eventnaam + "</div><img src='"
+    + doc.data().Img + "' id='vImg'> <div class='block block-strong inset'><p><b>Duurtijd: </b>"
+    + doc.data().Duurtijd + "</p><p><b>Moment van de dag: </b>"
+    + doc.data().Tijdstip + "</p><p><b>Beschrijving: </b>"
+    + doc.data().Beschrijving + "</p></div>";
+
+    $$("#detailEventNoDate").append(tlines);
+  })
+}
+
+// Datum van "voorstelnodate" tonen in checkboxes
+function getDatesDetailVoorstelNoDateEvent(){
+  db.collection('Events').doc(eventnummer).collection('Data').get().then((snapshot) => {
+    snapshot.docs.forEach(doc => {
+      
+      // TODO: Een functie maken voor het omzetten van Firestore data naar een weergeefbare datum
+      var ts = doc.data().datum;
+      var ts_ms = ts * 1000;
+      var date_ob = new Date(ts_ms);
+      var year = date_ob.getFullYear();
+      var month = ("0" + (date_ob.getMonth() + 1)).slice(-2);
+      var date = ("0" + date_ob.getDate()).slice(-2);
+      var fulldate = date + "-" + month + "-" + date;
+
+      var tlines = "";
+      tlines += "<li><label class='item-checkbox item-content'><input type='checkbox' name='demo-checkbox' value='Date'/><i class='icon icon-checkbox'></i><div class='item-inner'><div class='item-title'>"
+      + fulldate + "</div></div></label></li>";
+      $$("#getDateCheckbox").append(tlines);
+    })
+  })
+}
+
+    //  #endregion VOORSTELNODATE
+
+    //  #region VOORSTELNOEVENT
+
+// Events met "voorstelnoevent" als status ophalen en zetten onder "Datum kiezen..."
+function getListVoorstelNoEventEvents() {
+  db.collection('Events').where('Status', '==', "voorstelnoevent").get().then((snapshot) => {
+    snapshot.docs.forEach(doc => {
+      var tlines = "";
+      tlines += "<div class='card demo-card-header-pic'><a class ='voorstelNoEventCardLinks' id ='"
+      + doc.id + "' href='/detaileventdate/'><div style='background-image: url('"
+      + doc.data().Img + "')' class='card-header align-items-flex-end'>"
+      + doc.data().Eventnaam + "</div><div class='card-content card-content-padding'><p class='date'>Aanmelden tot "
+      // TODO: Events een Deadline geven en deze hieronder plaatsen
+      + "doc.data().Deadline" + "</p><p>"
+      + doc.data().Beschrijving + "</p></div><div class='card-footer'><a href='/detaileventdate/' class='voorstelNoEventCardLinks' id ='"
+      + doc.id + "'>"
+      + "isUserDeelnemerBijEvent(doc.id)" + "</a></div></a></div>";
+
+      $$("#eventVoorstelNoEvent").append(tlines);
+    })
+  })
+}
+
+    //  #endregion VOORSTELNOEVENT
+
+    //  #region GEPLAND
+
+// Events met "gepland" als status ophalen en zetten onder "Geplande events"
+function getListGeplandEvents() {
+  db.collection('Events').where('Status', '==', "gepland").get().then((snapshot) => {
+    snapshot.docs.forEach(doc => {
+      var tlines = "";
+      tlines += "<div class='card demo-card-header-pic'><a class ='geplandCardLinks' id ='"
+      + doc.id + "' href='/detailfinalevent/'><div style='background-image: url('"
+      + doc.data().Img + "')' class='card-header align-items-flex-end'>"
+      + doc.data().Eventnaam + "</div><div class='card-content card-content-padding'><p class='date'>"
+      // TODO: Events een Datum geven en deze op de volgende lijn plaatsen
+      + "doc.data().Datum" + "</p><p>"
+      + doc.data().Beschrijving + "</p></div><div class='card-footer'><a href='/detailfinalevent/' class='geplandCardLinks' id ='"
+      + doc.id + "'>"
+      + "isUserDeelnemerBijEvent(doc.id)" + "</a></div></a></div>";
+
+      $$("#eventGepland").append(tlines);
+    })
+  })
+}
+
+// Wanneer er op de cardlink van een gepland event wordt geklikt, dan wordt de "detailfinalevent.html" pagina geopend met de juiste informatie
+$$(document).on('click', 'a.geplandCardLinks', function (e) {
+  eventnummer = $$(this).attr("id");
+  getDetailGeplandEvent();
+});
+
+// Toont de details van een gepland event in "detailfinalevent.html"
+function getDetailGeplandEvent() {
+  db.collection('Events').doc(eventnummer).get().then(function(doc) {
+    var tlines = "";
+    tlines += "<div class='block-title block-title-medium'>"
+    + doc.data().Eventnaam + "</div><img src='"
+    + doc.data().Img + "' id='vImg'> <div class='block block-strong inset'><p><b>Datum: </b>"
+    // TODO: Events een Datum geven en deze op de volgende lijn plaatsen
+    + "doc.data().Datum" + "</p><p><b>Moment van de dag: </b>"
+    + doc.data().Tijdstip + "</p><p><b>Beschrijving: </b>"
+    + doc.data().Beschrijving + "</p></div> <div class='card'><div class='card-header'>Deelnemers:</div><div class='card-content'><div class='list media-list'><ul id='deelnemersDetailEventGepland'>"
+    + getDeelnemersGeplandEvent(doc.id); + "</ul></div></div></div>";
+    
+    $$("#detailEventGepland").append(tlines);
+  })
+}
+
+// Zorgt ervoor dat alle deelnemers aan een gepland event worden opgelijst in "detailfinalevent.html"
+function getDeelnemersGeplandEvent(event){
+  db.collection('Events').doc(event).collection('Deelnemers').get().then((snapshot) => {
+    snapshot.docs.forEach(doc => {
+      var tlines = "";
+      tlines += "<li class='item-content'><div class='item-media'><img src='" 
+      // TODO: Users een Img geven en deze als src opgeven voor <img> element
+      + "https://cdn.framework7.io/placeholder/fashion-88x88-4.jpg" + "' width='44'/></div><div class='item-inner'><div class='item-title-row'><div class='item-title'>"
+      + doc.data().Username + "</div></div></div></li>"
+
+      $$("#deelnemersDetailEventGepland").append(tlines);
+    });
+  })
+}
+
+    //  #endregion GEPLAND
+
+//  #endregion INDEX.HTML
+
+
+

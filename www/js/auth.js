@@ -17,7 +17,8 @@ var $$ = Dom7;
                 //getListMyEvents();
                 getListVoorstellenNoDate();
                 getListVoorstellenGepland();
-
+                getListMyEvents();
+                reloadHome();	
                 if (loggedIn == false) {
                   loggedIn = true;
                 } else loggedIn = false;
@@ -89,4 +90,5 @@ firebase.auth().signInWithPopup(provider).then(function(result) {
     // The firebase.auth.AuthCredential type that was used.
     var credential = error.credential;
     // ...
+
   }); */
