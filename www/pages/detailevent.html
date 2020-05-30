@@ -14,13 +14,25 @@
     </div>
   <div class="page-content" >
     <div id="detailVoorstelNoDateEvent"></div>
+    <div class="list simple-list" id="list_whenaangemeld">
+      <div class="block-title">Aangemelde data</div>
+      <ul id="dataAangemeld">
+      </ul>
+      <div class="block-title">Afgemelde data</div>
+      <ul id="dataAfgemeld">
+      </ul>
+    </div>
     <div class="block-title" id="titel_detail">Kies hier een beschikbare datum voor dit event</div>
-    <div class="list">
-      <ul id="getDateCheckbox"></ul>
+    <div class="list" id="list_detail">
+      <form action="">
+        <ul id="getDateCheckbox"></ul>
+      </form>
+      
     </div>
     <p class="row">
       <p class="row">
-        <button class="col button button-fill color-green" onclick="addDeelnemerForEvent()"> <a href="/" style="color: white;">Submit</a></button>
+        <button class="col button button-fill color-orange" id="detailEdit" onclick="showEditDates()">Edit</button>
+        <button class="col button button-fill color-green" onclick="addDeelnemerForEvent()" id="detailSubmit"> <a href="/" style="color: white;" >Submit</a></button>
         <button class="col button button-fill color-red"> <a href="/" style="color: white;">Niet deelnemen</a></button>                           
       </p> 
     </p>
