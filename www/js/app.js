@@ -89,6 +89,7 @@ const setupUI = (user) => {
     app.loginScreen.close('#my-login-screen');               
     // checkLoggedIn(loggedIn);
     // toggle UI elements
+    getAantalPersoneel();
     loggedInLinks.forEach(item => item.style.display = 'block');
     loggedOutLinks.forEach(item => item.style.display = 'none');
 
@@ -321,11 +322,12 @@ $$(document).on('page:init', '.page[data-name="lijstvoorstellen"]', function (e)
   getListAanvragen();
   getListRandomEvents();
   getListVoorstellen();
+  
 });
 
 // list van voorstellen history
 function getListHistory() {    
-  db.collection('Events').where('Status' , '==', "voorstel").get().then((snapshot)=>{
+  db.collection('Events').where('Status' , '==', "voorstelnodate").get().then((snapshot)=>{
     snapshot.docs.forEach(doc => {              
       var tlines = "";          
       tlines += "<li><a href='#' class='item-link item-content' id=" + doc.id + "><div class='item-media'><i class='f7-icons'>checkmark_alt_circle</i></div><div class='item-inner'><div class='item-title'>" + doc.data().Eventnaam + "</div></div></a></li>";
@@ -366,7 +368,7 @@ function getListRandomEvents(){
 }
 function getListVoorstellen(){
   var tlines = "";     
-    db.collection('Events').where('Status' , '==', "voorstel").get().then((snapshot)=>{
+    db.collection('Events').where('Status' , '==', "voorstelnodate").get().then((snapshot)=>{
       snapshot.docs.forEach(doc => {              
                  
         tlines += "<li><a href='/eventvoorstelzaakvoerdergoedgekeurd/' class='voorstellinks' id=" + doc.id + ">" + doc.data().Eventnaam + "</a></li>";       
@@ -441,7 +443,7 @@ function aanvraagGoedkeuren(){
   var DeadlineToTimestamp = firebase.firestore.Timestamp.fromDate(new Date(document.getElementById("adddeadline").value));
   mogelijkeData = app.calendar.get().value;
    db.collection("Events").doc(eventnummer).update({
-      Status: "voorstel",
+      Status: "voorstelnodate",
       Deadline: DeadlineToTimestamp
     }) 
 
@@ -667,7 +669,7 @@ function lijstEigenVoorstellen() {
 function lijstEigenHistory() {  
  
   var user = firebase.auth().currentUser;  
-  db.collection('Events').where('Status' , '==', "voorstel").where("Organisator", '==', localStorage.getItem("userID")).get().then((snapshot)=>{
+  db.collection('Events').where('Status' , '==', "voorstelnodate").where("Organisator", '==', localStorage.getItem("userID")).get().then((snapshot)=>{
     snapshot.docs.forEach(doc => {              
       var tlines ="";
       tlines += "<li><a href='#' class=' item-content' id=" + doc.id + "><div class='item-media'><i class='f7-icons'>checkmark_alt_circle</i></div><div class='item-inner'><div class='item-title'>" + doc.data().Eventnaam + "</div></div></a></li>";
@@ -1035,6 +1037,62 @@ function getDeelnemersGeplandEvent(event){
     //  #endregion GEPLAND
 
 //  #endregion INDEX.HTML
+var gecheckeddatum;
+function getCheckedDate(){
+  if (document.getElementById('date').checked) {
+    gecheckeddatum = document.getElementById('date').value;
+    return;
+  }
+  else{
+    gecheckeddatum = "no date"
+  }
+}
+// zet in firebase de datum en de id van de user 
+function addDeelnemerForEvent(){
+  getCheckedDate();
+  db.collection('Events').doc(eventnummer).collection('Deelnemers').add({
+    id: localStorage.getItem("UserID"),
+    datum: gecheckeddatum
+  });
+  
+
+}
 
 
 
+
+var aantalPersoneel = 0;
+function getAantalPersoneel(){
+
+  if (aantalPersoneel == 0) {
+    db.collection('Users').get().then((snapshot)=>{
+      snapshot.docs.forEach(doc => {              
+      aantalPersoneel++;        
+    }) 
+    getListDatumAanduiden();
+  }
+  
+    )}
+    
+}
+
+// lijst van id's van voorstellen waar alle personeelleden data hebben aangeduidt
+
+// datum aanduiden bij zaakvoerderspaneel lijst
+function getListDatumAanduiden() {
+
+  if (aantalPersoneel > 0) {
+    db.collection('Events').where('AantalAanmeldingen' , '==', aantalPersoneel).get().then((snapshot)=>{
+      snapshot.docs.forEach(doc => {              
+        var tlines = "";               
+        db.collection('Events').get().then((snapshot)=>{
+          snapshot.docs.forEach(doc => {              
+           tlines += "<li><a href='/eventvoorstelwithdate/' class='item-link item-content' id=" +  doc.id + "><div class='item-inner'><div class='item-title'>"+ doc.data().Eventnaam + "</div></div></a></li>";      
+    }) 
+    $$("#datumaanduiden").html(tlines); 
+    }
+    )}
+    
+      )}
+    )}
+}
