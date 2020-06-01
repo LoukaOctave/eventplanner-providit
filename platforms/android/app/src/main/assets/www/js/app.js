@@ -572,7 +572,7 @@ db.collection('Events').doc(eventnummer).collection('Data').get()
   .then((snapshot) => {
       snapshot.docs.forEach(doc => {             
         var tlines = "";          
-        tlines += "<p>" + doc.data().datum.toDate()  + "</p>";
+        tlines += "<p>" + DeadlineToTimestamp(doc.data().datum)  + "</p>";
         $$("#lijstdatarandomevent").append(tlines);                 
     }) 
   })

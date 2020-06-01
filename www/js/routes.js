@@ -59,6 +59,12 @@ var routes = [
     name: 'editevent'
   },
   {
+    path: '/eventresponsrandomevent/',
+    url: './pages/eventresponsrandomevent.html',
+    name: 'eventresponsrandomevent'
+  },
+  
+  {
     path: '/eventvoorstelwithdate/',
     url: './pages/eventvoorstelwithdate.html',
     name: 'eventvoorstelwithdate'

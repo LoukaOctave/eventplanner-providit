@@ -277,7 +277,6 @@ function datepickerRandomEvent(){
 
 // make event voorstel
 function firestoreAddVoorstel(){
-  console.log("testclick");
   var img = document.getElementById("img").files[0];
   var imgname = img.name;
  
@@ -310,7 +309,8 @@ function firestoreAddVoorstel(){
         Status: "aanvraag",
         Organisator: user.uid
       });
-
+      lijstEigenVoorstellen();
+      getListAanvragen();
     });
   });
   
@@ -325,27 +325,27 @@ function firestoreAddVoorstel(){
 //////////////////////////////////////
 /////////////MY EVENTS///////////////
 //////////////////////////////////////
-
-// lists op myevents laden
 $$(document).on('page:init', '.page[data-name="myevents"]', function (e) {
+  getListMyEvents();
+    });
   
- });
-
  
 function getListMyEvents(){
   lijstEigenVoorstellen() ;
   lijstEigenHistory();
+  console.log("check");
 }
 
 
 function lijstEigenVoorstellen() {    
+  var tlines = "";    
   //var user = firebase.auth().currentUser;
   db.collection('Events').where("Organisator", '==', localStorage.getItem("userID")).where('Status' , '==', "aanvraag").get().then((snapshot)=>{
-    snapshot.docs.forEach(doc => {              
-      var tlines = "";          
+    snapshot.docs.forEach(doc => {    
       tlines += "<li><a href='/eventvoorstel/' class='item-link item-content eigenvoorstellink' id="+ doc.id+ "><div class='item-inner'><div class='item-title'>" + doc.data().Eventnaam + "</div></div></a></li>";
-      $$("#listeigenvoorstellen").append(tlines);       
+      $$("#listeigenvoorstellen").html(tlines);      
   })
+   
 }) 
 }
 
@@ -517,9 +517,6 @@ function changepw(){
 
 }
 
-$$(document).on('page:init', '.page[data-name="myevents"]', function (e) {
-getListMyEvents();
-  });
 
 
 

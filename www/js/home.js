@@ -76,6 +76,7 @@ function getListVoorstelNoDateEvents() {
             $$("#titel_detail").hide();
             $$("#list_detail").hide();
             $$("#detailSubmit").hide();
+            $$("#detailAfkeuren").hide();
             getDatesAangemeldAndNot();
           } else {
             $$("#list_whenaangemeld").hide();
@@ -83,6 +84,7 @@ function getListVoorstelNoDateEvents() {
             $$("#detailEdit").hide();
             $$("#list_detail").show();
             $$("#detailSubmit").show();
+            $$("#detailAfkeuren").show();
             getDatesDetailVoorstelNoDateEvent();
           }
           
@@ -98,6 +100,7 @@ function getListVoorstelNoDateEvents() {
     $$("#detailEdit").hide();
     $$("#list_detail").show();
     $$("#detailSubmit").show();
+    $$("#detailAfkeuren").hide();
     getDatesDetailVoorstelNoDateEvent();
   
     db.collection('Events').doc(eventnummer).collection("Data").get().then((snapshot) => {
@@ -209,20 +212,46 @@ function getListVoorstelNoEventEvents() {
         + doc.id + "' href='/detailfinalevent/'><div style='background-image: url("
         + doc.data().Img + ")' class='card-header align-items-flex-end'>"
         + doc.data().Eventnaam + "</div><div class='card-content card-content-padding'><p class='date'>"
-        // TODO: Events een Datum geven en deze op de volgende lijn plaatsen
         + timestampToDate(doc.data().Datum) + "</p></div><div class='card-footer'><a href='/detailfinalevent/' class='geplandEventCardLinks' id ='"
         + doc.id + "'>"
-        + "isUserDeelnemerBijEvent(doc.id)" + "</a></div></a></div>";
+        + "ok" + "</a></div></a></div>";
   
         $$("#geplandEvent").append(tlines);
+        })
       })
-    })
   }
-  
+
+ // toggle aanwezigfinaal of niet
+  function setAanwezigfinaal(){
+    var toggle = app.toggle.get('.toggle');
+    if(toggle.checked){
+      db.collection('Events').doc(eventnummer).collection('Deelnemers').doc(userID).update({
+        AanwezigFinaal: true
+      })
+    }
+    if(!toggle.checked){
+      db.collection('Events').doc(eventnummer).collection('Deelnemers').doc(userID).update({
+        AanwezigFinaal: false
+      })
+    }
+  }
+ // toggle set aanwezig
+  function toggleaanwezigset(){
+    db.collection('Events').doc(eventnummer).collection('Deelnemers').doc(userID).get().then(function(doc) {
+      if (doc.data().AanwezigFinaal == true) {
+        app.toggle.get('#toggle').checked = true;
+    } else {
+        app.toggle.get('#toggle').checked = false;
+    }
+  }).catch(function(error) {
+      console.log("Error getting document:", error);
+  });
+  }
   // Wanneer er op de cardlink van een gepland event wordt geklikt, dan wordt de "detailfinalevent.html" pagina geopend met de juiste informatie
   $$(document).on('click', 'a.geplandEventCardLinks', function (e) {
     eventnummer = $$(this).attr("id");
     getDetailGeplandEvent();
+    toggleaanwezigset();
   });
   
   // Toont de details van een gepland event in "detailfinalevent.html"
@@ -232,11 +261,11 @@ function getListVoorstelNoEventEvents() {
       tlines += "<div class='block-title block-title-medium'>"
       + doc.data().Eventnaam + "</div><img src='"
       + doc.data().Img + "' id='vImg'> <div class='block block-strong inset'><p><b>Datum: </b>"
-      // TODO: Events een Datum geven en deze op de volgende lijn plaatsen
-      + "doc.data().Datum" + "</p><p><b>Moment van de dag: </b>"
-      + doc.data().Tijdstip + "</p><p><b>Beschrijving: </b>"
+      + timestampToDate(doc.data().Datum) + "</p><p><b>Startuur: </b>"
+      + doc.data().Startuur + "</p><p><b>Duurtijd: </b>"
+      + doc.data().Duurtijd + " uur</p><p><b>Beschrijving: </b>"
       + doc.data().Beschrijving + "</p></div> <div class='card'><div class='card-header'>Deelnemers:</div><div class='card-content'><div class='list media-list'><ul id='deelnemersDetailGeplandEvent'>"
-      + getDeelnemersGeplandEvent(doc.id); + "</ul></div></div></div>";
+      + getDeelnemersGeplandEvent(doc.id); + "</ul></div></div></div>"
       
       $$("#detailGeplandEvent").append(tlines);
     })
@@ -271,15 +300,17 @@ function timestampToDate(datum){
         fulldate = date + "/" + month;
         return fulldate;
 }
+function DeadlineToTimestamp(datum){
+ var date = new Date(datum.seconds*1000).toLocaleDateString();
+ return date;
+}
+
 
   //  #region DETAILEVENT.HTML
 // Datum van "voorstelnodate" tonen in checkboxes
 function getDatesDetailVoorstelNoDateEvent(){
-    db.collection('Events').doc(eventnummer).collection('Data').get().then((snapshot) => {
-      snapshot.docs.forEach(doc => {
-        
-        // TODO: Een functie maken voor het omzetten van Firestore data naar een weergeefbare Datum
-  
+    db.collection('Events').doc(eventnummer).collection('Data').orderBy('Datum').get().then((snapshot) => {
+      snapshot.docs.forEach(doc => {  
         var tlines = "";
         tlines += "<li><label class='item-checkbox item-content'><input type='checkbox' name='checkbox-date' value='Date'id="+ doc.id +" /><i class='icon icon-checkbox'></i><div class='item-inner'><div class='item-title'>"
         + timestampToDate(doc.data().Datum) + "</div></div></label></li>";
@@ -290,86 +321,107 @@ function getDatesDetailVoorstelNoDateEvent(){
 
   // wanneer een gebruiker zich al heeft aangemeld om de data te laten zien waarop ze zijn aangemeld en waarop niet
 function getDatesAangemeldAndNot(){
- 
-    db.collection('Events').doc(eventnummer).collection('Data').get().then((snapshot) => {
-      snapshot.docs.forEach(doc => {
-        // get aangemelde data
-        db.collection('Events').doc(eventnummer).collection('Data').doc(doc.id).collection('Deelnemers').where('Id' , '==', userID).where('Aanwezig' , '==', true).get().then((snapshot) => {
-          snapshot.docs.forEach(doc => {
-           db.collection('Events').doc(eventnummer).collection('Data').doc(doc.data().Date).get().then(function(doc) {
-            var tlines = "";               
-            tlines += "<li>" + timestampToDate(doc.data().Datum) + "</li>";
-            $$("#dataAangemeld").append(tlines);        
-          })
-          })
-          
+
+  db.collection('Events').doc(eventnummer).collection('Data').get().then((snapshot) => {
+    snapshot.docs.forEach(doc => {
+      // get aangemelde data
+      db.collection('Events').doc(eventnummer).collection('Data').doc(doc.id).collection('Deelnemers').where('Id' , '==', userID).where('Aanwezig' , '==', true).get().then((snapshot) => {
+        snapshot.docs.forEach(doc => {
+          db.collection('Events').doc(eventnummer).collection('Data').doc(doc.data().Date).get().then(function(doc) {
+          var tlines = "";               
+          tlines += "<li>" + timestampToDate(doc.data().Datum) + "</li>";
+          $$("#dataAangemeld").append(tlines);        
         })
-        // get afgemelde data
-        db.collection('Events').doc(eventnummer).collection('Data').doc(doc.id).collection('Deelnemers').where('Id' , '==', userID).where('Aanwezig' , '==', false).get().then((snapshot) => {
-          snapshot.docs.forEach(doc => {
-            db.collection('Events').doc(eventnummer).collection('Data').doc(doc.data().Date).get().then(function(doc) {  
-              var tlines = "";           
-              tlines += "<li>" + timestampToDate(doc.data().Datum) + "</li>";
-              $$("#dataAfgemeld").append(tlines);        
-            })
-          })
         })
-  
+        
       })
+      // get afgemelde data
+      db.collection('Events').doc(eventnummer).collection('Data').doc(doc.id).collection('Deelnemers').where('Id' , '==', userID).where('Aanwezig' , '==', false).get().then((snapshot) => {
+        snapshot.docs.forEach(doc => {
+          db.collection('Events').doc(eventnummer).collection('Data').doc(doc.data().Date).get().then(function(doc) {  
+            var tlines = "";           
+            tlines += "<li>" + timestampToDate(doc.data().Datum) + "</li>";
+            $$("#dataAfgemeld").append(tlines);        
+          })
+        })
+      })
+
     })
-    
-  }
+  })
+  
+}
 
   // aangemelde data laten zien
 function showAangemeldedata(){
 
-    for (i = 0; i < aangemeldedata.length; i++) {
-      db.collection('Events').doc(eventnummer).collection('Data').doc(aangemeldedata[i]).get().then(function(doc) {
-        var tlines = "";               
-        tlines += "<li>" + timestampToDate(doc.data().Datum) + "</li>";
-        $$("#dataAangemeld").append(tlines);        
-      })
-    }
-    }
+  for (i = 0; i < aangemeldedata.length; i++) {
+    db.collection('Events').doc(eventnummer).collection('Data').doc(aangemeldedata[i]).get().then(function(doc) {
+      var tlines = "";               
+      tlines += "<li>" + timestampToDate(doc.data().Datum) + "</li>";
+      $$("#dataAangemeld").append(tlines);        
+    })
+  }
+}
     
-    var gechecktedata = [];
-    var ungechecktedata = [];
-    function getCheckedDates() {
-      gechecktedata = [];
-      var checkboxdate = document.forms[0];
-      var i;
-      for (i = 0; i < checkboxdate.length; i++) {
-        if (checkboxdate[i].checked) {
-          gechecktedata.push(checkboxdate[i].id)
-        }
-        if (checkboxdate[i].checked == false) {
-          ungechecktedata.push(checkboxdate[i].id)
-        }
-      }
+var gechecktedata = [];
+var ungechecktedata = [];
+function getCheckedDates() {
+  gechecktedata = [];
+  var checkboxdate = document.forms[0];
+  var i;
+  for (i = 0; i < checkboxdate.length; i++) {
+    if (checkboxdate[i].checked) {
+      gechecktedata.push(checkboxdate[i].id)
     }
-    
-    // zet in firebase de Datum en de id van de user 
-    function addDeelnemerForEvent(){
-    
-      getCheckedDates();
-      for (i = 0; i < gechecktedata.length; i++) {
-        db.collection('Events').doc(eventnummer).collection('Data').doc(gechecktedata[i]).collection("Deelnemers").doc(localStorage.getItem("userID")).set({
-          Id: localStorage.getItem("userID"),
-          Aanwezig: true,
-          Date: gechecktedata[i]
-        })
+    if (checkboxdate[i].checked == false) {
+      ungechecktedata.push(checkboxdate[i].id)
     }
-      for (i = 0; i < ungechecktedata.length; i++) {
-        db.collection('Events').doc(eventnummer).collection('Data').doc(ungechecktedata[i]).collection("Deelnemers").doc(localStorage.getItem("userID")).set({
-          Id: localStorage.getItem("userID"),
-          Aanwezig: false,
-          Date: ungechecktedata[i]
-        })
-      }
-      db.collection('Events').doc(eventnummer).collection('Deelnemers').doc(localStorage.getItem("userID")).set({
-        Id: localStorage.getItem("userID"),
-        Aangemeld: true
-      })
+  }
+}
     
-    }
-    //  #endregion DETAILEVENT.HTML
+// zet in firebase de Datum en de id van de user 
+function addDeelnemerForEvent(){
+
+  getCheckedDates();
+  for (i = 0; i < gechecktedata.length; i++) {
+    db.collection('Events').doc(eventnummer).collection('Data').doc(gechecktedata[i]).collection("Deelnemers").doc(localStorage.getItem("userID")).set({
+      Id: localStorage.getItem("userID"),
+      Aanwezig: true,
+      Date: gechecktedata[i]
+    })
+  }
+  for (i = 0; i < ungechecktedata.length; i++) {
+    db.collection('Events').doc(eventnummer).collection('Data').doc(ungechecktedata[i]).collection("Deelnemers").doc(localStorage.getItem("userID")).set({
+      Id: localStorage.getItem("userID"),
+      Aanwezig: false,
+      Date: ungechecktedata[i]
+    })
+  }
+  db.collection('Events').doc(eventnummer).collection('Deelnemers').doc(localStorage.getItem("userID")).set({
+    Id: localStorage.getItem("userID"),
+    Aangemeld: true
+  })
+
+}
+//  Niet deelnemen aan detailevent
+
+function showNietDeelnemen(){
+  
+   
+  db.collection('Events').doc(eventnummer).collection('Deelnemers').doc(localStorage.getItem("userID")).set({
+    Id: localStorage.getItem("userID"),
+    Aangemeld: true,
+    Status: "niet aanwezig"
+  })
+  getCheckedDates();
+  for (i = 0; i < ungechecktedata.length; i++) {
+    db.collection('Events').doc(eventnummer).collection('Data').doc(ungechecktedata[i]).collection("Deelnemers").doc(localStorage.getItem("userID")).set({
+      Id: localStorage.getItem("userID"),
+      Aanwezig: false,
+      Date: ungechecktedata[i]
+    })
+  }
+  
+}
+
+//  #endregion DETAILEVENT.HTML

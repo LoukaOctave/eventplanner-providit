@@ -6,6 +6,7 @@ $$(document).on('page:init', '.page[data-name="lijstvoorstellen"]', function (e)
     getListAanvragen();
     getListRandomEvents();
     getListVoorstellen();
+    getEvents();
     
   });
 
@@ -15,14 +16,14 @@ function getListHistory() {
     db.collection('Events').where('Status' , '==', "voorstelnodate").get().then((snapshot)=>{
       snapshot.docs.forEach(doc => {              
         var tlines = "";          
-        tlines += "<li><a href='#' class='item-link item-content' id=" + doc.id + "><div class='item-media'><i class='f7-icons'>checkmark_alt_circle</i></div><div class='item-inner'><div class='item-title'>" + doc.data().Eventnaam + "</div></div></a></li>";
+        tlines += "<li><a href='#' class='item-content' id=" + doc.id + "><div class='item-media'><i class='f7-icons'>checkmark_alt_circle</i></div><div class='item-inner'><div class='item-title'>" + doc.data().Eventnaam + "</div></div></a></li>";
         $$("#voorstellenhistory").append(tlines);       
     })
   }) 
   db.collection('Events').where('Status' , '==', "afgekeurd").get().then((snapshot)=>{
     snapshot.docs.forEach(doc => {              
       var tlines = "";          
-      tlines += "<li><a href='#' class='item-link item-content' id=" + doc.id + "><div class='item-media'><i class='f7-icons'>multiply_circle</i></div><div class='item-inner'><div class='item-title'>" + doc.data().Eventnaam + "</div></div></a></li>";
+      tlines += "<li><a href='#' class='item-content' id=" + doc.id + "><div class='item-media'><i class='f7-icons'>multiply_circle</i></div><div class='item-inner'><div class='item-title'>" + doc.data().Eventnaam + "</div></div></a></li>";
       $$("#voorstellenhistory").append(tlines);       
   })
   }) 
@@ -35,7 +36,7 @@ function getListHistory() {
 function getListAanvragen() {
     var tlines = "";     
       db.collection('Events').where('Status' , '==', "aanvraag").get().then((snapshot)=>{
-        snapshot.docs.forEach(doc => {              
+        snapshot.docs.forEach(doc => {             
                    
           tlines += "<li><a href='/eventvoorstelzaakvoerder/' class='aanvraaglinks' id=" + doc.id + ">" + doc.data().Eventnaam + "</a></li>";       
       })
@@ -61,6 +62,19 @@ function getListAanvragen() {
           tlines += "<li><a href='/eventvoorstelzaakvoerdergoedgekeurd/' class='voorstellinks' id=" + doc.id + ">" + doc.data().Eventnaam + "</a></li>";       
       })
       $$("#goedgekeurdeaanvragen").html(tlines);      
+    })  
+  }
+  function getEvents(){
+    var aantalDeelnemers;
+
+    var tlines = ""; 
+     
+      db.collection('Events').where('Status' , '==', "gepland").get().then((snapshot)=>{
+        snapshot.docs.forEach(doc => {    
+          tlines += "<li><a href='/eventvoorstelzaakvoerdergoedgekeurd/' class='voorstellinks' id=" + doc.id + ">" + doc.data().Eventnaam + "</a></li>";       
+      })
+      $$("#geplandeevents").html(tlines);  
+         
     })  
   }
 
@@ -206,18 +220,22 @@ calendarInlineVoorstelrandomeventExists.setValue(mogelijkeData);
 
 // wanneer de zaakvoerder op een random event klikt dat al aangemaakt is wordt dit geactiveerd
 $$(document).on('click', 'a.randomvoorstellinks', function (e) {
-  // eventnummer = document.querySelectorAll('.randomvoorstellinks.active-state')[0].id;
   eventnummer = $$(this).attr("id");
   showRandomEventVoorstel();  
 });
-function showRandomEventVoorstel(){
-  
-
+function showRandomEventVoorstel(){  
 db.collection('Events').doc(eventnummer).collection('Data').get()
   .then((snapshot) => {
-      snapshot.docs.forEach(doc => {             
+      snapshot.docs.forEach(doc => {    
+        var alines = ""; 
+        db.collection("Events").doc(eventnummer).collection("Deelnemers").get().then(snap => {
+            aantalDeelnemers = snap.size;
+            document.querySelector(".datumkiezenrandomevent").setAttribute("id",eventnummer);            
+            alines = "Aantal aangemelden: " + aantalDeelnemers;
+            $$("#aantalaangemelden").html(alines); 
+         });         
         var tlines = "";          
-        tlines += "<p>" + doc.data().Datum.toDate()  + "</p>";
+        tlines += "<li>" + timestampToDate(doc.data().Datum) + "</li>";
         $$("#lijstdatarandomevent").append(tlines);                 
     }) 
   })
@@ -355,46 +373,202 @@ function getAantalPersoneel(){
 
 $$(document).on('click', 'button.datumkiezen', function (e) {
     eventnummer = $$(this).attr("id");
-    getlistresponses();
-  });
-function getlistresponses(){
-var deelnemers = [];
-var tlines = tlines1 + tlines2 + tlines3 + tlines4;
-var tlines1 = "";
-var tlines2 = "";
-var tlines3 = "";
-var tlines4 = "</div></div>";
+    async_function();
+    });
 
+
+var tlines = "";
+var olines = "";
+
+
+var aantalDeelnemersPerDate = [];
+var dataid = [];
+var data = [];
+var datametdeelnemers = [];
+
+
+//This function returns promise after 2 seconds 
+var first_function = function() { 
+  console.log("Entered first function"); 
+  return new Promise(resolve => { 
+      setTimeout(function() { 
+        resolve("\t\t This is second promise");
+        
+// alle data krijgen en alle data id's krijgen en bijhouden in 2 arrays
+db.collection('Events').doc(eventnummer).collection('Data').orderBy("Datum").get().then((snapshot)=>{
+  snapshot.docs.forEach(doc1 => {              
+    dataid.push(doc1.id);
+    data.push(doc1.data().Datum);
+    db.collection('Events').doc(eventnummer).collection('Data').doc(doc1.id).collection("Deelnemers").where("Aanwezig", "==", true).get().then(snap => {  
+      var aantalDeelnemers = snap.size;
+      aantalDeelnemersPerDate.push(aantalDeelnemers);  
+      var deelnemersinfo = [];  
+      db.collection('Events').doc(eventnummer).collection('Data').doc(doc1.id).collection("Deelnemers").where("Aanwezig", "==", true).get().then((snapshot)=>{
+        snapshot.docs.forEach(doc => {
+          deelnemersinfo.push(doc.id);        
+          })
+          datametdeelnemers.push(deelnemersinfo);
+          })  
+    });  
+    }) 
+})
+
+      }, 500); 
+  }); 
+  }; 
+
+  //This function executes returns promise after 4 seconds 
+  var second_function = function() { 
+    console.log("Entered second function"); 
+    return new Promise(resolve => { 
+        setTimeout(function() { 
+          resolve("\t\t This is second promise");     
+          datametdeelnemers.forEach(getsubarray);
+          function getsubarray(item, index){
+            datametdeelnemers[index].forEach(getsubarrayinfo);  
+          }
+          function getsubarrayinfo(item, index){
+            datametdeelnemers.forEach(getsubarrayinfo);
+            db.collection('Users').doc(datametdeelnemers[index][n]).get().then(doc => {  
+              tlinesDeelnemers = "<div class='chip-media'><img src=" + doc.data().Img + "/></div><div class='chip-label'>" + doc.data().Username + "</div>";
+              tlinesDeelnemersArray.push(tlinesDeelnemers); 
+            }); 
+          }
+
+                           
+        
+        }, 500); 
+    }); 
+    }; 
+
+  //This function executes returns promise after 4 seconds 
+  var third_function = function() { 
+  console.log("Entered third function"); 
+  return new Promise(resolve => { 
+      setTimeout(function() { 
+        resolve("\t\t This is third promise");
+        tlines = "";
+        olines = "";
+          dataid.forEach(addLines);       
+        
+        function addLines(item, index) { //  document.getElementById("demo").innerHTML += index + ":" + item + "<br>";
+        
+          /* tlines += "<div class='block-title'>" + timestampToDate(data[index]) + "<br>Aantal deelnemers: " + aantalDeelnemersPerDate[index] + "</div><div class='block block-strong dateblock'><div class='chip'>" 
+          + tlinesDeelnemersArray[index] + tlines4;          */  
+            tlines += "<tr><td class='label-cell'>"+ timestampToDate(data[index]) +"</td><td class='numeric-cell'>"+ aantalDeelnemersPerDate[index] +" </td></tr>";
+            olines += "<option value="+ dataid[index] +">" + timestampToDate(data[index]) + "</option>"            
+        }
+        $$("#tablebodyeventrespons").html(tlines);
+        $$("#Finaledatum").html(olines);
+
+      }, 500); 
+  }); 
+  }; 
+  
+
+
+
+
+  var async_function = async function() { 
+  console.log('async function called'); 
+    
+  const first_promise= await first_function(); 
+  console.log("After awaiting for 2 seconds," + 
+  "the promise returned from first function is:"); 
+  console.log(first_promise); 
+    
+/*   const second_promise= await second_function(); 
+  console.log("After awaiting for 4 seconds, the" +  
+  "promise returned from second function is:"); 
+  console.log(second_promise);  */ 
+
+  const third_promise = await third_function(); 
+  console.log("After awaiting for 4 seconds, the" +  
+  "promise returned from second function is:"); 
+  console.log(third_promise);  
+  } 
     
 
-    db.collection("Events").doc(eventnummer).collection("Data").get().then((snapshot)=>{
-        snapshot.docs.forEach(doc1 => {              
-            
-            db.collection("Events").doc(eventnummer).collection("Deelnemers").get().then(snap => {
-                tlines1 += "<div class='block-title'>" + timestampToDate(doc1.data().Datum) + "<br> ";
-                var aantalDeelnemers = snap.size
-                tlines2 += "Aantal deelnemers: " + aantalDeelnemers + "</div><div class='block block-strong dateblock'><div class='chip'>"  
-                db.collection("Events").doc(eventnummer).collection("Data").get().then((snapshot)=>{
-                    snapshot.docs.forEach(doc => {       
-                        db.collection("Events").doc(eventnummer).collection("Data").doc(doc.id).collection("Deelnemers").where('Aanwezig' , '==', true).get().then((snapshot)=>{
-                            snapshot.docs.forEach(doc => {              
-                                deelnemers.push(doc.id);
-                                for (i = 0; i < deelnemers.length; i++) {
-                                    db.collection('Users').doc(deelnemers[i]).get().then(function(doc) {
-                                        tlines3 += "<div class='chip-media'><img src=" + doc.data().Img + "/></div><div class='chip-label'>" + doc.data().Username + "</div>"
-                                    })
-                                    $$("#eventresponslist").append(tlines);
-                                }
-                          })         
-                        })
-                  }) 
-            
-                })              
-             });    
-      }) 
+  function confirmfinalevent(){
+    var finaledatum;
+    var finaledatumid = document.getElementById("Finaledatum").value;
+    var tijdstip = document.getElementById("tijdstipeventrespons").value;
+
+    
+    db.collection('Events').doc(eventnummer).collection('Data').doc(finaledatumid).update({
+      Status: "final date"
     })
 
-    
+  db.collection('Events').doc(eventnummer).collection('Data').doc(finaledatumid).get().then(function(doc) {
+    finaledatum = doc.data().Datum
+    db.collection('Events').doc(eventnummer).update({      
+      Datum: finaledatum,
+      Status: "gepland",
+      Startuur: tijdstip
+    })
+  })
+
+
 }
+$$(document).on('click', 'button.datumkiezenrandomevent', function (e) {
+  eventnummer = $$(this).attr("id");
+  async_function();
+  });
+
+function confirmfinalrandomevent(){
+  var finaledatum;
+  var finaledatumid = document.getElementById("Finaledatum").value;
+  var tijdstip = document.getElementById("tijdstipeventrespons").value;
+
+  
+  db.collection('Events').doc(eventnummer).collection('Data').doc(finaledatumid).update({
+    Status: "final date"
+  })
+
+db.collection('Events').doc(eventnummer).collection('Data').doc(finaledatumid).get().then(function(doc) {
+  finaledatum = doc.data().Datum
+  db.collection('Events').doc(eventnummer).update({      
+    Datum: finaledatum,
+    Startuur: tijdstip
+  })
+})
 
 
+
+  var img = document.getElementById("img").files[0];
+  var imgname = img.name;
+ 
+  var storage = firebase.storage();
+
+  var storageRef = firebase.storage().ref(imgname);
+
+  var uploadTask = storageRef.put(img);
+
+  uploadTask.on('state_changed', function (snapshot){
+    var progress = (snapshot.bytesTransferred/snapshot.totalBytes)*100;
+    console.log("upload is "+ progress+" done");
+  },function(error){
+    console.log(error.message);
+  },function(){
+
+    uploadTask.snapshot.ref.getDownloadURL().then(function (downloadURL){
+      console.log(downloadURL);
+      // later als login werkt kan dit worden uncomment worden samen met eigenaar
+      var user = firebase.auth().currentUser;
+      db.collection('Events').doc(eventnummer).update({
+        Eventnaam: document.getElementById("addeventnaam").value,
+        Duurtijd: document.getElementById("addeventduurtijd").value,
+        Beschrijving: document.getElementById("addeventbeschrijving").value,
+        URL: document.getElementById("addeventurl").value,
+        Locatie: document.getElementById("addeventlocatie").value,
+        Img: downloadURL ,
+        Status: "gepland",
+        Organisator: user.uid
+      });
+      getListRandomEvents();
+      getEvents();
+      reloadHome();
+    });
+  });
+  
+}
