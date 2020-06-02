@@ -305,7 +305,6 @@ $$(document).on('page:init', '.page[data-name="lijstvoorstellen"]', function (e)
 function getListMyEvents(){
   lijstEigenVoorstellen() ;
   lijstEigenHistory();
-  console.log("check");
 }
 
 
