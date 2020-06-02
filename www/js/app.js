@@ -18,9 +18,7 @@ var app = new Framework7({
   },
   // App root methods
   methods: {
-    helloWorld: function () {
-      app.dialog.alert('Hello World!');
-    },
+
   },
   // App routes (routes.js)
   routes: routes,
@@ -43,7 +41,7 @@ var app = new Framework7({
         // Init cordova APIs (see cordova-app.js)
         cordovaApp.init(f7);
       }
-     
+
     },
     pageInit: function (page) {
 
@@ -95,7 +93,8 @@ const setupUI = (user) => {
     loggedInLinks.forEach(item => item.style.display = 'block');
     loggedOutLinks.forEach(item => item.style.display = 'none');
     getUserRol();
-
+    //getListsZaakvoerder();
+    //getListMyEvents();
   } else {
     app.loginScreen.open('#my-login-screen');  
     app.views.current.router.navigate('/myevents/', {reloadCurrent: true});
@@ -140,39 +139,7 @@ function checkiszaakvoerder(){
 // Agenda detailEvent
 
 var $$ = Dom7;
-var monthNames = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August' , 'September' , 'October', 'November', 'December'];
-var calendarInlineDetailevent = app.calendar.create({
-  containerEl: '#demo-calendar-inline-container',
-  multiple: true,
-  weekHeader: false,
-  renderToolbar: function () {
-    return '<div class="toolbar calendar-custom-toolbar no-shadow">' +
-      '<div class="toolbar-inner">' +
-        '<div class="left">' +
-          '<a href="#" class="link icon-only"><i class="icon icon-back ' + (app.theme === 'md' ? 'color-black' : '') + '"></i></a>' +
-        '</div>' +
-        '<div class="center"></div>' +
-        '<div class="right">' +
-          '<a href="#" class="link icon-only"><i class="icon icon-forward ' + (app.theme === 'md' ? 'color-black' : '') + '"></i></a>' +
-        '</div>' +
-      '</div>' +
-    '</div>';
-  },
-  on: {
-    init: function (c) {
-      $$('.calendar-custom-toolbar .center').text(monthNames[c.currentMonth] +', ' + c.currentYear);
-      $$('.calendar-custom-toolbar .left .link').on('click', function () {
-        calendarInlineDetailevent.prevMonth();
-      });
-      $$('.calendar-custom-toolbar .right .link').on('click', function () {
-        calendarInlineDetailevent.nextMonth();
-      });
-    },
-    monthYearChangeStart: function (c) {
-      $$('.calendar-custom-toolbar .center').text(monthNames[c.currentMonth] +', ' + c.currentYear);
-    }
-  }
-});
+
 
 
 
@@ -215,47 +182,7 @@ function datepicker() {
 });
 }
 
-function datepickerDetailevent(){
-  var today = new Date();
-  var weekLater = new Date().setDate(today.getDate() + 7);
-  var monthNames = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August' , 'September' , 'October', 'November', 'December'];
-  var calendarInlineVoorsteldetailevent = app.calendar.create({
-  containerEl: '#demo-calendar-inline-container-detailevent',
-  multiple: true,
-  weekHeader: false,
-  disabled: {
-    from: new Date(2020, 4, 4),
-    to: new Date(2020, 4, 7),
-},
-  renderToolbar: function () {
-    return '<div class="toolbar calendar-custom-toolbar no-shadow">' +
-      '<div class="toolbar-inner">' +
-        '<div class="left">' +
-          '<a href="#" class="link icon-only"><i class="icon icon-back ' + (app.theme === 'md' ? 'color-black' : '') + '"></i></a>' +
-        '</div>' +
-        '<div class="center"></div>' +
-        '<div class="right">' +
-          '<a href="#" class="link icon-only"><i class="icon icon-forward ' + (app.theme === 'md' ? 'color-black' : '') + '"></i></a>' +
-        '</div>' +
-      '</div>' +
-    '</div>';
-  },
-  on: {
-    init: function (c) {
-      $$('.calendar-custom-toolbar .center').text(monthNames[c.currentMonth] +', ' + c.currentYear);
-      $$('.calendar-custom-toolbar .left .link').on('click', function () {
-        calendarInlineVoorsteldetailevent.prevMonth();
-      });
-      $$('.calendar-custom-toolbar .right .link').on('click', function () {
-        calendarInlineVoorsteldetailevent.nextMonth();
-      });
-    },
-    monthYearChangeStart: function (c) {
-      $$('.calendar-custom-toolbar .center').text(monthNames[c.currentMonth] +', ' + c.currentYear);
-    }
-  }
-});
-}
+
 // kalender bij het voorstellen van een event zonder bepaald event
 function datepickerRandomEvent(){
   var today = new Date();
@@ -305,6 +232,7 @@ function datepickerRandomEvent(){
 
 // make event voorstel
 function firestoreAddVoorstel(){
+  console.log("test");
   var img = document.getElementById("img").files[0];
   var imgname = img.name;
  
@@ -345,7 +273,20 @@ function firestoreAddVoorstel(){
 
 }
 
-
+db.collection("Events").where("Status", "==", "voorstennodate")
+    .onSnapshot(function(snapshot) {
+        snapshot.docChanges().forEach(function(change) {
+            if (change.type === "added") {
+                console.log("New city: ", change.doc.data());
+            }
+            if (change.type === "modified") {
+                console.log("Modified city: ", change.doc.data());
+            }
+            if (change.type === "removed") {
+                console.log("Removed city: ", change.doc.data());
+            }
+        });
+    });
 
 
 
@@ -355,8 +296,11 @@ function firestoreAddVoorstel(){
 //////////////////////////////////////
 $$(document).on('page:init', '.page[data-name="myevents"]', function (e) {
   getListMyEvents();
-    });
-  
+});
+  // lists op zaakvoerderspaneel laden
+$$(document).on('page:init', '.page[data-name="lijstvoorstellen"]', function (e) {
+  getListsZaakvoerder();
+  });
  
 function getListMyEvents(){
   lijstEigenVoorstellen() ;
@@ -448,6 +392,7 @@ function editAanvraagFormulierShow(){
   .get()
   .then(function(doc) {        
    document.getElementById("editeventnaam").value = doc.data().Eventnaam; 
+   document.getElementById("editeventprijs").value = doc.data().Prijspp; 
    document.getElementById("editeventbeschrijving").value = doc.data().Beschrijving; 
    document.getElementById("editeventtijdstip").value = doc.data().Tijdstip; 
    document.getElementById("editeventduurtijd").value =  doc.data().Duurtijd; 
@@ -504,15 +449,7 @@ if (img){
     Locatie: document.getElementById("editeventlocatie").value
   });
 }
-
-
-
 }
-// zodat info steeds getoond wordt op de myevents pagina's
-/* $$(document).on('click', 'a.myevents', function (e) {
-  getListMyEvents();
-  showAanvraagInfo();
-}); */
 // deze functie dient ervoor dat een organisator een aanvraag kan deleten
 $$(document).on('click', '.open-confirm', function () {
   app.dialog.confirm('Zeker dat je dit wilt verwijderen?', function () {

@@ -1,0 +1,124 @@
+<div class="page" data-name="eventresponsrandomevent">
+    <div class="navbar">
+      <div class="navbar-bg"></div>
+      
+      <div class="navbar-inner sliding">
+          <div class="left">
+              <a href="/eventvoorstelzaakvoerdergoedgekeurd/" class="link">
+                  <i class="icon icon-back"></i>
+                  <span>Back</span>
+              </a>
+          </div>
+        <div class="title">Zoek datum</div>
+      </div>
+    </div>
+    <div class="page-content">
+      <div class="block-title block-title-medium" >Kies een datum</div>
+      
+      <form >
+        <div class="data-table" id="eventresponslist">
+          <table>
+            <thead>
+              <tr>
+                <th class="label-cell">Datum</th>
+                <th class="numeric-cell">Aantal aanwezigen</th>
+              </tr>
+            </thead>
+            <tbody id="tablebodyeventrespons">
+            </tbody>
+          </table>
+        </div>
+        <div class="list">
+          <ul>
+          <li>
+            <div class="item-content item-input">
+              <div class="item-inner">
+                <div class="item-title item-label">Pick a date</div>
+                <div class="item-input-wrap">
+                  <select name="tijdstip" placeholder="Please choose..." id="Finaledatum">
+                  </select>
+                </div>
+              </div>
+            </div>
+          </li>
+            <li>
+              <div class="item-content item-input">
+                <div class="item-inner">
+                  <div class="item-title item-label">Evenement titel</div>
+                  <div class="item-input-wrap">
+                    <input type="text" placeholder="het evenement" id="addeventnaam"/>
+                  </div>
+                </div>
+              </div>
+            </li>
+            <li>
+              <div class="item-content item-input">
+                <div class="item-inner">
+                  <div class="item-title item-label">Tijdstip</div>
+                  <div class="item-input-wrap">
+                    <input type="time" name="time" placeholder="" id="tijdstipeventrespons">
+                  </div>
+                </div>
+              </div>
+            </li>       
+                    <li>
+          <div class="item-content item-input">
+            <div class="item-inner">
+              <div class="item-title item-label">Duurtijd in uur</div>
+              <div class="item-input-wrap">
+                <input type="number" min="0" max="100" value="0" id="addeventduurtijd"/>
+              </div>
+            </div>
+          </div>
+        </li>   
+            <li>
+              <div class="item-content item-input">
+                <div class="item-inner">
+                  <div class="item-title item-label">Locatie</div>
+                  <div class="item-input-wrap">
+                    <input type="text" placeholder="Locatie" id="addeventlocatie"/>
+                  </div>
+                </div>
+              </div>
+             </li>
+            <li>
+              <div class="item-content item-input">
+                <div class="item-inner">
+                  <div class="item-title item-label">Voeg foto toe</div>
+                  <div class="item-input-wrap">
+                    <input type="file" name="img" placeholder="img"  id="img"/>
+                  </div>
+                </div>
+              </div>
+            </li>     
+            <li>
+              <div class="item-content item-input">
+                <div class="item-inner">
+                  <div class="item-title item-label">URL</div>
+                  <div class="item-input-wrap">
+                    <input type="url" placeholder="URL" id="addeventurl"/>
+                  </div>
+                </div>
+              </div>
+            </li>            
+            <li class="align-top">
+              <div class="item-content item-input">
+                <div class="item-inner">
+                  <div class="item-title item-label">Beschrijving</div>
+                  <div class="item-input-wrap">
+                    <textarea placeholder="beschrijf kort de activiteit" id="addeventbeschrijving"></textarea>
+                  </div>
+                </div>
+              </div>
+            </li>
+          </ul>
+          <button class="col button button-fill" onclick="confirmfinalrandomevent()"> <a href="/lijstvoorstellen/" style="color: white;">Submit</a></button>   
+    </div>
+ 
+
+      </form>
+
+    </div>
+  </div>
+
+

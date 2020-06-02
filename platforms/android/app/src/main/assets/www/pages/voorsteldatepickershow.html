@@ -12,16 +12,20 @@
                   <span>Back</span>
               </a>
           </div>
-        <div class="title">Datums selecteren</div>
+        <div class="title">Data event zonder naam</div>
       </div>
     </div>
     <div class="page-content">
-      <div class="block-title block-title-medium">Datums selecteren</div>
-      
-      <div class="block block-strong inset" id="lijstdatarandomevent">
-
+      <div class="block-title block-title-medium" id="aantalaangemelden"></div> 
+           
+      <div class="list simple-list" >
+        <ul id="lijstdatarandomevent"></ul>
       </div>
-      <button class="col button button-fill color-red"> <a href="/lijstvoorstellen/" style="color: white;" onclick="deleterandomdatumvoorstel()">Verwijderen</a></button>
+      
+      <div class="block row">          
+        <button class="col button button-fill color-green datumkiezenrandomevent"> <a href="/eventresponsrandomevent/" style="color: white;" onclick="">Datum kiezen</a></button>  
+        <button class="col button button-fill color-red"> <a href="/lijstvoorstellen/" style="color: white;" onclick="deleterandomdatumvoorstel()">Verwijderen</a></button>                             
+      </div>    
     </div>
   </div>
 

@@ -103,12 +103,16 @@ color: black;
   margin-bottom: -10px;
 }
 #vImg {
-  height: 20vh;
+  max-width: 100%;
 }
 #oImg {
-  height: 20vh;
+  height: 25vh;
 }
 #gImg {
-  height: 20vh;
+  height: 25vh;
+
+}
+#fImg {
+  height: 25vh;
 
 }

@@ -15,7 +15,7 @@ var $$ = Dom7;
     //setupGuides(snapshot.docs);
     setupUI(user);
     //getListMyEvents();
-    reloadHome();	
+    //reloadHome();	
     if (loggedIn == false) {
     loggedIn = true;
     } else loggedIn = false;

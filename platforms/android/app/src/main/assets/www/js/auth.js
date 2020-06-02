@@ -11,27 +11,30 @@ var $$ = Dom7;
 
       localStorage.setItem("userID", user.uid);
         // get data // on snapshot laat data veranderen als data in de firestore veranderd
-            db.collection('events').onSnapshot(snapshot => {
-                //setupGuides(snapshot.docs);
-                setupUI(user);
-                getListMyEvents();
-                getListVoorstellenNoDate();
-                getListVoorstellenGepland();
 
-                if (loggedIn == false) {
-                  loggedIn = true;
-                } else loggedIn = false;
-            }, err => {
-                console.log(err.message);
-            })
+    //setupGuides(snapshot.docs);
+    setupUI(user);
+    //getListMyEvents();
+    //reloadHome();	
+    if (loggedIn == false) {
+    loggedIn = true;
+    } else loggedIn = false;
+
+
         
     } else {
         setupUI();
+        userID = localStorage.removeItem("userID");
         // om niets van output te hebben
         //setupGuides([]);
     }
 
 });
+
+let authWorkerApp = firebase.initializeApp(firebase.app().options, 'auth-worker');
+let authWorkerAuth = firebase.auth(authWorkerApp);
+authWorkerAuth.setPersistence(firebase.auth.Auth.Persistence.NONE); // disables caching of account credentials
+
 
 
 //login
@@ -65,27 +68,57 @@ function logout() {
     auth.signOut();
     loggedIn = false; 
     console.log("uitgelogd");
+    localStorage.removeItem("userID");
 }
 
-/* // login status 
 
 
-// login met google
-var provider = new firebase.auth.GoogleAuthProvider();
+// signup
+ 
+function addpersoon(){
+    const password = document.getElementById("Paswoord").value;
+    if(password.length > 5){
+        var imgprofiel = document.getElementById("imgprofiel").files[0];
+        var imgprofielname = imgprofiel.name; 
+        var storage = firebase.storage();
+        var storageRef = firebase.storage().ref(imgprofielname);
+        var uploadTask = storageRef.put(imgprofiel);
+      
+      
+        uploadTask.on('state_changed', function (snapshot){
+          var progress = (snapshot.bytesTransferred/snapshot.totalBytes)*100;
+          console.log("upload is "+ progress+"done");
+        },function(error){
+          console.log(error.message);
+        },function(){
+      
+          uploadTask.snapshot.ref.getDownloadURL().then(function (downloadURL){
+            console.log(downloadURL);
+            const email = document.getElementById("Emailadres").value;
+            const username = document.getElementById("Naam").value;      
+            const rol = document.getElementById("addrol").value;
+           
+            authWorkerAuth.createUserWithEmailAndPassword(email, password).then(cred => {
+              // met doc() gaan we zelf een userid toewzijen aan een user ipv dat firestore dit automatisch doet 
+              return db.collection('Users').doc(cred.user.uid).set({
+                  Username: username,
+                  Email: email,
+                  Rol: rol,
+                  Img: downloadURL
+              })       
+          }).then(() => {
+                  app.dialog.alert('User geregistreerd');
+     
+                app.views.current.router.navigate('/myevents/', {reloadCurrent: true});
+                
+          })  
+          
+           
+          });
+        });
+    } else {
+        app.dialog.alert('het paswoord moet minstens 5 characters zijn');
+    }
 
-firebase.auth().signInWithPopup(provider).then(function(result) {
-    // This gives you a Google Access Token. You can use it to access the Google API.
-    var token = result.credential.accessToken;
-    // The signed-in user info.
-    var user = result.user;
-    // ...
-  }).catch(function(error) {
-    // Handle Errors here.
-    var errorCode = error.code;
-    var errorMessage = error.message;
-    // The email of the user's account used.
-    var email = error.email;
-    // The firebase.auth.AuthCredential type that was used.
-    var credential = error.credential;
-    // ...
-  }); */
+
+    }

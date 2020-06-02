@@ -22,7 +22,7 @@
             <div class="item-inner">
               <div class="item-title item-label">Evenement titel</div>
               <div class="item-input-wrap">
-                <input type="text" value="Bowlen" placeholder="het evenement"/>
+                <input type="text" value="Bowlen" placeholder="het evenement" id="editeventnaam"/>
               </div>
             </div>
           </div>
@@ -33,7 +33,7 @@
             <div class="item-inner">
               <div class="item-title item-label">Duurtijd (in uren)</div>
               <div class="item-input-wrap">
-                <input type="number" value="2" min="0" max="100"/>
+                <input type="number" value="2" min="0" max="100" id="editeventduurtijd"/>
               </div>
             </div>
           </div>
@@ -44,7 +44,7 @@
             <div class="item-inner">
               <div class="item-title item-label">Moment van de dag</div>
               <div class="item-input-wrap">
-                    <select name="tijdstip" placeholder="Please choose..." >
+                    <select name="tijdstip" placeholder="Please choose..." id="editeventtijdstip">
                       <option value="savonds">'s avonds</option>
                       <option value="namiddag">Namiddag</option>
                       <option value="voormiddag">Voormiddag</option>
@@ -61,7 +61,7 @@
               <div class="item-title item-label">Prijs p.p</div>
               <div class="item-input-wrap">
                 <div class="range-slider range-slider-init" data-label="true">
-                  <input type="range" value="20" min="0" max="100" step="1"/>
+                  <input type="range" value="20" min="0" max="100" step="1"/ id="editeventprijs">
                 </div>
               </div>
             </div>
@@ -73,7 +73,7 @@
             <div class="item-inner">
               <div class="item-title item-label">Locatie</div>
               <div class="item-input-wrap">
-                <input type="password" placeholder="Locatie"/>
+                <input type="text" placeholder="Locatie" id="editeventlocatie"/>
               </div>
             </div>
           </div>
@@ -95,7 +95,7 @@
             <div class="item-inner">
               <div class="item-title item-label">URL</div>
               <div class="item-input-wrap">
-                <input type="url" placeholder="URL" value="www.bowleninvilvoorde.be"/>
+                <input type="url" placeholder="URL" value="www.bowleninvilvoorde.be"/ id="editeventurl">
               </div>
             </div>
           </div>
@@ -106,7 +106,7 @@
             <div class="item-inner">
               <div class="item-title item-label">Beschrijving</div>
               <div class="item-input-wrap">
-                <textarea placeholder="Bio" value="Gaan bowlen en eventueel erna iets eten">Gaan bowlen en eventueel erna iets eten</textarea>
+                <textarea placeholder="Bio" value="Gaan bowlen en eventueel erna iets eten" id="editeventbeschrijving">Gaan bowlen en eventueel erna iets eten</textarea>
               </div>
             </div>
           </div>

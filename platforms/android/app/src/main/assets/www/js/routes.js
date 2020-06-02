@@ -3,6 +3,7 @@ var routes = [
   {
     path: '/',
     url: './index.html',
+    name: 'index'
   },
   {
     path: '/about/',
@@ -15,10 +16,7 @@ var routes = [
   {
     path: '/lijstvoorstellen/',
     componentUrl: './pages/lijstvoorstellen.html',
-  },
-  {
-    path: '/product/:id/',
-    componentUrl: './pages/product.html',
+    name: 'lijstvoorstellen'
   },
   {
     path: '/eventvoorstel/',
@@ -38,6 +36,12 @@ var routes = [
     name: 'voorsteldatepicker'
   },
   {
+    path: '/finaleventzaakvoerder/',
+    url: './pages/finaleventzaakvoerder.html',
+    name: 'finaleventzaakvoerder'
+  },
+  
+  {
     path: '/createEvent/',
     url: './pages/createEvent.html',
     name: 'createEvent'
@@ -48,9 +52,20 @@ var routes = [
     name: 'myevents'
   },
   {
+    path: '/aanvraagafkeurenuitlegReadZaakvoerder/',
+    url: './pages/aanvraagafkeurenuitlegReadZaakvoerder.html',
+    name: 'aanvraagafkeurenuitlegReadZaakvoerder'
+  },
+
+  {
     path: '/detailevent/',
     url: './pages/detailevent.html',
     name: 'detailevent'
+  },
+  {
+    path: '/register/',
+    url: './pages/register.html',
+    name: 'register'
   },
   {
     path: '/detailfinalevent/',
@@ -62,6 +77,12 @@ var routes = [
     url: './pages/editevent.html',
     name: 'editevent'
   },
+  {
+    path: '/eventresponsrandomevent/',
+    url: './pages/eventresponsrandomevent.html',
+    name: 'eventresponsrandomevent'
+  },
+  
   {
     path: '/eventvoorstelwithdate/',
     url: './pages/eventvoorstelwithdate.html',
@@ -86,6 +107,11 @@ var routes = [
     path: '/voorsteldatepickershow/',
     url: './pages/voorsteldatepickershow.html',
     name: 'voorsteldatepickershow'
+  },
+  {
+    path: '/changepw/',
+    url: './pages/changepw.html',
+    name: 'changepw'
   },
   {
     path: '/dynamic-route/blog/:blogId/post/:postId/',
@@ -162,25 +188,11 @@ var routes = [
       }, 1000);
     },
   },
-  {
-    path: '/locatie/',
-    componentUrl: './pages/locatie.html',
-  },
-  {
-    path: '/gegevens/',
-    componentUrl: './pages/gegevens.html',
-  },
-  {
-    path: '/login/',
-    componentUrl: './pages/login.html',
-  },
-  //{
-    //path: '/gegevens/:id/',
-    //componentUrl: './pages/product.html',
-  //},
+
   // Default route (404 page). MUST BE THE LAST
   {
     path: '(.*)',
     url: './pages/404.html',
   },
 ];
+

@@ -4,7 +4,7 @@
       <div class="navbar-bg"></div>
       <div class="navbar-inner sliding">
         <div class="left">
-          <a href="/eventvoorstel/" class="link myevents">
+          <a href="/eventvoorstel/" class="link" onclick="showAanvraagInfo()">
               <i class="icon icon-back"></i>
               <span>Back</span>
           </a>
@@ -33,7 +33,7 @@
             <div class="item-inner">
               <div class="item-title item-label">Duurtijd (in uren)</div>
               <div class="item-input-wrap">
-                <input type="number" value="0" min="0" max="100" id="editeventduurtijd"/>
+                <input type="number" value="2" min="0" max="100" id="editeventduurtijd"/>
               </div>
             </div>
           </div>
@@ -61,7 +61,7 @@
               <div class="item-title item-label">Prijs p.p</div>
               <div class="item-input-wrap">
                 <div class="range-slider range-slider-init" data-label="true">
-                  <input type="range" value="20" min="0" max="100" step="1" id="editeventprijs"/>
+                  <input type="range" value="20" min="0" max="100" step="1"/ id="editeventprijs">
                 </div>
               </div>
             </div>
@@ -84,7 +84,7 @@
             <div class="item-inner">
               <div class="item-title item-label">Wijzig foto</div>
               <div class="item-input-wrap">
-                <input type="file" name="img" placeholder="img"  id="editeventimg"/>
+                <input type="file" name="img" placeholder="img"  id="img"/>
               </div>
             </div>
           </div>
@@ -95,7 +95,7 @@
             <div class="item-inner">
               <div class="item-title item-label">URL</div>
               <div class="item-input-wrap">
-                <input type="url" placeholder="URL" value="www.bowleninvilvoorde.be" id="editeventurl"/>
+                <input type="url" placeholder="URL" value="www.bowleninvilvoorde.be"/ id="editeventurl">
               </div>
             </div>
           </div>
@@ -106,7 +106,7 @@
             <div class="item-inner">
               <div class="item-title item-label">Beschrijving</div>
               <div class="item-input-wrap">
-                <textarea placeholder="Bio" value="" id="editeventbeschrijving"></textarea>
+                <textarea placeholder="Bio" value="Gaan bowlen en eventueel erna iets eten" id="editeventbeschrijving">Gaan bowlen en eventueel erna iets eten</textarea>
               </div>
             </div>
           </div>
@@ -114,7 +114,7 @@
 
       </ul>
       <p></p>
-      <button class="col button button-fill color-green editEventButton"> <a href="/myevents/" style="color: white;" onclick="editAanvraag()">Indienen</a></button>
+      <button class="col button button-fill color-green editEventButton"> <a href="/myevents/" style="color: white;">Indienen</a></button>
     </div>
     
   </div>

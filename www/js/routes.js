@@ -16,6 +16,7 @@ var routes = [
   {
     path: '/lijstvoorstellen/',
     componentUrl: './pages/lijstvoorstellen.html',
+    name: 'lijstvoorstellen'
   },
   {
     path: '/eventvoorstel/',
@@ -35,6 +36,12 @@ var routes = [
     name: 'voorsteldatepicker'
   },
   {
+    path: '/finaleventzaakvoerder/',
+    url: './pages/finaleventzaakvoerder.html',
+    name: 'finaleventzaakvoerder'
+  },
+  
+  {
     path: '/createEvent/',
     url: './pages/createEvent.html',
     name: 'createEvent'
@@ -44,6 +51,12 @@ var routes = [
     url: './pages/myevents.html',
     name: 'myevents'
   },
+  {
+    path: '/aanvraagafkeurenuitlegReadZaakvoerder/',
+    url: './pages/aanvraagafkeurenuitlegReadZaakvoerder.html',
+    name: 'aanvraagafkeurenuitlegReadZaakvoerder'
+  },
+
   {
     path: '/detailevent/',
     url: './pages/detailevent.html',
