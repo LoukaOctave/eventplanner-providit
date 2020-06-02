@@ -54,6 +54,7 @@
   ],
   "dependencies": {
     "cordova-android": "^8.1.0",
+    "cordova-plugin-calendar": "^5.1.5",
     "dom7": "^2.1.3",
     "dotenv": "^8.2.0",
     "firebase-admin": "^8.12.1",
@@ -70,7 +71,8 @@
   },
   "cordova": {
     "plugins": {
-      "cordova-plugin-whitelist": {}
+      "cordova-plugin-whitelist": {},
+      "cordova-plugin-calendar": {}
     },
     "platforms": [
       "android"

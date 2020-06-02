@@ -319,6 +319,10 @@ function getListVoorstelNoEventEvents() {
       "</ul></div></div></div>"
       
       $$("#detailGeplandEvent").append(tlines);
+      
+      document.querySelector('.start').innerHTML = DeadlineToTimestamp(doc.data().Datum) + " "+ doc.data().Startuur;
+      document.querySelector('.stop').innerHTML = DeadlineToTimestamp(doc.data().Datum) + " "+ timeToMilliseconds(calcEndTime(doc.data().Startuur, doc.data().Duurtijd)) ;
+
     })
     getDeelnemersGeplandEvent()
   }
@@ -338,7 +342,7 @@ function timestampToDate(datum){
         return fulldate;
 }
 function DeadlineToTimestamp(datum){
- var date = new Date(datum.seconds*1000).toLocaleDateString();
+ var date = new Date((datum).seconds*1000).toLocaleDateString();
  return date;
 }
 
@@ -466,7 +470,8 @@ function showNietDeelnemen(){
 //  #region ICAL
 
 // Converts hh:mm to milliseconds integer
-function timeToMilliseconds(tijdstip) { return (parseInt(tijdstip.split(":")[0], 10) * 3600000) + (parseInt(tijdstip.split(":")[1], 10) * 60000) }
+function timeToMilliseconds(tijdstip) { console.log(parseInt(tijdstip.split(":")[0], 10) * 3600000) + (parseInt(tijdstip.split(":")[1], 10) * 60000)
+   return (parseInt(tijdstip.split(":")[0], 10) * 3600000) + (parseInt(tijdstip.split(":")[1], 10) * 60000) }
 
 // Calculates end time of event in 24-hour format
 function calcEndTime(start, duurtijd) { return (parseInt(start.split(":")[0], 10) + parseInt(duurtijd, 10)) + ":" + start.split(":")[1]; }
@@ -482,6 +487,7 @@ function getEventICAL(event) {
     var end = doc.data().Datum.toMillis() + timeToMilliseconds(calcEndTime(doc.data().Startuur, doc.data().Duurtijd));
     cal.addEvent(subject, description, location, begin, end);
     cal.download("Providit-Eventplanner-" + doc.id + "-" + doc.data().Eventnaam);
+    window.open( "data:text/calendar;charset=utf8," + escape(cal));
   })
 }
 

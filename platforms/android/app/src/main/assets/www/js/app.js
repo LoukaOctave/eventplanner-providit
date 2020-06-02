@@ -139,39 +139,7 @@ function checkiszaakvoerder(){
 // Agenda detailEvent
 
 var $$ = Dom7;
-var monthNames = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August' , 'September' , 'October', 'November', 'December'];
-var calendarInlineDetailevent = app.calendar.create({
-  containerEl: '#demo-calendar-inline-container',
-  multiple: true,
-  weekHeader: false,
-  renderToolbar: function () {
-    return '<div class="toolbar calendar-custom-toolbar no-shadow">' +
-      '<div class="toolbar-inner">' +
-        '<div class="left">' +
-          '<a href="#" class="link icon-only"><i class="icon icon-back ' + (app.theme === 'md' ? 'color-black' : '') + '"></i></a>' +
-        '</div>' +
-        '<div class="center"></div>' +
-        '<div class="right">' +
-          '<a href="#" class="link icon-only"><i class="icon icon-forward ' + (app.theme === 'md' ? 'color-black' : '') + '"></i></a>' +
-        '</div>' +
-      '</div>' +
-    '</div>';
-  },
-  on: {
-    init: function (c) {
-      $$('.calendar-custom-toolbar .center').text(monthNames[c.currentMonth] +', ' + c.currentYear);
-      $$('.calendar-custom-toolbar .left .link').on('click', function () {
-        calendarInlineDetailevent.prevMonth();
-      });
-      $$('.calendar-custom-toolbar .right .link').on('click', function () {
-        calendarInlineDetailevent.nextMonth();
-      });
-    },
-    monthYearChangeStart: function (c) {
-      $$('.calendar-custom-toolbar .center').text(monthNames[c.currentMonth] +', ' + c.currentYear);
-    }
-  }
-});
+
 
 
 
@@ -214,47 +182,7 @@ function datepicker() {
 });
 }
 
-function datepickerDetailevent(){
-  var today = new Date();
-  var weekLater = new Date().setDate(today.getDate() + 7);
-  var monthNames = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August' , 'September' , 'October', 'November', 'December'];
-  var calendarInlineVoorsteldetailevent = app.calendar.create({
-  containerEl: '#demo-calendar-inline-container-detailevent',
-  multiple: true,
-  weekHeader: false,
-  disabled: {
-    from: new Date(2020, 4, 4),
-    to: new Date(2020, 4, 7),
-},
-  renderToolbar: function () {
-    return '<div class="toolbar calendar-custom-toolbar no-shadow">' +
-      '<div class="toolbar-inner">' +
-        '<div class="left">' +
-          '<a href="#" class="link icon-only"><i class="icon icon-back ' + (app.theme === 'md' ? 'color-black' : '') + '"></i></a>' +
-        '</div>' +
-        '<div class="center"></div>' +
-        '<div class="right">' +
-          '<a href="#" class="link icon-only"><i class="icon icon-forward ' + (app.theme === 'md' ? 'color-black' : '') + '"></i></a>' +
-        '</div>' +
-      '</div>' +
-    '</div>';
-  },
-  on: {
-    init: function (c) {
-      $$('.calendar-custom-toolbar .center').text(monthNames[c.currentMonth] +', ' + c.currentYear);
-      $$('.calendar-custom-toolbar .left .link').on('click', function () {
-        calendarInlineVoorsteldetailevent.prevMonth();
-      });
-      $$('.calendar-custom-toolbar .right .link').on('click', function () {
-        calendarInlineVoorsteldetailevent.nextMonth();
-      });
-    },
-    monthYearChangeStart: function (c) {
-      $$('.calendar-custom-toolbar .center').text(monthNames[c.currentMonth] +', ' + c.currentYear);
-    }
-  }
-});
-}
+
 // kalender bij het voorstellen van een event zonder bepaald event
 function datepickerRandomEvent(){
   var today = new Date();
@@ -377,7 +305,6 @@ $$(document).on('page:init', '.page[data-name="lijstvoorstellen"]', function (e)
 function getListMyEvents(){
   lijstEigenVoorstellen() ;
   lijstEigenHistory();
-  console.log("check");
 }
 
 

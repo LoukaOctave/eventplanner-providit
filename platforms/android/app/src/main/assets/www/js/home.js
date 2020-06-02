@@ -462,3 +462,28 @@ function showNietDeelnemen(){
 }
 
 //  #endregion DETAILEVENT.HTML
+
+//  #region ICAL
+
+// Converts hh:mm to milliseconds integer
+function timeToMilliseconds(tijdstip) { return (parseInt(tijdstip.split(":")[0], 10) * 3600000) + (parseInt(tijdstip.split(":")[1], 10) * 60000) }
+
+// Calculates end time of event in 24-hour format
+function calcEndTime(start, duurtijd) { return (parseInt(start.split(":")[0], 10) + parseInt(duurtijd, 10)) + ":" + start.split(":")[1]; }
+
+// Converts event to ical format and downloads it
+function getEventICAL(event) {
+  db.collection('Events').doc(event).get().then(function(doc) {
+    var cal = ics();
+    var subject = doc.data().Eventnaam;
+    var description = doc.data().Beschrijving;
+    var location = doc.data().Locatie;
+    var begin = doc.data().Datum.toMillis() + timeToMilliseconds(doc.data().Startuur);
+    var end = doc.data().Datum.toMillis() + timeToMilliseconds(calcEndTime(doc.data().Startuur, doc.data().Duurtijd));
+    cal.addEvent(subject, description, location, begin, end);
+    cal.download("Providit-Eventplanner-" + doc.id + "-" + doc.data().Eventnaam);
+    window.open( "data:text/calendar;charset=utf8," + escape(cal));
+  })
+}
+
+//  #endregion ICAL
