@@ -108,7 +108,7 @@ function showEventVoorstelZaakvoerder(){
       $$("#vTijdstip").html('<b>Tijdstip:</b> ' + doc.data().Tijdstip); 
       $$("#vDuur").html('<b>Duurtijd:</b> ' + doc.data().Duurtijd); 
       $$("#vLocatie").html('<b>Locatie:</b> ' + doc.data().Locatie); 
-      $$("#vURL").html('<b>URL:</b> ' + doc.data().URL); 
+      $$("#vURL").html(doc.data().URL);
       document.getElementById("vImg").setAttribute("src", doc.data().Img);
       document.getElementById("vURL").setAttribute("href", doc.data().URL);
       document.getElementById("vGoedkeuren").setAttribute("id", doc.id);
@@ -131,8 +131,6 @@ function showEventVoorstelZaakvoerder(){
     });
 
 }
-
-
 
 $$(document).on('click', 'a.aanvraagGoedkeuren', function (e) {
   aanvraagGoedkeuren();  
