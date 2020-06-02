@@ -462,32 +462,11 @@ function showNietDeelnemen(){
 
 //  #region ICAL
 
-function calcEventStartTime(startuur) {
-  var output;
-  var hh = startuur.split(":")[0];
-  var mm = startuur.split(":")[1];
+// Converts hh:mm to milliseconds integer
+function timeToMilliseconds(tijdstip) { return (parseInt(tijdstip.split(":")[0], 10) * 3600000) + (parseInt(tijdstip.split(":")[1], 10) * 60000) }
 
-  switch (hh) {
-    case (hh == "00"):
-      output = "12:" + mm + " am";
-      break;
-    case (hh == "12"):
-      output = "12:" + mm + " pm";
-      break;
-    case (parseInt(hh, 10) > 12):
-      output = (parseInt(hh, 10) - 12) + ":" + mm + " pm";
-      break;
-    case (parseInt(hh, 10) < 12):
-      output = parseInt(hh, 10) + ":" + mm + " pm";
-      break;
-  }
-
-  return output;
-}
-
-function calcEventEndTime(startuur, duurtijd) {
-  return ;
-}
+// Calculates end time of event in 24-hour format
+function calcEndTime(start, duurtijd) { return (parseInt(start.split(":")[0], 10) + parseInt(duurtijd, 10)) + ":" + start.split(":")[1]; }
 
 // Converts event to ical format and downloads it
 function getEventICAL(event) {
@@ -496,10 +475,9 @@ function getEventICAL(event) {
     var subject = doc.data().Eventnaam;
     var description = doc.data().Beschrijving;
     var location = doc.data().Locatie;
-    var begin = new Date(doc.data().Datum.seconds*1000).toLocaleDateString() + " " + calcEventStartTime(doc.data().Startuur);
-    var end = new Date(doc.data().Datum.seconds*1000).toLocaleDateString() + " " + calcEventEndTime(calcEventStartTime(doc.data().Startuur), doc.data().Duurtijd);
+    var begin = doc.data().Datum.toMillis() + timeToMilliseconds(doc.data().Startuur);
+    var end = doc.data().Datum.toMillis() + timeToMilliseconds(calcEndTime(doc.data().Startuur, doc.data().Duurtijd));
     cal.addEvent(subject, description, location, begin, end);
-
     cal.download("Providit-Eventplanner-" + doc.id + "-" + doc.data().Eventnaam);
   })
 }
