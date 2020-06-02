@@ -459,3 +459,49 @@ function showNietDeelnemen(){
 }
 
 //  #endregion DETAILEVENT.HTML
+
+//  #region ICAL
+
+function calcEventStartTime(startuur) {
+  var output;
+  var hh = startuur.split(":")[0];
+  var mm = startuur.split(":")[1];
+
+  switch (hh) {
+    case (hh == "00"):
+      output = "12:" + mm + " am";
+      break;
+    case (hh == "12"):
+      output = "12:" + mm + " pm";
+      break;
+    case (parseInt(hh, 10) > 12):
+      output = (parseInt(hh, 10) - 12) + ":" + mm + " pm";
+      break;
+    case (parseInt(hh, 10) < 12):
+      output = parseInt(hh, 10) + ":" + mm + " pm";
+      break;
+  }
+
+  return output;
+}
+
+function calcEventEndTime(startuur, duurtijd) {
+  return ;
+}
+
+// Converts event to ical format and downloads it
+function getEventICAL(event) {
+  db.collection('Events').doc(event).get().then(function(doc) {
+    var cal = ics();
+    var subject = doc.data().Eventnaam;
+    var description = doc.data().Beschrijving;
+    var location = doc.data().Locatie;
+    var begin = new Date(doc.data().Datum.seconds*1000).toLocaleDateString() + " " + calcEventStartTime(doc.data().Startuur);
+    var end = new Date(doc.data().Datum.seconds*1000).toLocaleDateString() + " " + calcEventEndTime(calcEventStartTime(doc.data().Startuur), doc.data().Duurtijd);
+    cal.addEvent(subject, description, location, begin, end);
+
+    cal.download("Providit-Eventplanner-" + doc.id + "-" + doc.data().Eventnaam);
+  })
+}
+
+//  #endregion ICAL
