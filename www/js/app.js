@@ -75,13 +75,15 @@ var user = firebase.auth().currentUser; // TODO: moet ook aangepast worden wanne
 console.log(user);
 var loggedIn = false;
 console.log(loggedIn);
-let userID = localStorage.getItem("userID"); // TODO: moet ook aangepast worden wanneer user inlogd en uitlogd
+var userID;
+var userRol;
 // !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 const loggedOutLinks = document.querySelectorAll('.loggedout');
 const loggedInLinks = document.querySelectorAll('.loggedin');
 const setupUI = (user) => {
 
   if (user){
+    userID = localStorage.getItem("userID")
     // output account information
     db.collection('users').doc(user.uid).get().then(doc => {
       //myApp.dialog.alert('Welcome  ' + doc.data().username  );
@@ -92,19 +94,45 @@ const setupUI = (user) => {
     getAantalPersoneel();
     loggedInLinks.forEach(item => item.style.display = 'block');
     loggedOutLinks.forEach(item => item.style.display = 'none');
+    getUserRol();
 
   } else {
+    app.loginScreen.open('#my-login-screen');  
+    app.views.current.router.navigate('/myevents/', {reloadCurrent: true});
+    userRol = "";
+    
     // hide account info
     //accountDetails.innerHTML = "";
     // toggle UI elements
-    loggedInLinks.forEach(item => item.style.display = 'none');
-    loggedOutLinks.forEach(item => item.style.display = 'block');
+    // loggedInLinks.forEach(item => item.style.display = 'none');
+    // loggedOutLinks.forEach(item => item.style.display = 'block');
+    // document.getElementById("logout").style.display = 'none';
 
   }
 }
 // !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 
+function getUserRol(){
+  db.collection('Users').doc(userID).get().then(function(doc) {
+    if (doc.exists) {
+        userRol = doc.data().Rol
+        // zaakvoerderspaneel activeren of niet
+        if (userRol !== "Zaakvoerder"){
+          $$("#tablijstvoorstellen").hide();
+        }
 
+    } else {
+      console.log("doc does not exist");
+    }
+}).catch(function(error) {
+    console.log("Error getting document:", error);
+});
+}
+function checkiszaakvoerder(){
+  if(userRol == "Zaakvoerder"){
+    return true;
+  } else return false;
+}
 
 
 

@@ -134,7 +134,7 @@
   --f7-bars-border-color: rgba(255, 255, 255, 0.1);
 }
 /*====================
-  Color Themes
+  Color Themes 
   ==================== */
 .text-color-primary {
   --f7-theme-color-text-color: var(--f7-theme-color);

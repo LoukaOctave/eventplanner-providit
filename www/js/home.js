@@ -33,6 +33,7 @@ $$(document).on('page:init', '.page[data-name="home"]', function (e) {
 
 // Events met "voorstelnodate" als status ophalen en zetten onder "Datum kiezen..."
 function getListVoorstelNoDateEvents() {
+  //$$("#voorstelNoDateEvent").empty();
     var aangemeld;
     db.collection('Events').where('Status', '==', "voorstelnodate").get().then((snapshot) => {
       snapshot.docs.forEach(doc => {
@@ -205,8 +206,16 @@ function getListVoorstelNoEventEvents() {
   
   // Events met "gepland" als status ophalen en zetten onder "Geplande events"
   function getListGeplandEvents() {
+    var aanwezigGepland;
     db.collection('Events').where('Status', '==', "gepland").get().then((snapshot) => {
       snapshot.docs.forEach(doc => {
+   db.collection('Events').doc(doc.id).collection('Deelnemers').doc(userID).get().then(function(doc1) {
+        if (doc1.exists && doc1.data().AanwezigFinaal == true) {
+          aanwezigGepland = "ik ben aanwezig";
+      } else {
+          aanwezigGepland = "Ik ben afwezig";
+        
+    } 
         var tlines = "";
         tlines += "<div class='card demo-card-header-pic'><a class ='geplandEventCardLinks' id ='"
         + doc.id + "' href='/detailfinalevent/'><div style='background-image: url("
@@ -214,34 +223,73 @@ function getListVoorstelNoEventEvents() {
         + doc.data().Eventnaam + "</div><div class='card-content card-content-padding'><p class='date'>"
         + timestampToDate(doc.data().Datum) + "</p></div><div class='card-footer'><a href='/detailfinalevent/' class='geplandEventCardLinks' id ='"
         + doc.id + "'>"
-        + "ok" + "</a></div></a></div>";
+        + aanwezigGepland + "</a></div></a></div>";
   
         $$("#geplandEvent").append(tlines);
         })
       })
+})
   }
-
+  // Zorgt ervoor dat alle deelnemers aan een gepland event worden opgelijst in "detailfinalevent.html"
+  function getDeelnemersGeplandEvent(){
+    var tlines = "";
+    db.collection('Events').doc(eventnummer).collection('Deelnemers').where("AanwezigFinaal", "==", true).get().then((snapshot) => {
+      snapshot.docs.forEach(doc => {
+        
+        db.collection('Users').doc(doc.id).get().then(function(doc) {
+          if (doc.exists) {
+            
+            tlines += "<li class='item-content'><div class='item-media'><img src='" 
+            // TODO: Users een Img geven en deze als src opgeven voor <img> element
+            + doc.data().Img  + "' width='44'/></div><div class='item-inner'><div class='item-title-row'><div class='item-title'>"
+            + doc.data().Username + "</div></div></div></li>"
+      
+            
+          } else {
+              // doc.data() will be undefined in this case
+              console.log("No such document!");
+          }
+          }).then(() => {
+            $$("#deelnemersDetailGeplandEvent").html(tlines);          
+          }).catch(function(error) {
+              console.log("Error getting document:", error);
+          });
+      });
+    })
+  }
  // toggle aanwezigfinaal of niet
   function setAanwezigfinaal(){
     var toggle = app.toggle.get('.toggle');
     if(toggle.checked){
       db.collection('Events').doc(eventnummer).collection('Deelnemers').doc(userID).update({
         AanwezigFinaal: true
-      })
+      }).then(() => {
+        getDeelnemersGeplandEvent() 
+     })
+      
     }
     if(!toggle.checked){
       db.collection('Events').doc(eventnummer).collection('Deelnemers').doc(userID).update({
         AanwezigFinaal: false
-      })
+      }).then(() => {
+        getDeelnemersGeplandEvent() 
+     })
     }
   }
  // toggle set aanwezig
   function toggleaanwezigset(){
     db.collection('Events').doc(eventnummer).collection('Deelnemers').doc(userID).get().then(function(doc) {
-      if (doc.data().AanwezigFinaal == true) {
+      if (doc.exists && doc.data().AanwezigFinaal == true) {
         app.toggle.get('#toggle').checked = true;
     } else {
         app.toggle.get('#toggle').checked = false;
+        if(doc.exists == false){
+          db.collection('Events').doc(eventnummer).collection('Deelnemers').doc(userID).set({
+            Id: userID,
+            Aanwezigfinaal: false
+        })
+        }
+        
     }
   }).catch(function(error) {
       console.log("Error getting document:", error);
@@ -265,27 +313,13 @@ function getListVoorstelNoEventEvents() {
       + doc.data().Startuur + "</p><p><b>Duurtijd: </b>"
       + doc.data().Duurtijd + " uur</p><p><b>Beschrijving: </b>"
       + doc.data().Beschrijving + "</p></div> <div class='card'><div class='card-header'>Deelnemers:</div><div class='card-content'><div class='list media-list'><ul id='deelnemersDetailGeplandEvent'>"
-      + getDeelnemersGeplandEvent(doc.id); + "</ul></div></div></div>"
+      "</ul></div></div></div>"
       
       $$("#detailGeplandEvent").append(tlines);
     })
+    getDeelnemersGeplandEvent()
   }
-  
-  // Zorgt ervoor dat alle deelnemers aan een gepland event worden opgelijst in "detailfinalevent.html"
-  function getDeelnemersGeplandEvent(event){
-    db.collection('Events').doc(event).collection('Deelnemers').get().then((snapshot) => {
-      snapshot.docs.forEach(doc => {
-        var tlines = "";
-        tlines += "<li class='item-content'><div class='item-media'><img src='" 
-        // TODO: Users een Img geven en deze als src opgeven voor <img> element
-        + "https://cdn.framework7.io/placeholder/fashion-88x88-4.jpg" + "' width='44'/></div><div class='item-inner'><div class='item-title-row'><div class='item-title'>"
-        + doc.data().Username + "</div></div></div></li>"
-  
-        $$("#deelnemersDetailGeplandEvent").append(tlines);
-      });
-    })
-  }
-  
+
       //  #endregion GEPLAND
   
   //  #endregion INDEX.HTML

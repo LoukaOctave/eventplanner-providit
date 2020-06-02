@@ -3,6 +3,7 @@ var routes = [
   {
     path: '/',
     url: './index.html',
+    name: 'index'
   },
   {
     path: '/about/',
@@ -47,6 +48,11 @@ var routes = [
     path: '/detailevent/',
     url: './pages/detailevent.html',
     name: 'detailevent'
+  },
+  {
+    path: '/register/',
+    url: './pages/register.html',
+    name: 'register'
   },
   {
     path: '/detailfinalevent/',

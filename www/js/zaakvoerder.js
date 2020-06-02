@@ -13,23 +13,30 @@ $$(document).on('page:init', '.page[data-name="lijstvoorstellen"]', function (e)
 
   // list van voorstellen history
 function getListHistory() {    
-    db.collection('Events').where('Status' , '==', "voorstelnodate").get().then((snapshot)=>{
+    db.collection('Events').where('Status' , '==', "voorstelnodate").limit(5).get().then((snapshot)=>{
       snapshot.docs.forEach(doc => {              
         var tlines = "";          
-        tlines += "<li><a href='#' class='item-content' id=" + doc.id + "><div class='item-media'><i class='f7-icons'>checkmark_alt_circle</i></div><div class='item-inner'><div class='item-title'>" + doc.data().Eventnaam + "</div></div></a></li>";
+        tlines += "<li><div class='item-content' id=" + doc.id + "><div class='item-media'><i class='f7-icons'>checkmark_alt_circle</i></div><div class='item-inner'><div class='item-title'>" + doc.data().Eventnaam + "</div></div></div></li>";
         $$("#voorstellenhistory").append(tlines);       
     })
+    
   }) 
-  db.collection('Events').where('Status' , '==', "afgekeurd").get().then((snapshot)=>{
+  db.collection('Events').where('Status' , '==', "gepland").limit(5).get().then((snapshot)=>{
     snapshot.docs.forEach(doc => {              
       var tlines = "";          
-      tlines += "<li><a href='#' class='item-content' id=" + doc.id + "><div class='item-media'><i class='f7-icons'>multiply_circle</i></div><div class='item-inner'><div class='item-title'>" + doc.data().Eventnaam + "</div></div></a></li>";
+      tlines += "<li><div href='#' class='item-content' id=" + doc.id + "><div class='item-media'><i class='f7-icons'>checkmark_alt_circle</i></div><div class='item-inner'><div class='item-title'>" + doc.data().Eventnaam + "</div></div></div></li>";
       $$("#voorstellenhistory").append(tlines);       
   })
-  }) 
   
-      
-  }
+}) 
+  db.collection('Events').where('Status' , '==', "afgekeurd").limit(5).get().then((snapshot)=>{
+    snapshot.docs.forEach(doc => {              
+      var tlines = "";          
+      tlines += "<li><div href='#' class='item-content' id=" + doc.id + "><div class='item-media'><i class='f7-icons'>multiply_circle</i></div><div class='item-inner'><div class='item-title'>" + doc.data().Eventnaam + "</div></div></div></li>";
+      $$("#voorstellenhistory").append(tlines);       
+  })
+  })      
+}
 
 
   // eventvoorstellen ophalen voor zaakvoerderspaneel
@@ -66,12 +73,12 @@ function getListAanvragen() {
   }
   function getEvents(){
     var aantalDeelnemers;
-
+    
     var tlines = ""; 
-     
+    
       db.collection('Events').where('Status' , '==', "gepland").get().then((snapshot)=>{
         snapshot.docs.forEach(doc => {    
-          tlines += "<li><a href='/eventvoorstelzaakvoerdergoedgekeurd/' class='voorstellinks' id=" + doc.id + ">" + doc.data().Eventnaam + "</a></li>";       
+          tlines += "<li><a href='/eventvoorstelzaakvoerdergoedgekeurd/' class='eventlinks' id=" + doc.id + ">" + doc.data().Eventnaam + "</a></li>";       
       })
       $$("#geplandeevents").html(tlines);  
          
@@ -263,14 +270,40 @@ function aanvraagAfkeuren(){
 $$(document).on('click', 'a.voorstellinks', function (e) {
   eventnummer = $$(this).attr("id");
   showVoorstelInfo();
-});
+  $$(".datumkiezen").show();
 
+});
+$$(document).on('click', 'a.eventlinks', function (e) {
+  $$(".datumkiezen").hide();
+  eventnummer = $$(this).attr("id");
+  showVoorstelInfo();
+
+
+});
+// bepaald of het voor een voorstel of een gepland event is
+var aantalDeelnemers;
 function showVoorstelInfo(){
-    var aantalDeelnemers;
     
-    db.collection("Events").doc(eventnummer).collection("Deelnemers").get().then(snap => {
-        aantalDeelnemers = snap.size // will return the collection size
-     });
+    db.collection("Events").doc(eventnummer).get().then(doc => {
+      if (doc.data().Status == "gepland"){        
+        db.collection("Events").doc(eventnummer).collection("Deelnemers").where("AanwezigFinaal", "==", true).get().then(snap => {
+          aantalDeelnemers = snap.size // will return the collection size
+          getshowVoorstelInfoData();
+          $$(".datumkiezen").hide();
+       });
+      } else {        
+        db.collection("Events").doc(eventnummer).collection("Deelnemers").where("Aangemeld", "==", true).get().then(snap => {
+          aantalDeelnemers = snap.size // will return the collection size
+          getshowVoorstelInfoData();
+          $$(".datumkiezen").show();
+       });
+      }
+   });
+
+
+}
+// om de data bij een voorstel op te halen
+function getshowVoorstelInfoData(){    
   db.collection("Events").doc(eventnummer)
   .get()
   .then(function(doc) {        
@@ -289,7 +322,7 @@ function showVoorstelInfo(){
   .catch(function(error) {
       console.log("Error getting eventdocuments: ", error);
   });
-}
+} 
 function editVoorstelFormulierShow(){
   db.collection("Events").doc(eventnummer)
   .get()
